@@ -1,8 +1,8 @@
 "use client"
 import { motion } from "framer-motion";
-import { TChildren } from "@/src/types";
+import { IChildren } from "@/src/types";
 
-const AnimatedButton = ({ children }: TChildren) => {
+const AnimatedButton = ({ children }: IChildren) => {
     return (
         <motion.div
             className="box cursor-pointer"

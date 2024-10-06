@@ -5,6 +5,6 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 };
 
 
-export interface TChildren  {
+export interface IChildren  {
   children: ReactNode;
 }
