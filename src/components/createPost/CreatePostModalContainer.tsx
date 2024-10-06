@@ -9,8 +9,8 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
     return (
         <CreatePostModal
             buttonCompo={children}
-            title='Create Post'
             className={className}
+            title='Create Post'
         >
             create post
         </CreatePostModal>

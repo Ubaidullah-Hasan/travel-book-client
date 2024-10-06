@@ -49,7 +49,7 @@ const CreatePostModal = ({ title, children, buttonCompo, className }: IProps) =>
                 onOpenChange={onOpenChange}
             >
                 <ModalContent>
-                    {(onClose) => (
+                    {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
                                 {title}
