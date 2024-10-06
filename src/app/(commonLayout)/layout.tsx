@@ -1,6 +1,6 @@
+import { ReactNode } from 'react';
 import LeftSidebar from '@/src/components/sidebar/LeftSidebar';
 import RightSidebar from '@/src/components/sidebar/RightSidebar';
-import { ReactNode } from 'react';
 
 type TProps = {
     children: ReactNode,
@@ -9,7 +9,7 @@ type TProps = {
 const layout = ({ children }: TProps) => {
     return (
         <div className='flex justify-between gap-6'>
-            <aside className='w-[25%] relative bg-red-600'>
+            <aside className='w-[25%] relative'>
                 <LeftSidebar />
             </aside>
 
@@ -17,7 +17,7 @@ const layout = ({ children }: TProps) => {
                 {children}
             </main>
 
-            <aside className='w-[25%]  bg-red-600'>
+            <aside className='w-[25%] '>
                 <RightSidebar />
             </aside>
         </div>
