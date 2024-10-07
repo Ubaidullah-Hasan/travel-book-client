@@ -24,7 +24,9 @@ const CreatePostModal = ({ title, children, buttonCompo, className }: IProps) =>
             </Button>
 
             <Modal
-                backdrop="opaque"
+            backdrop="opaque"
+                className='pb-5'
+                isDismissable={false}
                 isOpen={isOpen}
                 motionProps={{
                     variants: {
@@ -46,25 +48,18 @@ const CreatePostModal = ({ title, children, buttonCompo, className }: IProps) =>
                         },
                     }
                 }}
+                size='2xl'
                 onOpenChange={onOpenChange}
             >
                 <ModalContent>
                     {() => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">
+                            <ModalHeader className="flex flex-col gap-1 text-center border-b border-default-200">
                                 {title}
                             </ModalHeader>
                             <ModalBody>
                                 {children}
                             </ModalBody>
-                            {/* <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Action
-                                </Button>
-                            </ModalFooter> */}
                         </>
                     )}
                 </ModalContent>

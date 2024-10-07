@@ -19,7 +19,7 @@ const CreatePost = () => {
                     </div>
                 </CreatePostModalContainer>
             </CardHeader>
-            <Divider />
+            <Divider className='' />
 
             <CardFooter className='flex justify-around'>
                 <CreatePostModalContainer>

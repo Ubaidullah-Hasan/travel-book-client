@@ -2,10 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup } from "@nextui-org/react";
 import { useState } from "react";
-import { TPost } from "@/src/types";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
-import AnimatedButton from "../framerMotion/AnimatedButton";
 import { BiMessageRoundedDetail } from "react-icons/bi";
+import AnimatedButton from "../framerMotion/AnimatedButton";
+import { TPost } from "@/src/types";
 
 
 
@@ -20,7 +20,7 @@ const PostCard = ({ post }: { post: TPost }) => {
 
     return (
         <Card className="rounded-md " shadow="sm">
-            <CardHeader className="justify-between border-b">
+            <CardHeader className="justify-between border-b border-default-200">
                 <div className="flex gap-5">
                     <Avatar
                         isBordered
@@ -44,8 +44,8 @@ const PostCard = ({ post }: { post: TPost }) => {
                     {isFollowed ? "Unfollow" : "Follow"}
                 </Button>
             </CardHeader>
-            <CardBody className="px-3 py-0 text-small text-default-400">
-                <h2 className="text-lg text-default-800 my-3">{title}</h2>
+            <CardBody className="px-3 py-0 text-small text-default-400 my-4">
+                <h2 className="text-lg text-default-800 mb-2">{title}</h2>
                 <p>
                     {description.length <= 142 || isExpanded ? description : `${description.slice(0, 141)}`}
                     {description.length >= 142 && !isExpanded ? (
@@ -61,7 +61,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                 </span>
             </CardBody>
 
-            <CardFooter className="gap-3 justify-between border-t">
+            <CardFooter className="gap-3 justify-between border-t border-default-200">
                 <div className="flex gap-1">
                     <ButtonGroup radius="full" size="sm"  >
                         <Button
