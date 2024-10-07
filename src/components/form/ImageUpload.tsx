@@ -45,13 +45,13 @@ export default function ImageUpload({ name }: ImageUploadProps) {
                 multiple
                 accept="image/*, video/*"
                 className="hidden" // Hide the default file input
-                type="file"
                 id="file-upload"
+                type="file"
                 onChange={handleFileUpload}
             />
             <label
-                htmlFor="file-upload"
-                className="flex items-center w-full border p-4 rounded-xl text-sm cursor-pointer font-semibold text-blue-700 bg-blue-100">
+                className="flex items-center w-full border p-4 rounded-xl text-sm cursor-pointer font-semibold text-blue-700 bg-blue-100"
+                htmlFor="file-upload">
                 <FaUpload className="mr-2" /> 
                 {filePreviews.length ? "Upload More" : "Upload Images"}
             </label>

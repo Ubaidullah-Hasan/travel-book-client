@@ -1,5 +1,8 @@
 import React from 'react';
 import { Logo } from '@/src/assets/icons';
+import { AiOutlineLogin } from "react-icons/ai";
+import Link from 'next/link';
+import AnimatedButton from '../framerMotion/AnimatedButton';
 
 const LeftSidebar = () => {
     return (
@@ -8,8 +11,13 @@ const LeftSidebar = () => {
                 <Logo />
                 <p className='font-bold uppercase'>TravelBook</p>
             </div>
-            Left Sidebar
-            
+            <Link href='/login'>
+                <div className='duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2'>
+                    <AiOutlineLogin />
+                    Login
+                </div>
+            </Link>
+
         </div>
     );
 };

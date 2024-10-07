@@ -7,7 +7,9 @@ import FSForm from '../form/TSForm';
 import CreatePostModal from '../modal/CreatePostModal';
 import FSTextEditor from '../form/FSTextEditor';
 import ImageUpload from '../form/ImageUpload';
-import { IChildren } from '@/src/types';
+import { IChildren, TCategory } from '@/src/types';
+import FSSelect from '../form/FSSelect';
+import { useGetAllCategories } from '@/src/hooks/categories.hook';
 
 
 interface IProps extends IChildren {
@@ -15,7 +17,15 @@ interface IProps extends IChildren {
 }
 
 const CreatePostModalContainer = ({ children, className }: IProps) => {
-    const [value, setValue] = useState('');
+    const { data: catetoriesResponse } = useGetAllCategories();
+
+
+    const categoryOptions = catetoriesResponse?.result?.map((item: TCategory) => ({
+        label: item?.name,
+        key: item?._id,
+    }))
+    console.log(categoryOptions);
+
 
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
         console.log(data);
@@ -31,7 +41,7 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
                 <div className='space-y-3'>
                     <div className='flex gap-5'>
                         <FSInput label='Title' name='title' />
-                        <FSInput label='Category' name='title' />
+                        <FSSelect options={categoryOptions} label='Category' name='category' />
                     </div>
 
                     <FSTextEditor label='Description' name='description' />
