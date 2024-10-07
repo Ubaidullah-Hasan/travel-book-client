@@ -3,11 +3,11 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Link 
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaRegUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
 import { useUserRegistration } from "@/src/hooks/auth.hook";
-import { useRouter } from "next/navigation";
 
 
 const Register = () => {
@@ -87,8 +87,8 @@ const Register = () => {
                                     <Button
                                         fullWidth
                                         color="primary"
-                                        type="submit"
                                         isLoading={isPending}
+                                        type="submit"
                                     >
                                         Register
                                     </Button>

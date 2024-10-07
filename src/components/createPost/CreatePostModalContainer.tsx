@@ -24,9 +24,6 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
         key: item?._id,
     }))
 
-    console.log(categoryOptions);
-
-
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
         console.log(data);
     }

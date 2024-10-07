@@ -12,7 +12,7 @@ import { TPost } from "@/src/types";
 
 
 const PostCard = ({ post }: { post: TPost }) => {
-    console.log(post);
+    // console.log(post);
     const [isFollowed, setIsFollowed] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const { description, title, userId, categoryId, images, upVote, downVote, _id } = post;
