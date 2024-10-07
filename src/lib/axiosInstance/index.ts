@@ -1,27 +1,49 @@
 import axios from "axios";
 import envConfig from "@/src/config/envConfig";
+import { cookies } from "next/headers";
+import { getNewAccessToken } from "@/src/services/authService";
 
 export const axiosInstance = axios.create({
     baseURL: envConfig.backend_api,
 });
 
+
+
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    const accessToken = cookies().get("accessToken")?.value;
+
+    if (accessToken) {
+        config.headers.Authorization = accessToken;
+    }
+
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
+
+// Add a response interceptor
+axios.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    async function (error) {
+        const config = error.config;
+
+        if (error?.response?.status === 401 && !config?.sent) {
+            config.sent = true;
+            const res = await getNewAccessToken(); 
+            const accessToken = res.result.accessToken;
+
+            config.headers["Authorization"] = accessToken;
+            cookies().set("accessToken", accessToken);
+
+            return axiosInstance(config);
+        } else {
+            return Promise.reject(error);
+        }
+    },
+);
+
 export default axiosInstance;
-
-// axios.interceptors.request.use(function (config) {
-//     // Do something before request is sent
-//     return config;
-// }, function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-// });
-
-// // Add a response interceptor
-// axios.interceptors.response.use(function (response) {
-//     // Any status code that lie within the range of 2xx cause this function to trigger
-//     // Do something with response data
-//     return response;
-// }, function (error) {
-//     // Any status codes that falls outside the range of 2xx cause this function to trigger
-//     // Do something with response error
-//     return Promise.reject(error);
-// });

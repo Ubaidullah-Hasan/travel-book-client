@@ -16,7 +16,6 @@ export const registerUser = async (userInfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        console.log(error);
         throw new Error(error);
     }
 }
@@ -32,7 +31,6 @@ export const login = async (userinfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        console.log(error);
         throw new Error(error);
     }
 };
@@ -65,4 +63,23 @@ export const getCurrentUser = async () => {
 export const logoutUser = () => {
     cookies().delete("accessToken");
     cookies().delete("refreshToken");
+};
+
+export const getNewAccessToken = async () => {
+    try {
+        const refreshToken = cookies().get("refreshToken")?.value;
+
+        const res = await axiosInstance({
+            url: "/auth/refresh-token",
+            method: "POST",
+            withCredentials: true,
+            headers: {
+                cookie: `refreshToken=${refreshToken}`,
+            },
+        });
+
+        return res.data;
+    } catch (error) {
+        throw new Error("Failed to get new access token");
+    }
 };
