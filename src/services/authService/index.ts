@@ -17,3 +17,18 @@ export const registerUser = async (userInfo: FieldValues) => {
         throw new Error(error);
     }
 }
+
+export const login = async (userinfo: FieldValues) => {
+    try {
+        const { data } = await axiosInstance.post("/auth/login", userinfo);
+
+        if (data.success) {
+            cookies().set("accessToken", data?.data?.accessToken);
+            cookies().set("refreshToken", data?.data?.refreshToken);
+        }
+
+        return data;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+};

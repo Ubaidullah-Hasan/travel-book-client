@@ -1,17 +1,29 @@
 "use client"
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Link } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
+import { useUserLogin } from "@/src/hooks/auth.hook";
+import { useRouter } from "next/navigation";
 
 
 const Login = () => {
+    const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
+    const { mutate: handleLogin, isSuccess, isPending } = useUserLogin();
+
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data);
+        handleLogin(data);
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            router.push("/")
+        }
+
+    }, [isSuccess])
 
     return (
         <div>
@@ -72,7 +84,7 @@ const Login = () => {
                                         Have a Account?
                                         <Link href="/register">Register</Link>
                                     </p>
-                                    <Button fullWidth color="primary" type="submit" >
+                                    <Button fullWidth color="primary" type="submit" isLoading={isPending}>
                                         Sign in
                                     </Button>
                                 </ModalFooter>
