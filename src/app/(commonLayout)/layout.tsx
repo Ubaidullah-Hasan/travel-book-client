@@ -13,7 +13,7 @@ const layout = ({ children }: TProps) => {
                 <LeftSidebar />
             </aside>
 
-            <main className='relative flex flex-col flex-1 h-screen'>
+            <main className='relative flex flex-col flex-1 h-screen my-5'>
                 {children}
             </main>
 
