@@ -1,14 +1,13 @@
 "use client"
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
 import { Button } from '@nextui-org/button';
 import FSInput from '../form/FSInput';
 import FSForm from '../form/TSForm';
 import CreatePostModal from '../modal/CreatePostModal';
 import FSTextEditor from '../form/FSTextEditor';
 import ImageUpload from '../form/ImageUpload';
-import { IChildren, TCategory } from '@/src/types';
 import FSSelect from '../form/FSSelect';
+import { IChildren, TCategory } from '@/src/types';
 import { useGetAllCategories } from '@/src/hooks/categories.hook';
 
 
@@ -24,6 +23,7 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
         label: item?.name,
         key: item?._id,
     }))
+
     console.log(categoryOptions);
 
 
@@ -41,7 +41,7 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
                 <div className='space-y-3'>
                     <div className='flex gap-5'>
                         <FSInput label='Title' name='title' />
-                        <FSSelect options={categoryOptions} label='Category' name='category' />
+                        <FSSelect label='Category' name='category' options={categoryOptions} />
                     </div>
 
                     <FSTextEditor label='Description' name='description' />

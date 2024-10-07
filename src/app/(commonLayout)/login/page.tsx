@@ -1,10 +1,10 @@
 "use client"
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Link } from "@nextui-org/react";
+import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
-import { useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
 
 
 const Login = () => {
@@ -16,10 +16,10 @@ const Login = () => {
     return (
         <div>
             <Modal
+                hideCloseButton
+                className="login-modal"
                 isOpen={true}
                 placement="top-center"
-                className="login-modal"
-                hideCloseButton
             >
                 <ModalContent>
                     {() => (
@@ -72,7 +72,7 @@ const Login = () => {
                                         Have a Account?
                                         <Link href="/register">Register</Link>
                                     </p>
-                                    <Button fullWidth type="submit" color="primary" >
+                                    <Button fullWidth color="primary" type="submit" >
                                         Sign in
                                     </Button>
                                 </ModalFooter>

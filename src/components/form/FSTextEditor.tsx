@@ -17,7 +17,6 @@ export default function FSTextEditor({
             <Controller
                 control={control}
                 name={name}
-                rules={{ required: `${name} is required` }}
                 render={({ field }) => (
                     <ReactQuill
                         theme="snow"
@@ -25,6 +24,7 @@ export default function FSTextEditor({
                         onChange={field.onChange}
                     />
                 )}
+                rules={{ required: `${name} is required` }}
             />
         </div>
     );

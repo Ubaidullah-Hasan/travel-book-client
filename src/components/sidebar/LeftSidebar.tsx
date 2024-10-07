@@ -1,8 +1,7 @@
 import React from 'react';
-import { Logo } from '@/src/assets/icons';
 import { AiOutlineLogin } from "react-icons/ai";
 import Link from 'next/link';
-import AnimatedButton from '../framerMotion/AnimatedButton';
+import { Logo } from '@/src/assets/icons';
 
 const LeftSidebar = () => {
     return (

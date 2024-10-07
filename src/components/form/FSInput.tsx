@@ -2,8 +2,8 @@
 
 import { Input } from "@nextui-org/input";
 import { useFormContext } from "react-hook-form";
-import { IInput } from "@/src/types";
 import { ReactNode } from "react";
+import { IInput } from "@/src/types";
 
 interface IProps extends IInput {
     endContent?: ReactNode;
@@ -32,16 +32,16 @@ export default function FSInput({
     return (
         <Input
             {...register(name)}
+            endContent={endContent}
             errorMessage={errors[name] ? (errors[name].message as string) : ""}
             isInvalid={!!errors[name]}
             label={label}
+            placeholder={placeholder}
             required={required}
             size={size}
+            startContent={startContent}
             type={type}
             variant={variant}
-            endContent={endContent}
-            startContent={startContent}
-            placeholder={placeholder}
         />
     );
 }

@@ -1,26 +1,38 @@
 "use client"
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Link } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { FaRegUser } from "react-icons/fa";
 import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
-import { useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { FaRegUser, FaUserInjured } from "react-icons/fa";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
+import { useRouter } from "next/navigation";
 
 
 const Register = () => {
+    const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
+    const { mutate: handleRegister, isPending, isSuccess } = useUserRegistration();
+
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data);
+        handleRegister(data);
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            router.push("/")
+        }
+
+    }, [isSuccess])
 
     return (
         <div>
             <Modal
+                hideCloseButton
+                className="login-modal"
                 isOpen={true}
                 placement="top-center"
-                className="login-modal"
-                hideCloseButton
             >
                 <ModalContent>
                     {() => (
@@ -72,7 +84,12 @@ const Register = () => {
                                         I Have a Account!
                                         <Link href="/login">login</Link>
                                     </p>
-                                    <Button fullWidth type="submit" color="primary" >
+                                    <Button
+                                        fullWidth
+                                        color="primary"
+                                        type="submit"
+                                        isLoading={isPending}
+                                    >
                                         Register
                                     </Button>
                                 </ModalFooter>

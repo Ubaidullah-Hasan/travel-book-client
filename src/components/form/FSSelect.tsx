@@ -1,6 +1,5 @@
 import { Select, SelectItem } from "@nextui-org/select";
 import { useFormContext } from "react-hook-form";
-
 import { IInput } from "@/src/types";
 
 interface IProps extends IInput {
@@ -24,11 +23,11 @@ export default function FSSelect({
     return (
         <Select
             {...register(name)}
+            required
             className="!capitalize"
             isDisabled={disabled}
             label={label}
             variant={variant}
-            required
         >
             {options.map((option) => (
                 <SelectItem key={option.key} className="capitalize">{option.label}</SelectItem>
