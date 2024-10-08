@@ -4,6 +4,7 @@ import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup } f
 import { useState } from "react";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BiMessageRoundedDetail } from "react-icons/bi";
+import parse from 'html-react-parser';
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import { TPost } from "@/src/types";
 
@@ -17,6 +18,19 @@ const PostCard = ({ post }: { post: TPost }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const { description, title, userId, categoryId, images, upVote, downVote, _id } = post;
 
+    const descriptionText = parse(description);
+
+    function stripHtml(html: any) {
+        const spaceAdd = (html.replace(/<\/[^>]+>/g, '$& '));
+        const tempDiv = document.createElement('div');
+
+        tempDiv.innerHTML = spaceAdd;
+
+        return tempDiv.innerText || tempDiv.textContent || '';
+    }
+
+    const cleanText = stripHtml(description);
+    
 
     return (
         <Card className="rounded-md " shadow="sm">
@@ -47,8 +61,12 @@ const PostCard = ({ post }: { post: TPost }) => {
             <CardBody className="px-3 py-0 text-small text-default-400 my-4">
                 <h2 className="text-lg text-default-800 mb-2">{title}</h2>
                 <p>
-                    {description.length <= 142 || isExpanded ? description : `${description.slice(0, 141)}`}
-                    {description.length >= 142 && !isExpanded ? (
+                    {
+                        cleanText.length <= 142 || isExpanded
+                            ? descriptionText
+                            : (cleanText.slice(0, 142))
+                    }
+                    {cleanText.length >= 142 && !isExpanded ? (
                         <span className="text-blue-500 ms-2"
                             role="button"
                             onClick={() => setIsExpanded(true)}
@@ -89,7 +107,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                 </div>
                 <AnimatedButton>
                     <div className="flex gap-1 items-center cursor-pointer">
-                        <BiMessageRoundedDetail size={20}/>
+                        <BiMessageRoundedDetail size={20} />
                         <p className="text-default-400 text-small">Comments</p>
                         <p className="text-small text-default-400">(9)</p>
                     </div>

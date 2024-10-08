@@ -8,8 +8,7 @@ export const axiosInstance = axios.create({
 });
 
 
-
-axios.interceptors.request.use(function (config) {
+axiosInstance.interceptors.request.use(function (config) {
     // Do something before request is sent
     const accessToken = cookies().get("accessToken")?.value;
 
@@ -24,8 +23,9 @@ axios.interceptors.request.use(function (config) {
 });
 
 // Add a response interceptor
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     function (response) {
+ 
         return response;
     },
     async function (error) {
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
 
         if (error?.response?.status === 401 && !config?.sent) {
             config.sent = true;
-            const res = await getNewAccessToken(); 
+            const res = await getNewAccessToken();
             const accessToken = res.result.accessToken;
 
             config.headers["Authorization"] = accessToken;

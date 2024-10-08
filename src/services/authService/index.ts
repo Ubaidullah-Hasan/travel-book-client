@@ -36,8 +36,7 @@ export const login = async (userinfo: FieldValues) => {
 };
 
 export const getCurrentUser = async () => {
-    const accessToken = cookies().get("accessToken")?.value;
-
+    const accessToken = cookies().get("accessToken")?.value;    
     let decodedToken = null;
 
     if (accessToken) {
@@ -53,7 +52,7 @@ export const getCurrentUser = async () => {
             isVarified: decodedToken.isVarified,
             isDeleted: decodedToken.isDeleted,
         };
-
+        
         return jwtPayload;
     }
 

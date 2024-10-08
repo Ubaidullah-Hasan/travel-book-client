@@ -10,8 +10,10 @@ import {
 import { TUser } from "../types";
 import { getCurrentUser } from "../services/authService";
 
-
-export const UserContext = createContext<IUserProviderValues | undefined>(undefined);
+// Create the UserContext
+export const UserContext = createContext<IUserProviderValues | undefined>(
+  undefined
+);
 
 interface IUserProviderValues {
   user: TUser | null;
@@ -20,32 +22,45 @@ interface IUserProviderValues {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
+// UserProvider component
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUser = async () => {
-    const user = await getCurrentUser();
+    try {
+      const user = await getCurrentUser();
 
-    setUser(user);
-    setIsLoading(false);
+      if (user) {
+        setUser(user);
+      } else {
+        console.log("No user found, maybe not logged in.");
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+
+  // Fetch user on component mount
   useEffect(() => {
     handleUser();
-  }, [isLoading]);
+  }, []); // Empty array to run once on mount
 
-  const initialValue = { user, setUser, isLoading, setIsLoading }
+  const initialValue = { user, setUser, isLoading, setIsLoading };
 
   return (
     <UserContext.Provider value={initialValue}>
-      {children}
+      {isLoading ? <div>Loading...</div> : children} {/* Add loading state */}
     </UserContext.Provider>
   );
 };
 
 export default UserProvider;
 
+// useUser hook to access context
 export const useUser = () => {
   const context = useContext(UserContext);
 

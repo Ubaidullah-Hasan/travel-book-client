@@ -1,7 +1,7 @@
 import React from 'react';
 import "./style.css"
 import SearchField from '../form/SearchField';
-import CreatePost from '../createPost/CreatePost';
+import CreatePost from '../createPost/CreatePostCard';
 import { ThemeSwitch } from '../ui/theme-switch';
 
 const RightSidebar = async () => {

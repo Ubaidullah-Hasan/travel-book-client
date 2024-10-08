@@ -29,7 +29,7 @@ export default function FSSelect({
             label={label}
             variant={variant}
         >
-            {options.map((option) => (
+            {options?.map((option) => (
                 <SelectItem key={option.key} className="capitalize">{option.label}</SelectItem>
             ))}
         </Select>

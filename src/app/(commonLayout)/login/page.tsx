@@ -9,21 +9,20 @@ import FSForm from "@/src/components/form/TSForm";
 import { useUserLogin } from "@/src/hooks/auth.hook";
 
 
-const Login = async() => {
+
+const Login = async () => {
     const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
-    const { mutate: handleLogin, isSuccess, isPending } = useUserLogin();
+    const { mutate: handleLogin, isPending} = useUserLogin();
 
-    const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+    const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
         handleLogin(data);
     }
 
-    useEffect(() => {
-        if (isSuccess) {
-            router.push("/")
-        }
 
-    }, [isSuccess]);
+    useEffect(() => {
+        
+    }, [router]);
 
     return (
         <div>

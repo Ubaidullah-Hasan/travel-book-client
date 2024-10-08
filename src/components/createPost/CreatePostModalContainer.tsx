@@ -1,21 +1,62 @@
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button } from '@nextui-org/button';
+import { ReactNode } from 'react';
+import { toast } from 'sonner';
 import FSInput from '../form/FSInput';
 import FSForm from '../form/TSForm';
 import CreatePostModal from '../modal/CreatePostModal';
 import FSTextEditor from '../form/FSTextEditor';
 import ImageUpload from '../form/ImageUpload';
 import FSSelect from '../form/FSSelect';
-import { IChildren, TCategory } from '@/src/types';
+import Loading from '../ui/Loading';
+import { TCategory } from '@/src/types';
 import { useGetAllCategories } from '@/src/hooks/categories.hook';
+import { useUser } from '@/src/context/user.provider';
+import { uploadMultipleImages, useCreatePosts } from '@/src/hooks/post.hook';
 
 
-interface IProps extends IChildren {
+interface IProps {
     className?: string;
+    children?: ReactNode;
 }
 
-const CreatePostModalContainer = ({ children, className }: IProps) => {
+
+const CreatePostModalContainer = ({ className }: IProps) => {
     const { data: catetoriesResponse } = useGetAllCategories();
+    const { user } = useUser();
+    const { mutate: createPost, isPending } = useCreatePosts();
+
+    const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+
+        const imagesToUpload = data.images;
+
+        const postData = {
+            ...data,
+            images: [],
+            userId: user?._id,
+        };
+
+        if (imagesToUpload && imagesToUpload.length > 0) {
+
+            // Upload images
+            uploadMultipleImages(imagesToUpload, {
+                onSuccess: (uploadedImageUrls: any) => {
+                    postData.images = uploadedImageUrls;
+
+                    // Now create the post with the image URLs
+                    // @ts-ignore
+                    createPost(postData);
+                },
+                onError: () => {
+                    toast.error("Something went wrong!");
+                }
+            });
+        } else {
+            // If no images, create the post directly
+            // @ts-ignore
+            createPost(postData);
+        }
+    };
 
 
     const categoryOptions = catetoriesResponse?.result?.map((item: TCategory) => ({
@@ -23,32 +64,34 @@ const CreatePostModalContainer = ({ children, className }: IProps) => {
         key: item?._id,
     }))
 
-    const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data);
-    }
 
     return (
-        <CreatePostModal
-            buttonCompo={children}
-            className={className}
-            title='Create Post'
-        >
-            <FSForm onSubmit={handleSubmit}>
-                <div className='space-y-3'>
-                    <div className='flex gap-5'>
-                        <FSInput label='Title' name='title' />
-                        <FSSelect label='Category' name='category' options={categoryOptions} />
-                    </div>
+        <>
+            {
+                isPending && <Loading />
+            }
+            <CreatePostModal
+                className={className}
+                title='Create Post'
+            >
+                <FSForm onSubmit={handleSubmit}>
+                    <div className='space-y-3'>
+                        <div className='flex gap-5'>
+                            <FSInput label='Title' name='title' />
+                            <FSSelect label='Category' name='categoryId' options={categoryOptions} />
+                        </div>
 
-                    <FSTextEditor label='Description' name='description' />
+                        <FSTextEditor label='Description' name='description' />
 
-                    <div>
-                        <ImageUpload name="images" />
+                        <div>
+                            <ImageUpload name="images" />
+                        </div>
+                        <Button fullWidth color='primary' type='submit'>Post</Button>
                     </div>
-                    <Button fullWidth color='primary' type='submit'>Post</Button>
-                </div>
-            </FSForm>
-        </CreatePostModal>
+                </FSForm>
+            </CreatePostModal>
+        </>
+
     );
 };
 
