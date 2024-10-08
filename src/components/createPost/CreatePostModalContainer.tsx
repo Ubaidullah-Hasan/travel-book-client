@@ -1,4 +1,3 @@
-"use client"
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button } from '@nextui-org/button';
 import FSInput from '../form/FSInput';

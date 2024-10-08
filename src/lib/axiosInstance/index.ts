@@ -1,6 +1,6 @@
 import axios from "axios";
-import envConfig from "@/src/config/envConfig";
 import { cookies } from "next/headers";
+import envConfig from "@/src/config/envConfig";
 import { getNewAccessToken } from "@/src/services/authService";
 
 export const axiosInstance = axios.create({
