@@ -7,8 +7,7 @@ import { BiMessageRoundedDetail } from "react-icons/bi";
 import parse from 'html-react-parser';
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import { TPost } from "@/src/types";
-
-
+import { Image } from "@nextui-org/image";
 
 
 
@@ -30,7 +29,7 @@ const PostCard = ({ post }: { post: TPost }) => {
     }
 
     const cleanText = stripHtml(description);
-    
+
 
     return (
         <Card className="rounded-md " shadow="sm">
@@ -60,7 +59,7 @@ const PostCard = ({ post }: { post: TPost }) => {
             </CardHeader>
             <CardBody className="px-3 py-0 text-small text-default-400 my-4">
                 <h2 className="text-lg text-default-800 mb-2">{title}</h2>
-                <p>
+                <p className="text-default-900">
                     {
                         cleanText.length <= 142 || isExpanded
                             ? descriptionText
@@ -74,6 +73,19 @@ const PostCard = ({ post }: { post: TPost }) => {
                     ) : ""
                     }
                 </p>
+                <div className="space-y-2 my-2">
+                    {
+                        images?.map((image, i) => (
+                            <Image
+                                key={i}
+                                alt={`${title}-${i}`}
+                                src={image}
+                                className="rounded w-full"
+                                width={1000}
+                            />
+                        ))
+                    }
+                </div>
                 <span className="pt-2 capitalize">
                     #{categoryId?.name}
                 </span>

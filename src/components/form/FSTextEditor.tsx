@@ -1,16 +1,26 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { Controller, useFormContext } from "react-hook-form";
-// import ReactQuill from "react-quill";
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
+import dynamic from "next/dynamic";
 import { IInput } from "@/src/types";
 import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
 
 interface IProps extends IInput {
     type?: string;
 }
+
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }], // Add color and background options
+        ['clean'] // Remove formatting button
+    ],
+};
+
 
 export default function FSTextEditor({
     name,
@@ -29,6 +39,7 @@ export default function FSTextEditor({
                         theme="snow"
                         value={field.value || ""}
                         onChange={field.onChange}
+                        modules={modules}
                     />
                 )}
                 rules={{ required: `${name} is required` }}
