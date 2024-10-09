@@ -22,38 +22,33 @@ interface IUserProviderValues {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-// UserProvider component
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUser = async () => {
-    try {
-      const user = await getCurrentUser();
+    const user = await getCurrentUser();
 
-      if (user) {
-        setUser(user);
-      } else {
-        console.log("No user found, maybe not logged in.");
-      }
-    } catch (error) {
-      console.error("Error fetching user:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    setUser(user);
+    setIsLoading(false);
   };
 
 
-  // Fetch user on component mount
+
   useEffect(() => {
     handleUser();
-  }, []); // Empty array to run once on mount
+  }, [isLoading]);
 
-  const initialValue = { user, setUser, isLoading, setIsLoading };
+  const initialValue = {
+    user,
+    setUser,
+    isLoading,
+    setIsLoading
+  };
 
   return (
     <UserContext.Provider value={initialValue}>
-      {isLoading ? <div>Loading...</div> : children} {/* Add loading state */}
+      {children}
     </UserContext.Provider>
   );
 };

@@ -10,8 +10,10 @@ import { useRouter } from 'next/navigation';
 import albumIcon from "../../assets/icons/album.png";
 import vedioIcon from "../../assets/icons/video-call.png";
 import AnimatedButton from '../framerMotion/AnimatedButton';
+import { useUser } from '@/src/context/user.provider';
 
 const CreatePostCard = () => {
+    const { user } = useUser();
     const router = useRouter()
     const handleCreatPostBtn = () => {
         router.push("/create-post");
@@ -20,7 +22,11 @@ const CreatePostCard = () => {
     return (
         <Card className="w-full">
             <CardHeader className="flex gap-3">
-                <Avatar className='w-11 h-11 ' src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
+                <Avatar className='w-11 h-11'
+                    src={user?.profilePhoto || 'https://i.ibb.co.com/nb7ZFPP/user.png'}
+                    isBordered
+                    color={user?.email ? 'success' : "default"}
+                />
                 <div className='flex-1'>
                     <div className='bg-default-100 hover:bg-default-200 text-default-400 py-2 px-4 w-full text-start rounded-full text-sm cursor-pointer' onClick={handleCreatPostBtn}>
                         Share your mind!

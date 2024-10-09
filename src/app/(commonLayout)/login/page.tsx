@@ -2,30 +2,40 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
 import { useUserLogin } from "@/src/hooks/auth.hook";
+import Loading from "@/src/components/ui/Loading";
+import { useUser } from "@/src/context/user.provider";
 
 
 
 const Login = async () => {
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect');
     const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
-    const { mutate: handleLogin, isPending} = useUserLogin();
+    const { mutate: handleLogin, isPending, isSuccess } = useUserLogin();
+    const { setIsLoading } = useUser(); 
 
     const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
         handleLogin(data);
+        setIsLoading(true);
     }
 
-
-    useEffect(() => {
-        
-    }, [router]);
+    if (isSuccess && !isPending) {
+        if (redirect) {
+            router.push(redirect);
+        } else {
+            router.push("/");
+        }
+    }
 
     return (
         <div>
+            {isPending && <Loading />}
             <Modal
                 hideCloseButton
                 className="login-modal"
