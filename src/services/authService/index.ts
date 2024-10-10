@@ -92,3 +92,13 @@ export const changePassword = async (passInfo:FieldValues) => {
         throw new Error("Failed to change password!");
     }
 }
+
+export const forgotPassword = async (email:FieldValues) => {
+    try {
+        const { data } = await axiosInstance.post("auth/forgot-password", email);
+
+        return data;
+    } catch (error) {
+        throw new Error("Failed request to forgot password!");
+    }
+}

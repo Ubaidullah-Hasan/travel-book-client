@@ -4,12 +4,12 @@ import { Button } from '@nextui-org/button';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { LockIcon } from '@/src/assets/icons';
 import FSInput from '@/src/components/form/FSInput';
 import FSForm from '@/src/components/form/TSForm';
 import { usePasswordChange } from '@/src/hooks/auth.hook';
 import Loading from '@/src/components/ui/Loading';
-import { useRouter } from 'next/navigation';
 import { useUser } from '@/src/context/user.provider';
 import { logoutUser } from '@/src/services/authService';
 

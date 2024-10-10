@@ -82,7 +82,7 @@ const Login = async () => {
                                         >
                                             Remember me
                                         </Checkbox>
-                                        <Link color="primary" href="#" size="sm">
+                                        <Link color="primary" href="/forgot-password" size="sm">
                                             Forgot password?
                                         </Link>
                                     </div>
