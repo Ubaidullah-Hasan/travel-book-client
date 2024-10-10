@@ -5,9 +5,9 @@ import { useState } from "react";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import parse from 'html-react-parser';
+import { Image } from "@nextui-org/image";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import { TPost } from "@/src/types";
-import { Image } from "@nextui-org/image";
 
 
 
@@ -79,8 +79,8 @@ const PostCard = ({ post }: { post: TPost }) => {
                             <Image
                                 key={i}
                                 alt={`${title}-${i}`}
-                                src={image}
                                 className="rounded w-full"
+                                src={image}
                                 width={1000}
                             />
                         ))

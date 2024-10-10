@@ -10,7 +10,7 @@ interface IProps extends IChildren {
     className?: string;
 }
 
-const CreatePostModal = ({ title, children }: IProps) => {
+const ModalContainer = ({ title, children }: IProps) => {
 
     return (
         <>
@@ -59,4 +59,4 @@ const CreatePostModal = ({ title, children }: IProps) => {
     );
 };
 
-export default CreatePostModal;
+export default ModalContainer;

@@ -16,7 +16,7 @@ export const registerUser = async (userInfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -31,7 +31,7 @@ export const login = async (userinfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 
@@ -59,7 +59,7 @@ export const getCurrentUser = async () => {
     return decodedToken;
 };
 
-export const logoutUser = () => {
+export const logoutUser = async() => {
     cookies().delete("accessToken");
     cookies().delete("refreshToken");
 };
@@ -82,3 +82,13 @@ export const getNewAccessToken = async () => {
         throw new Error("Failed to get new access token");
     }
 };
+
+export const changePassword = async (passInfo:FieldValues) => {
+    try {
+        const { data } = await axiosInstance.post("auth/change-password", passInfo);
+
+        return data;
+    } catch (error) {
+        throw new Error("Failed to change password!");
+    }
+}

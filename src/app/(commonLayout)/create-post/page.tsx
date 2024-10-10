@@ -1,10 +1,10 @@
 "use client"
 import React from 'react';
-import CreatePostModalContainer from '@/src/components/createPost/CreatePostModalContainer';
+import CreatePostModal from '@/src/components/createPost/CreatePostModal';
 
 const CreatePost = () => {
     return (
-        <CreatePostModalContainer />
+        <CreatePostModal />
     );
 };
 

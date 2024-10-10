@@ -4,11 +4,11 @@ import { ReactNode } from 'react';
 import { toast } from 'sonner';
 import FSInput from '../form/FSInput';
 import FSForm from '../form/TSForm';
-import CreatePostModal from '../modal/CreatePostModal';
 import FSTextEditor from '../form/FSTextEditor';
 import ImageUpload from '../form/ImageUpload';
 import FSSelect from '../form/FSSelect';
 import Loading from '../ui/Loading';
+import ModalContainer from '../modal/ModalContainer';
 import { TCategory } from '@/src/types';
 import { useGetAllCategories } from '@/src/hooks/categories.hook';
 import { useUser } from '@/src/context/user.provider';
@@ -21,7 +21,7 @@ interface IProps {
 }
 
 
-const CreatePostModalContainer = ({ className }: IProps) => {
+const CreatePostModal = ({ className }: IProps) => {
     const { data: catetoriesResponse } = useGetAllCategories();
     const { user } = useUser();
     const { mutate: createPost, isPending } = useCreatePosts();
@@ -70,7 +70,7 @@ const CreatePostModalContainer = ({ className }: IProps) => {
             {
                 isPending && <Loading />
             }
-            <CreatePostModal
+            <ModalContainer
                 className={className}
                 title='Create Post'
             >
@@ -89,10 +89,10 @@ const CreatePostModalContainer = ({ className }: IProps) => {
                         <Button fullWidth color='primary' type='submit'>Post</Button>
                     </div>
                 </FSForm>
-            </CreatePostModal>
+            </ModalContainer>
         </>
 
     );
 };
 
-export default CreatePostModalContainer;
+export default CreatePostModal;

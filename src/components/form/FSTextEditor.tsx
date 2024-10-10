@@ -36,10 +36,10 @@ export default function FSTextEditor({
                 name={name}
                 render={({ field }) => (
                     <ReactQuill
+                        modules={modules}
                         theme="snow"
                         value={field.value || ""}
                         onChange={field.onChange}
-                        modules={modules}
                     />
                 )}
                 rules={{ required: `${name} is required` }}
