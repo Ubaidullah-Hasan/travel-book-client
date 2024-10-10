@@ -36,7 +36,7 @@ export const login = async (userinfo: FieldValues) => {
 };
 
 export const getCurrentUser = async () => {
-    const accessToken = cookies().get("accessToken")?.value;    
+    const accessToken = cookies().get("accessToken")?.value;
     let decodedToken = null;
 
     if (accessToken) {
@@ -52,14 +52,14 @@ export const getCurrentUser = async () => {
             isVarified: decodedToken.isVarified,
             isDeleted: decodedToken.isDeleted,
         };
-        
+
         return jwtPayload;
     }
 
     return decodedToken;
 };
 
-export const logoutUser = async() => {
+export const logoutUser = async () => {
     cookies().delete("accessToken");
     cookies().delete("refreshToken");
 };
@@ -83,7 +83,7 @@ export const getNewAccessToken = async () => {
     }
 };
 
-export const changePassword = async (passInfo:FieldValues) => {
+export const changePassword = async (passInfo: FieldValues) => {
     try {
         const { data } = await axiosInstance.post("auth/change-password", passInfo);
 
@@ -93,12 +93,26 @@ export const changePassword = async (passInfo:FieldValues) => {
     }
 }
 
-export const forgotPassword = async (email:FieldValues) => {
+export const forgotPassword = async (email: FieldValues) => {
     try {
         const { data } = await axiosInstance.post("auth/forgot-password", email);
 
         return data;
     } catch (error) {
         throw new Error("Failed request to forgot password!");
+    }
+}
+
+export const resetPassword = async (password: FieldValues, token: string) => {
+    
+    try {
+        const { data } = await axiosInstance.post(
+            `auth/reset-password/${token}`,
+            {password}
+        );
+
+        return data;
+    } catch (error) {
+        throw new Error("May be token is expired, Again request to forgot password!");
     }
 }

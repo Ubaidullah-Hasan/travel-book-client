@@ -1,6 +1,5 @@
 "use client"
 import { Button, Link } from "@nextui-org/react";
-import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import FormModal from '@/src/components/modal/FormModal';
 import { MailIcon } from "@/src/assets/icons";
@@ -8,6 +7,7 @@ import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
 import { usePasswordForgot } from "@/src/hooks/auth.hook";
 import Loading from "@/src/components/ui/Loading";
+import AnimatedButton from "@/src/components/framerMotion/AnimatedButton";
 
 const ForgotPassword = () => {
     const { mutate: handleForget, isPending } = usePasswordForgot();
@@ -38,9 +38,11 @@ const ForgotPassword = () => {
                     </div>
                     <div className="mt-3 space-y-2">
 
-                        <Button fullWidth color="primary" type="submit">
-                            Forget Password
-                        </Button>
+                        <AnimatedButton scaleValue={1.01}>
+                            <Button fullWidth color="primary" type="submit">
+                                Forget Password
+                            </Button>
+                        </AnimatedButton>
                         <p className="flex gap-2 justify-start">
                             I Have a Account!
                             <Link href="/login">login</Link>
