@@ -12,7 +12,7 @@ import ModalContainer from '../modal/ModalContainer';
 import { TCategory } from '@/src/types';
 import { useGetAllCategories } from '@/src/hooks/categories.hook';
 import { useUser } from '@/src/context/user.provider';
-import { uploadMultipleImages, useCreatePosts } from '@/src/hooks/post.hook';
+import { uploadImages, useCreatePosts } from '@/src/hooks/post.hook';
 
 
 interface IProps {
@@ -39,7 +39,7 @@ const CreatePostModal = ({ className }: IProps) => {
         if (imagesToUpload && imagesToUpload.length > 0) {
 
             // Upload images
-            uploadMultipleImages(imagesToUpload, {
+            uploadImages(imagesToUpload, {
                 onSuccess: (uploadedImageUrls: any) => {
                     postData.images = uploadedImageUrls;
 

@@ -17,12 +17,12 @@ const SidebarOption = () => {
         {
             icon: <IoNewspaperOutline size={20} />,
             label: "Profile",
-            path: "/profile",
+            path: "/my-profile",
         },
         {
             icon: <GrUserSettings />,
             label: "Seeting",
-            path: "/seeting",
+            path: "/profile-seetings",
         },
         {
             icon: <TbPasswordUser />,

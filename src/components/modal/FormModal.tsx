@@ -7,10 +7,11 @@ import { IChildren } from "@/src/types";
 
 interface IModalProps extends IChildren {
     title: string;
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
 }
 
 
-const FormModal = ({ children, title }: IModalProps) => {
+const FormModal = ({ children, title, size="md" }: IModalProps) => {
 
     return (
         <div className="relative">
@@ -22,6 +23,7 @@ const FormModal = ({ children, title }: IModalProps) => {
                 className="py-5 relative"
                 isOpen={true}
                 placement="top-center"
+                size={size}
             >
                 <ModalContent>
                     {() => (

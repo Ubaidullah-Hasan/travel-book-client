@@ -35,33 +35,11 @@ export const useCreatePosts = () => {
 }
 
 
-// Image upload hook 
-export const uploadImage = async (imageFile: any) => {
-    const formData = new FormData();
 
-    formData.append('image', imageFile);
-    formData.append('key', '21cddba9e429154e3c42d3c011ea0762');
-
-    try {
-        const response = await fetch('https://api.imgbb.com/1/upload', {
-            method: 'POST',
-            body: formData,
-        });
-        const data = await response.json();
-
-        if (data.success) {
-            console.log('Image URL:', data.data.url);
-        } else {
-            console.error('Upload failed:', data.error); // Log any error message
-        }
-    } catch (error) {
-        console.error('Error uploading image:', error);
-    }
-};
 
 
 // Upload Multiple Images
-export const uploadMultipleImages = async (imageFiles: File[], { onSuccess, onError }: IUploadOptions) => {
+export const uploadImages = async (imageFiles: File[], { onSuccess, onError }: IUploadOptions) => {
     const apiKey = '21cddba9e429154e3c42d3c011ea0762';
 
     const promises = imageFiles.map(async (imageFile: any) => {

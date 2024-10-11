@@ -3,6 +3,7 @@
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { LockIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
@@ -11,7 +12,6 @@ import AnimatedButton from "@/src/components/framerMotion/AnimatedButton";
 import { usePasswordReset } from "@/src/hooks/auth.hook";
 import Loading from "@/src/components/ui/Loading";
 import { logoutUser } from "@/src/services/authService";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/src/context/user.provider";
 
 interface IParams {
@@ -31,6 +31,7 @@ const ResetPage = ({ params }: IParams) => {
             password: data.password,
             token: params.token[0],
         }
+
         handleReset(dataInfo);
     }
 
