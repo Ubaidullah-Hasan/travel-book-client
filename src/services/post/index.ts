@@ -18,3 +18,15 @@ export const createPost = async (postData: FormData) => {
 
     return res.data;
 }
+
+export const getUserAllPosts = async (queryOptions: IQueryOptions, userId:string) => {
+    try {
+        const res = await axiosInstance.get(`/posts/user-post/${userId}`, {
+            params: queryOptions
+        });
+
+        return res.data;
+    } catch (error:any) {
+        throw new Error(error.response.data.message);
+    }
+}

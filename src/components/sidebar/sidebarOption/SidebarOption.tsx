@@ -37,14 +37,24 @@ const SidebarOption = () => {
     ]
     const sidebarLinkUser = [
         {
-            icon: < IoNewspaperOutline size = { 20} />,
+            icon: <IoNewspaperOutline size={20} />,
             label: "Profile",
-            path: "/profile",
+            path: "/my-profile",
         },
         {
             icon: <GrUserSettings />,
             label: "Seeting",
-            path: "/seeting",
+            path: "/profile-seetings",
+        },
+        {
+            icon: <TbPasswordUser />,
+            label: "change password",
+            path: "/change-password",
+        },
+        {
+            icon: <RiFunctionAddLine />,
+            label: "Add Category",
+            path: "/add-category",
         },
     ]
 

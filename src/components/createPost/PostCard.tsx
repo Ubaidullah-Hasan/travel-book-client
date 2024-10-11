@@ -43,7 +43,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                     />
                     <div className="flex flex-col gap-1 items-start justify-center">
                         <h4 className="text-small font-semibold leading-none text-default-600">{userId?.name || "Unknown"}</h4>
-                        <h5 className="text-small tracking-tight text-default-400">@zoeylang</h5>
+                        <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                     </div>
                 </div>
                 <Button

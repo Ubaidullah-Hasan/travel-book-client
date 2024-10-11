@@ -2,7 +2,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { createPost, getAllPosts } from "../services/post"
+import { createPost, getAllPosts, getUserAllPosts } from "../services/post"
 import { IQueryOptions } from "../types"
 
 interface IUploadOptions {
@@ -14,6 +14,13 @@ export const useGetAllPosts = (queryOptions: IQueryOptions) => {
     return useQuery({
         queryKey: ["POST", queryOptions],
         queryFn: async () => await getAllPosts(queryOptions),
+    })
+}
+
+export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string | undefined) => {
+    return useQuery({
+        queryKey: ["POST", queryOptions],
+        queryFn: async () => await getUserAllPosts(queryOptions, userId as string),
     })
 }
 

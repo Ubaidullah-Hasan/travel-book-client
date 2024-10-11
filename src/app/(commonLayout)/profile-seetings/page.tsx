@@ -1,6 +1,6 @@
 "use client"
 import { Button } from '@nextui-org/button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { BiPhone } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
@@ -14,9 +14,12 @@ import { toast } from 'sonner';
 import { useUpdateProfile } from '@/src/hooks/user.hook';
 import { useUser } from '@/src/context/user.provider';
 import Loading from '@/src/components/ui/Loading';
+import { logoutUser } from '@/src/services/authService';
+import { useRouter } from 'next/navigation';
 
 const ProfileSeetings = () => {
-    const { user } = useUser();
+    const router = useRouter();
+    const { user, setIsLoading } = useUser();
     const [profilePhoto, setProfilePhoto] = useState<File[]>([]);
     const { mutate: handleUpdateProfile, isSuccess, isPending } = useUpdateProfile(user?.email as string);
 
@@ -33,7 +36,6 @@ const ProfileSeetings = () => {
             uploadImages(profilePhoto, {
                 onSuccess: (uploadedImageUrl: any) => {
                     updateInfo.profilePhoto = uploadedImageUrl[0];
-
                     handleUpdateProfile(updateInfo);
                 },
                 onError: () => {
@@ -54,6 +56,19 @@ const ProfileSeetings = () => {
             setProfilePhoto(profilePhoto);
         }
     }
+
+    // logout after successful update profile
+    const handleRedirect = async () => {
+        if (!isPending && isSuccess) {
+            await logoutUser();
+            setIsLoading(true);
+            router.push("/login");
+        }
+    }
+
+    useEffect(() => {
+        handleRedirect();
+    }, [isPending, isSuccess]);
 
     return (
         <div>
