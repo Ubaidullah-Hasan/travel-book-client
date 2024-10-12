@@ -1,8 +1,8 @@
 "use client"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { createPost, getAllPosts, getUserAllPosts } from "../services/post"
+import { createPost, getAllPosts, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote } from "../services/post"
 import { IQueryOptions } from "../types"
 
 interface IUploadOptions {
@@ -34,6 +34,40 @@ export const useCreatePosts = () => {
         onSuccess: () => {
             router.push("/");
             toast.success("Post created successfully");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+
+export const useTogglePostUpVote = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, TToggleVote>({
+        mutationKey: ["POST"],
+        mutationFn: async (info) => await toggleUpVote(info),
+        onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["POST"]);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+export const useTogglePostDownVote = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, TToggleVote>({
+        mutationKey: ["POST"],
+        mutationFn: async (info) => await toggleDownVote(info),
+        onSuccess: () => {
+            toast.success("Down vote successfull");
+            // @ts-ignore
+            queryClient.invalidateQueries(["POST"]);
         },
         onError: (error) => {
             toast.error(error.message);

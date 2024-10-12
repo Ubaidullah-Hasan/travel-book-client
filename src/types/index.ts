@@ -25,8 +25,8 @@ export type TPost = {
   description: string;
   images: string[];
   categoryId: TCategory;
-  upVote: number;
-  downVote: number;
+  upVote: string[];
+  downVote: string[];
   isPremium: boolean;
 }
 
@@ -60,4 +60,12 @@ export interface IInput {
   label: string;
   name: string;
   disabled?: boolean;
+}
+
+
+export type TFollow = {
+  _id: string,
+  email: string,
+  name: string,
+  profilePhoto: string
 }

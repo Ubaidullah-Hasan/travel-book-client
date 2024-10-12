@@ -19,14 +19,50 @@ export const createPost = async (postData: FormData) => {
     return res.data;
 }
 
-export const getUserAllPosts = async (queryOptions: IQueryOptions, userId:string) => {
+export const getUserAllPosts = async (queryOptions: IQueryOptions, userId: string) => {
     try {
         const res = await axiosInstance.get(`/posts/user-post/${userId}`, {
             params: queryOptions
         });
 
         return res.data;
-    } catch (error:any) {
+    } catch (error: any) {
         throw new Error(error.response.data.message);
     }
 }
+
+export type TToggleVote = {
+    userId: string,
+    postId: string,
+}
+
+export const toggleUpVote = async (info: TToggleVote) => {
+    console.log(info)
+    try {
+        const res = await axiosInstance.patch(
+            `/posts/toggle-upvote/${info?.postId}`,
+            { userId: info?.userId }
+        );
+
+        return res.data;
+
+    } catch (error: any) {
+        throw new Error(error.response.data.message);
+    }
+}
+
+export const toggleDownVote = async (info: TToggleVote) => {
+    try {
+        const res = await axiosInstance.patch(
+            `/posts/toggle-downvote/${info?.postId}`,
+            { userId: info?.userId }
+        );
+
+        return res.data;
+
+    } catch (error: any) {
+        throw new Error(error.response.data.message);
+    }
+}
+
+
