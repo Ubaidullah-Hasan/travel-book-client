@@ -4,18 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { BiPhone } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 import { MailIcon } from '@/src/assets/icons';
 import FSInput from '@/src/components/form/FSInput';
 import FSForm from '@/src/components/form/TSForm';
 import AnimatedButton from '@/src/components/framerMotion/AnimatedButton';
 import FormModal from '@/src/components/modal/FormModal';
 import { uploadImages } from '@/src/hooks/post.hook';
-import { toast } from 'sonner';
 import { useUpdateProfile } from '@/src/hooks/user.hook';
 import { useUser } from '@/src/context/user.provider';
 import Loading from '@/src/components/ui/Loading';
 import { logoutUser } from '@/src/services/authService';
-import { useRouter } from 'next/navigation';
 
 const ProfileSeetings = () => {
     const router = useRouter();
@@ -53,6 +53,7 @@ const ProfileSeetings = () => {
 
         if (file) {
             const profilePhoto = [file];
+
             setProfilePhoto(profilePhoto);
         }
     }

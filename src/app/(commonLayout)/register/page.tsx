@@ -8,9 +8,12 @@ import { LockIcon, MailIcon } from "@/src/assets/icons";
 import FSInput from "@/src/components/form/FSInput";
 import FSForm from "@/src/components/form/TSForm";
 import { useUserRegistration } from "@/src/hooks/auth.hook";
+import { logoutUser } from "@/src/services/authService";
+import { useUser } from "@/src/context/user.provider";
 
 
 const Register = () => {
+    const {setIsLoading} = useUser();
     const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
     const { mutate: handleRegister, isPending, isSuccess } = useUserRegistration();
@@ -19,11 +22,17 @@ const Register = () => {
         handleRegister(data);
     }
 
-    useEffect(() => {
-        if (isSuccess) {
-            router.push("/")
-        }
+    const handleRedirect = async () => {
 
+        if (isSuccess) {
+            await logoutUser();
+            setIsLoading(true);
+            router.push("/login");
+        }
+    }
+
+    useEffect(() => {
+        handleRedirect();
     }, [isSuccess])
 
     return (

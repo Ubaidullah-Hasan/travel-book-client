@@ -7,7 +7,7 @@ import { IChildren } from "@/src/types";
 
 interface IModalProps extends IChildren {
     title: string;
-    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
+    size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
 }
 
 

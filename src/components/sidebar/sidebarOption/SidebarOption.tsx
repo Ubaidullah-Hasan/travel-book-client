@@ -16,6 +16,11 @@ const SidebarOption = () => {
     const sidebarLinkAdmin = [
         {
             icon: <IoNewspaperOutline size={20} />,
+            label: "Home",
+            path: "/",
+        },
+        {
+            icon: <IoNewspaperOutline size={20} />,
             label: "Profile",
             path: "/my-profile",
         },
@@ -36,6 +41,11 @@ const SidebarOption = () => {
         },
     ]
     const sidebarLinkUser = [
+        {
+            icon: <IoNewspaperOutline size={20} />,
+            label: "Home",
+            path: "/",
+        },
         {
             icon: <IoNewspaperOutline size={20} />,
             label: "Profile",

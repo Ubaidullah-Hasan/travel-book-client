@@ -1,23 +1,36 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup } from "@nextui-org/react";
-import { useState } from "react";
+import {  useState } from "react";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import parse from 'html-react-parser';
 import { Image } from "@nextui-org/image";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import { TPost } from "@/src/types";
+import { useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
+import { useUser } from "@/src/context/user.provider";
+import { useRouter } from "next/navigation";
 
 
 
 const PostCard = ({ post }: { post: TPost }) => {
-    // console.log(post);
-    const [isFollowed, setIsFollowed] = useState(false);
+    const router = useRouter();
+    const { user } = useUser();
     const [isExpanded, setIsExpanded] = useState(false);
-    const { description, title, userId, categoryId, images, upVote, downVote, _id } = post;
+    const { data: followInfo } = useGetUserFollow(user?._id);
 
+    const followData = (followInfo?.result);
+    const followers = followData?.followers;
+    const followersCount = followData?.followersCount;
+    const following = followData?.following;
+    const followingCount = followData?.followingCount;
+
+    const { mutate: handleFollowUpdate, isPending: updating, isSuccess: updateSuccesfull } = useUpdateUserFollow();
+    const { description, title, userId, categoryId, images, upVote, downVote } = post;
     const descriptionText = parse(description);
+
+    const isFollowed = followers?.some((follow: string) => follow.match(userId?._id));
 
     function stripHtml(html: any) {
         const spaceAdd = (html.replace(/<\/[^>]+>/g, '$& '));
@@ -29,6 +42,15 @@ const PostCard = ({ post }: { post: TPost }) => {
     }
 
     const cleanText = stripHtml(description);
+
+    const handleFollow = () => {
+        const ids = {
+            userId: userId?._id,
+            followingId: user?._id,
+        }
+
+        handleFollowUpdate(ids);
+    }
 
 
     return (
@@ -46,16 +68,31 @@ const PostCard = ({ post }: { post: TPost }) => {
                         <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                     </div>
                 </div>
-                <Button
-                    className={isFollowed ? "bg-transparent text-foreground border-default-200" : ""}
-                    color="primary"
-                    radius="full"
-                    size="sm"
-                    variant={isFollowed ? "bordered" : "solid"}
-                    onPress={() => setIsFollowed(!isFollowed)}
-                >
-                    {isFollowed ? "Unfollow" : "Follow"}
-                </Button>
+                <AnimatedButton scaleValue={1.05}>
+                    {userId?._id !== user?._id ?
+                        <Button
+                            className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
+                            color="primary"
+                            radius="full"
+                            size="sm"
+                            variant={isFollowed ? "bordered" : "solid"}
+                            onPress={handleFollow}
+                            isLoading={updating}
+                        >
+                            {isFollowed ? "Unfollow" : "Follow"}
+                        </Button>
+                        :
+                        <Button
+                            className='uppercase'
+                            color="primary"
+                            radius="full"
+                            size="sm"
+                            onPress={() => router.push("/my-profile")}
+                        >
+                            VIEW
+                        </Button>
+                    }
+                </AnimatedButton>
             </CardHeader>
             <CardBody className="px-3 py-0 text-small text-default-400 my-4">
                 <h2 className="text-lg text-default-800 mb-2">{title}</h2>
