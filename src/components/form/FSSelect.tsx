@@ -4,7 +4,7 @@ import { IInput } from "@/src/types";
 
 interface IProps extends IInput {
     options: {
-        key: string;
+        key: string|boolean;
         label: string;
     }[];
 }
@@ -30,7 +30,7 @@ export default function FSSelect({
             variant={variant}
         >
             {options?.map((option) => (
-                <SelectItem key={option.key} className="capitalize">{option.label}</SelectItem>
+                <SelectItem key={option.key as string} className="capitalize">{option.label}</SelectItem>
             ))}
         </Select>
     );

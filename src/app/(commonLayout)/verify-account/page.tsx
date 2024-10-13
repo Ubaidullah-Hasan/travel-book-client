@@ -26,7 +26,7 @@ const VerifyAccount = () => {
     }
 
     if (paymentReqSuccess) {
-        router.push(paymentData?.result)
+        router?.push(paymentData?.result);
     }
 
     return (

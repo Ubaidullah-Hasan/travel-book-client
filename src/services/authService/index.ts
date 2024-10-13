@@ -49,7 +49,7 @@ export const getCurrentUser = async () => {
             profilePhoto: decodedToken.profilePhoto,
             role: decodedToken.role,
             status: decodedToken.status,
-            isVarified: decodedToken.isVarified,
+            isVerified: decodedToken.isVerified,
             isDeleted: decodedToken.isDeleted,
         };
 
@@ -104,11 +104,11 @@ export const forgotPassword = async (email: FieldValues) => {
 }
 
 export const resetPassword = async (password: FieldValues, token: string) => {
-    
+
     try {
         const { data } = await axiosInstance.post(
             `auth/reset-password/${token}`,
-            {password}
+            { password }
         );
 
         return data;

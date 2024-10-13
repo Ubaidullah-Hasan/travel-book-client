@@ -45,7 +45,6 @@ export const getUserFollowInfo = async (userId: string | undefined) => {
 }
 
 export const getSingleUserById = async (userId: string | undefined) => {
-    console.log(userId);
     try {
         const { data } = await axiosInstance.get(
             `/users/${userId}`

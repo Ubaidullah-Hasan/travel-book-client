@@ -34,7 +34,9 @@ const CreatePostModal = ({ className }: IProps) => {
             ...data,
             images: [],
             userId: user?._id,
+            isPremium: data?.isPremium === "false" ? false : true,
         };
+        console.log(postData);
 
         if (imagesToUpload && imagesToUpload.length > 0) {
 
@@ -63,6 +65,16 @@ const CreatePostModal = ({ className }: IProps) => {
         label: item?.name,
         key: item?._id,
     }))
+    const postTypeOptions = [
+        {
+            label: "Free",
+            key: false,
+        },
+        {
+            label: "Premium",
+            key: true,
+        }
+    ]
 
 
     return (
@@ -83,8 +95,11 @@ const CreatePostModal = ({ className }: IProps) => {
 
                         <FSTextEditor label='Description' name='description' />
 
-                        <div>
-                            <ImageUpload name="images" />
+                        <div className='flex gap-5'>
+                            <div className='w-[100%]'>
+                                <ImageUpload name="images" />
+                            </div>
+                            <FSSelect label='Post type' name='isPremium' options={postTypeOptions} />
                         </div>
                         <Button fullWidth color='primary' type='submit'>Post</Button>
                     </div>

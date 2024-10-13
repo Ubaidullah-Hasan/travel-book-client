@@ -12,11 +12,16 @@ export const getAllPosts = async (queryOptions: IQueryOptions) => {
 }
 
 export const createPost = async (postData: FormData) => {
-    const res = await axiosInstance.post(`/posts`, postData);
+    try {
+        const res = await axiosInstance.post(`/posts`, postData);
 
-    revalidateTag("posts");
+        revalidateTag("posts");
 
-    return res.data;
+        return res.data;
+    } catch (error: any) {
+        console.error(error);
+        throw new Error(error?.response?.data?.message)
+    }
 }
 
 export const getUserAllPosts = async (queryOptions: IQueryOptions, userId: string) => {

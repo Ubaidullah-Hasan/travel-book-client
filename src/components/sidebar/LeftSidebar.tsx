@@ -23,8 +23,8 @@ const LeftSidebar = () => {
 
     const handleLogOut = async () => {
         await logoutUser();
-        router.push("/")
         setIsLoading(true);
+        router.push("/");
     }
 
     return (

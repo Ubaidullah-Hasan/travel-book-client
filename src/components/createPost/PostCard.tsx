@@ -7,7 +7,7 @@ import parse from 'html-react-parser';
 import { Image } from "@nextui-org/image";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import { TFollow, TPost } from "@/src/types";
-import { useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
+import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
 import { useRouter } from "next/navigation";
 import { GoHeart } from "react-icons/go";
@@ -20,6 +20,8 @@ import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
 const PostCard = ({ post }: { post: TPost }) => {
     const router = useRouter();
     const { user } = useUser();
+    const { data: userRes } = useGetSinglUserById(user?._id);
+    const fullUserData = (userRes?.result);
     const [isExpanded, setIsExpanded] = useState(false);
     const { data: followInfo } = useGetUserFollow(user?._id);
     const { mutate: updateUpVote, isPending: upVoteUpdating } = useTogglePostUpVote();
@@ -27,12 +29,12 @@ const PostCard = ({ post }: { post: TPost }) => {
 
     const followData = (followInfo?.result);
     const followers = followData?.followers;
-    const followersCount = followData?.followersCount;
-    const following = followData?.following;
-    const followingCount = followData?.followingCount;
+    // const followersCount = followData?.followersCount;
+    // const following = followData?.following;
+    // const followingCount = followData?.followingCount;
 
     const { mutate: handleFollowUpdate, isPending: updating } = useUpdateUserFollow();
-    const { description, title, userId, categoryId, images, upVote, downVote, _id } = post;
+    const { description, title, userId, categoryId, images, upVote, downVote, _id, isPremium } = post;
     const descriptionText = parse(description);
 
     const isFollowed = followers?.some((follow: TFollow) => follow?._id?.match(userId?._id));
@@ -46,6 +48,7 @@ const PostCard = ({ post }: { post: TPost }) => {
         return tempDiv.innerText || tempDiv.textContent || '';
     }
 
+    const isShowPost = !isPremium || isPremium && (fullUserData?.isVerified === true); // todo
 
     const isDownVote = downVote?.some((vote) => vote === user?._id) || false;
     const isUpvote = upVote?.some((vote) => vote === user?._id) || false;
@@ -128,39 +131,81 @@ const PostCard = ({ post }: { post: TPost }) => {
                     }
                 </AnimatedButton>
             </CardHeader>
-            <CardBody className="px-3 py-0 text-small text-default-400 my-4">
-                <h2 className="text-lg text-default-800 mb-2">{title}</h2>
-                <p className="text-default-900">
-                    {
-                        cleanText.length <= 142 || isExpanded
-                            ? descriptionText
-                            : (cleanText.slice(0, 142))
-                    }
-                    {cleanText.length >= 142 && !isExpanded ? (
-                        <span className="text-blue-500 ms-2"
-                            role="button"
-                            onClick={() => setIsExpanded(true)}
-                        >See more...</span>
-                    ) : ""
-                    }
-                </p>
-                <div className="space-y-2 my-2">
-                    {
-                        images?.map((image, i) => (
-                            <Image
-                                key={i}
-                                alt={`${title}-${i}`}
-                                className="rounded w-full"
-                                src={image}
-                                width={1000}
-                            />
-                        ))
-                    }
-                </div>
-                <span className="pt-2 capitalize">
-                    #{categoryId?.name}
-                </span>
-            </CardBody>
+
+            {
+                isShowPost ? (
+                    <CardBody className="px-3 py-0 text-small text-default-400 my-4">
+                        <h2 className="text-lg text-default-800 mb-2">{title}</h2>
+                        <p className="text-default-900">
+                            {
+                                cleanText.length <= 142 || isExpanded
+                                    ? descriptionText
+                                    : (cleanText.slice(0, 142))
+                            }
+                            {cleanText.length >= 142 && !isExpanded ? (
+                                <span className="text-blue-500 ms-2"
+                                    role="button"
+                                    onClick={() => setIsExpanded(true)}
+                                >See more...</span>
+                            ) : ""
+                            }
+                        </p>
+                        <div className="space-y-2 my-2">
+                            {
+                                images?.map((image, i) => (
+                                    <Image
+                                        key={i}
+                                        alt={`${title}-${i}`}
+                                        className="rounded w-full"
+                                        src={image}
+                                        width={1000}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <span className="pt-2 capitalize">
+                            #{categoryId?.name}
+                        </span>
+                    </CardBody>
+                ) :
+                    <CardBody className="py-0 text-small text-default-400 relative">
+                        <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[1000] flex items-center justify-center " >
+                            <Button onClick={() => router.push("/verify-account")} className="bg-default-200 uppercase text-sm">Premium Content</Button>
+                        </div>
+                        <h2 className="text-lg text-default-800 mb-2">{title}</h2>
+                        <p className="text-default-900">
+                            {
+                                cleanText.length <= 142 || isExpanded
+                                    ? descriptionText
+                                    : (cleanText.slice(0, 142))
+                            }
+                            {cleanText.length >= 142 && !isExpanded ? (
+                                <span className="text-blue-500 ms-2"
+                                    role="button"
+                                    onClick={() => setIsExpanded(true)}
+                                >See more...</span>
+                            ) : ""
+                            }
+                        </p>
+                        <div className="space-y-2 my-2">
+                            {
+                                images?.map((image, i) => (
+                                    <Image
+                                        key={i}
+                                        alt={`${title}-${i}`}
+                                        className="rounded w-full"
+                                        src={image}
+                                        width={1000}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <span className="pt-2 capitalize">
+                            #{categoryId?.name}
+                        </span>
+                    </CardBody>
+            }
+
 
             <CardFooter className="gap-3 justify-between border-t border-default-200">
                 <div className="flex gap-1">
