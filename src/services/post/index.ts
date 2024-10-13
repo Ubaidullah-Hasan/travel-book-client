@@ -19,7 +19,6 @@ export const createPost = async (postData: FormData) => {
 
         return res.data;
     } catch (error: any) {
-        console.error(error);
         throw new Error(error?.response?.data?.message)
     }
 }
@@ -36,13 +35,41 @@ export const getUserAllPosts = async (queryOptions: IQueryOptions, userId: strin
     }
 }
 
+export const getSinglePost = async (queryOptions: IQueryOptions, userId: string) => {
+    try {
+        const res = await axiosInstance.get(`/posts/${userId}`, {
+            params: queryOptions
+        });
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response.data.message);
+    }
+}
+
+export type TUpdateData = {
+    title: string,
+    categoryId: string,
+    isPremium: boolean,
+}
+
+export const updateSinglePost = async (updateData: TUpdateData, userId: string) => {
+    try {
+        const res = await axiosInstance.patch(`/posts/${userId}`, updateData);
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response.data.message);
+    }
+}
+
+
 export type TToggleVote = {
     userId: string,
     postId: string,
 }
 
 export const toggleUpVote = async (info: TToggleVote) => {
-    console.log(info)
     try {
         const res = await axiosInstance.patch(
             `/posts/toggle-upvote/${info?.postId}`,
@@ -70,4 +97,16 @@ export const toggleDownVote = async (info: TToggleVote) => {
     }
 }
 
+
+export const deletePostPermanently = async (postId: string) => {
+    try {
+        const res = await axiosInstance.delete(`/posts/${postId}`);
+
+        revalidateTag("posts");
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message)
+    }
+}
 

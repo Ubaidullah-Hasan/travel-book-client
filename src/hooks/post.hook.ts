@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { createPost, getAllPosts, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote } from "../services/post"
+import { createPost, deletePostPermanently, getAllPosts, getSinglePost, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
 import { IQueryOptions } from "../types"
 
 interface IUploadOptions {
@@ -24,6 +24,13 @@ export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string |
     })
 }
 
+export const useGetSinglePostsById = (queryOptions: IQueryOptions, userId: string | undefined) => {
+    return useQuery({
+        queryKey: ["POST"],
+        queryFn: async () => await getSinglePost(queryOptions, userId as string),
+    })
+}
+
 export const useCreatePosts = () => {
     const router = useRouter();
     // console.log({ hi: envConfig.img_bb_key }) // todo
@@ -34,6 +41,25 @@ export const useCreatePosts = () => {
         onSuccess: () => {
             router.push("/");
             toast.success("Post created successfully");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+export const useUpdatePost = (userId: string) => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, TUpdateData>({
+        mutationKey: ["POST"],
+        mutationFn: async (updateData) => await updateSinglePost(updateData, userId),
+        onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["POST"]);
+            router.push("/");
+            toast.success("Post updated successfully");
         },
         onError: (error) => {
             toast.error(error.message);
@@ -66,6 +92,24 @@ export const useTogglePostDownVote = () => {
         mutationFn: async (info) => await toggleDownVote(info),
         onSuccess: () => {
             toast.success("Down vote successfull");
+            // @ts-ignore
+            queryClient.invalidateQueries(["POST"]);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+
+export const useDeletePostPermanantly = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, string>({
+        mutationKey: ["POST"],
+        mutationFn: async (postId) => await deletePostPermanently(postId),
+        onSuccess: () => {
+            toast.success("Post deleted successfull");
             // @ts-ignore
             queryClient.invalidateQueries(["POST"]);
         },

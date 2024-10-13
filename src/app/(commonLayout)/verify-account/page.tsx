@@ -1,11 +1,10 @@
 "use client"
-import { useUser } from '@/src/context/user.provider';
-import { useGetSinglUserById, useUserPayment } from '@/src/hooks/user.hook';
-import { logoutUser } from '@/src/services/authService';
 import { Button } from '@nextui-org/button';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { LuBadgeCheck } from 'react-icons/lu';
+import { useGetSinglUserById, useUserPayment } from '@/src/hooks/user.hook';
+import { useUser } from '@/src/context/user.provider';
 
 const VerifyAccount = () => {
     const { user } = useUser();
@@ -36,19 +35,19 @@ const VerifyAccount = () => {
             {
                 fullUserData?.isVerified ?
                     <Button
-                        isLoading={paymentWaiting}
-                        onClick={() => handlePayment(100)}
+                        className='uppercase text-white'
                         color='success'
                         disabled={fullUserData?.isVerified}
-                        className='uppercase text-white'
+                        isLoading={paymentWaiting}
                         startContent={
                             <LuBadgeCheck />
                         }
+                        onClick={() => handlePayment(100)}
                     >Verified</Button> :
                     <Button
+                        color='primary'
                         isLoading={paymentWaiting}
                         onClick={() => handlePayment(100)}
-                        color='primary'
                     >Payment 100 tk</Button>
             }
         </div>

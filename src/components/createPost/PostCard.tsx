@@ -5,16 +5,17 @@ import { useState } from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import parse from 'html-react-parser';
 import { Image } from "@nextui-org/image";
-import AnimatedButton from "../framerMotion/AnimatedButton";
-import { TFollow, TPost } from "@/src/types";
-import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
-import { useUser } from "@/src/context/user.provider";
 import { useRouter } from "next/navigation";
 import { GoHeart } from "react-icons/go";
 import { IoHeartSharp } from "react-icons/io5";
+import { LuBadgeCheck } from "react-icons/lu";
+import AnimatedButton from "../framerMotion/AnimatedButton";
+import DropDownPostEdit from "../ui/DropDownPostEdit/DropDownPostEdit";
+import { TFollow, TPost } from "@/src/types";
+import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
+import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
-import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
 
 
 const PostCard = ({ post }: { post: TPost }) => {
@@ -110,24 +111,16 @@ const PostCard = ({ post }: { post: TPost }) => {
                         <Button
                             className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
                             color="primary"
+                            isLoading={updating}
                             radius="full"
                             size="sm"
                             variant={isFollowed ? "bordered" : "solid"}
                             onPress={handleFollow}
-                            isLoading={updating}
                         >
                             {isFollowed ? "Unfollow" : "Follow"}
                         </Button>
                         :
-                        <Button
-                            className='uppercase'
-                            color="primary"
-                            radius="full"
-                            size="sm"
-                            onPress={() => router.push("/my-profile")}
-                        >
-                            VIEW
-                        </Button>
+                        <DropDownPostEdit postId={_id} />
                     }
                 </AnimatedButton>
             </CardHeader>
@@ -170,7 +163,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                 ) :
                     <CardBody className="py-0 text-small text-default-400 relative">
                         <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[1000] flex items-center justify-center " >
-                            <Button onClick={() => router.push("/verify-account")} className="bg-default-200 uppercase text-sm">Premium Content</Button>
+                            <Button className="bg-default-200 uppercase text-sm" onClick={() => router.push("/verify-account")}>Premium Content</Button>
                         </div>
                         <h2 className="text-lg text-default-800 mb-2">{title}</h2>
                         <p className="text-default-900">
@@ -212,9 +205,8 @@ const PostCard = ({ post }: { post: TPost }) => {
                     <ButtonGroup radius="full" size="sm"  >
                         <Button
                             className="hover:bg-default-200"
-                            onClick={() => handleUpVote(_id)}
-                            isLoading={upVoteUpdating}
                             isDisabled={isDownVote}
+                            isLoading={upVoteUpdating}
                             startContent={
                                 upVote?.some((vote) => vote === user?._id) ?
                                     (
@@ -230,13 +222,13 @@ const PostCard = ({ post }: { post: TPost }) => {
                                             size={20} />
                                     </AnimatedButton>
                             }
+                            onClick={() => handleUpVote(_id)}
                         >{upVote?.length}</Button>
 
                         <Button
                             className="bg-transparent/20 hover:bg-default-200 disabled:bg-default-200"
-                            onClick={() => handleDownVote(_id)}
-                            isLoading={downVoteUpdating}
                             disabled={isUpvote}
+                            isLoading={downVoteUpdating}
                             startContent={
                                 downVote?.some((vote) => vote === user?._id) ?
                                     (
@@ -252,6 +244,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                                             size={20} />
                                     </AnimatedButton>
                             }
+                            onClick={() => handleDownVote(_id)}
                         >{downVote?.length}</Button>
                     </ButtonGroup>
                 </div>

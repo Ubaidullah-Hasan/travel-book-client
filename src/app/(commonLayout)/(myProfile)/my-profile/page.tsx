@@ -49,10 +49,10 @@ const MyProfile = () => {
                                         <Skeleton className="rounded-lg w-full h-auto" isLoaded={!followDataLoading}>
                                             <Image
                                                 alt={follower?.name}
+                                                className='border object-cover'
                                                 height={200}
                                                 src={follower?.profilePhoto}
                                                 width={200}
-                                                className='border object-cover'
                                             />
                                         </Skeleton>
                                     </div>
@@ -75,10 +75,10 @@ const MyProfile = () => {
                                         <Skeleton className="rounded-lg" isLoaded={!followDataLoading}>
                                             <Image
                                                 alt={following?.name}
+                                                className='border object-cover'
                                                 height={200}
                                                 src={following?.profilePhoto}
                                                 width={200}
-                                                className='border object-cover'
                                             />
                                         </Skeleton>
                                     </div>

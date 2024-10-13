@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { getSingleUserById, getUserFollowInfo, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
-import { useRouter } from "next/navigation";
 
 export const useUpdateProfile = (userEmail: string) => {
 

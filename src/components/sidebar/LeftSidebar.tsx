@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 "use client"
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AiOutlineLogin } from "react-icons/ai";
 import Link from 'next/link';
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
+import { useRouter } from 'next/navigation';
 import SidebarOption from './sidebarOption/SidebarOption';
 import { Logo } from '@/src/assets/icons';
 import { useUser } from '@/src/context/user.provider';
 import { logoutUser } from '@/src/services/authService';
-import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
-import { useRouter } from 'next/navigation';
 import { useGetSinglUserById } from '@/src/hooks/user.hook';
 
 

@@ -14,7 +14,7 @@ interface IProps extends IInput {
 
 const modules = {
     toolbar: [
-        [{ 'header': [1, 2, false] }],
+        [{ 'header': [1, 2, 3, 4, false] }],
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }, { 'background': [] }], // Add color and background options
         ['clean'] // Remove formatting button
@@ -42,7 +42,9 @@ export default function FSTextEditor({
                         onChange={field.onChange}
                     />
                 )}
+
                 rules={{ required: `${name} is required` }}
+
             />
         </div>
     );
