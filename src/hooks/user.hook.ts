@@ -2,7 +2,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { getUserFollowInfo, TIds, toggleUserFollowInfo, updateUserProfile } from "../services/userServices";
+import { getSingleUserById, getUserFollowInfo, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
+import { useRouter } from "next/navigation";
 
 export const useUpdateProfile = (userEmail: string) => {
 
@@ -38,11 +39,37 @@ export const useUpdateUserFollow = () => {
     });
 }
 
+export const useUserPayment = () => {
+    const queryClient = useQueryClient(); // Get the query client
+
+
+    return useMutation<any, Error, TUserPayment>({
+        mutationKey: ["USER_PAYMENT"],
+        mutationFn: async (info) => await userPayment(info),
+        onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["USER_PAYMENT"]);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
 export const useGetUserFollow = (userId: string | undefined) => {
     
     return useQuery<any, Error, FieldValues>({
         queryKey: ["USER_FOLLOW"],
         queryFn: async () => await getUserFollowInfo(userId),
+        enabled: !!userId,
+    });
+}
+
+export const useGetSinglUserById = (userId: string | undefined) => {
+    
+    return useQuery<any, Error, FieldValues>({
+        queryKey: ["GET_SINGL_USER"],
+        queryFn: async () => await getSingleUserById(userId),
         enabled: !!userId,
     });
 }

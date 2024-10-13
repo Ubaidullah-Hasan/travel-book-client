@@ -8,7 +8,6 @@ const PostCard = dynamic(() => import('@/src/components/createPost/PostCard'), {
 
 const RecentPosts = () => {
     const queryOptions = {
-        sortBy: '-updatedAt',
         searchTerm: '',
     };
     const { data: posts } = useGetAllPosts(queryOptions);

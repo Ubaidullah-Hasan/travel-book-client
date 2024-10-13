@@ -9,19 +9,23 @@ import SidebarOption from './sidebarOption/SidebarOption';
 import { Logo } from '@/src/assets/icons';
 import { useUser } from '@/src/context/user.provider';
 import { logoutUser } from '@/src/services/authService';
+import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
+import { useRouter } from 'next/navigation';
+import { useGetSinglUserById } from '@/src/hooks/user.hook';
+
 
 
 const LeftSidebar = () => {
-    const { user, isLoading, setUser } = useUser();
+    const router = useRouter();
+    const { user, setIsLoading } = useUser();
+    const { data: userRes } = useGetSinglUserById(user?._id);
+    const fullUserData = (userRes?.result);
 
-    const handleLogOut = () => {
-        logoutUser();
-        setUser(null);
+    const handleLogOut = async () => {
+        await logoutUser();
+        router.push("/")
+        setIsLoading(true);
     }
-
-    useEffect(() => {
-
-    }, [user, isLoading]);
 
     return (
         <div className='w-[25%] px-3 py-4 fixed top-0 bottom-0 left-0 overflow-y-scroll '>
@@ -30,7 +34,22 @@ const LeftSidebar = () => {
                 <p className='font-bold uppercase'>TravelBook</p>
             </div>
             <div className='space-y-2 mt-6'>
+
                 <SidebarOption />
+                {
+                    fullUserData?.isVerified ? (
+                        <div className='cursor-default duration-200 bg-default-100 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2'>
+                            <LuBadgeCheck className='text-green-600' />
+                            Verified
+                        </div>
+                    ) : (
+                        <div className='cursor-pointer duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2' onClick={() => router.push("/verify-account")}>
+                            <LuBadgeAlert className='text-warning-600' />
+                            Verified Account
+                        </div>
+                    )
+                }
+
                 {
                     !user?.email ? (
                         <div>

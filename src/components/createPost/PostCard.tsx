@@ -14,6 +14,7 @@ import { GoHeart } from "react-icons/go";
 import { IoHeartSharp } from "react-icons/io5";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
+import { LuBadgeAlert, LuBadgeCheck } from "react-icons/lu";
 
 
 const PostCard = ({ post }: { post: TPost }) => {
@@ -45,12 +46,9 @@ const PostCard = ({ post }: { post: TPost }) => {
         return tempDiv.innerText || tempDiv.textContent || '';
     }
 
-    
 
-    const isDownVote = downVote?.some((vote) => vote === user?._id) || false; 
-    const isUpvote = upVote?.some((vote) => vote === user?._id) || false; 
-
-    console.log({ isDownVote, isUpvote}); 
+    const isDownVote = downVote?.some((vote) => vote === user?._id) || false;
+    const isUpvote = upVote?.some((vote) => vote === user?._id) || false;
 
     const cleanText = stripHtml(description);
 
@@ -93,7 +91,14 @@ const PostCard = ({ post }: { post: TPost }) => {
                         src={userId?.profilePhoto || "https://nextui.org/avatars/avatar-1.png"}
                     />
                     <div className="flex flex-col gap-1 items-start justify-center">
-                        <h4 className="text-small font-semibold leading-none text-default-600">{userId?.name || "Unknown"}</h4>
+                        <div>
+                            {
+                                <h4 className="text-small font-semibold leading-none text-default-600 flex gap-1 items-center">
+                                    {userId?.name || "Unknown"}
+                                    {userId.isVerified && <LuBadgeCheck className="text-green-500" />}
+                                </h4>
+                            }
+                        </div>
                         <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                     </div>
                 </div>
@@ -168,7 +173,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                             startContent={
                                 upVote?.some((vote) => vote === user?._id) ?
                                     (
-                                        <AnimatedButton scaleValue={isDownVote ? 1:1.1}>
+                                        <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
                                             <IoHeartSharp
                                                 className={"text-red-600"}
                                                 size={20}

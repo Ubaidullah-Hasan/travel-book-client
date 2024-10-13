@@ -6,8 +6,8 @@ const authRoutes = ["/login", "/register"]
 
 type Role = keyof typeof roleBasedRoutes;
 const roleBasedRoutes = {
-  USER: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/], // must you have user to access this routes
-  ADMIN: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/], // must you have admin to access this routes
+  USER: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/, /^\/verify-account/], // must you have user to access this routes
+  ADMIN: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/, /^\/verify-account/], // must you have admin to access this routes
 }
 
 
@@ -15,10 +15,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const user = await getCurrentUser();
 
-  if(!user){
-    if (authRoutes.includes(pathname)){
+  if (!user) {
+    if (authRoutes.includes(pathname)) {
       return NextResponse.next();
-    }else{
+    } else {
       return NextResponse.redirect(
         new URL(`/login?redirect=${pathname}`, request.url),
       );
@@ -28,12 +28,12 @@ export async function middleware(request: NextRequest) {
 
   const routesArray = roleBasedRoutes[user.role as Role]
 
-  if (user.role && routesArray) { 
-    if(routesArray.some((route) => pathname.match(route))){
+  if (user.role && routesArray) {
+    if (routesArray.some((route) => pathname.match(route))) {
 
       return NextResponse.next();
     }
-    
+
   }
 
   return NextResponse.redirect(new URL('/', request.url));
@@ -41,5 +41,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/create-post', '/login', '/register', '/change-password', '/profile-seetings', '/add-category', '/my-profile']
+  matcher: ['/create-post', '/login', '/register', '/change-password', '/profile-seetings', '/add-category', '/my-profile', "/verify-account"]
 }
