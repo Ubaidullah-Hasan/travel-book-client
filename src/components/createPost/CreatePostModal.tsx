@@ -37,7 +37,6 @@ const CreatePostModal = ({ className }: IProps) => {
             isPremium: data?.isPremium === "false" ? false : true,
         };
 
-        console.log(postData);
 
         if (imagesToUpload && imagesToUpload.length > 0) {
 

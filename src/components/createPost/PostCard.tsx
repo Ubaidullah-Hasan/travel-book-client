@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup } from "@nextui-org/react";
@@ -11,14 +12,17 @@ import { IoHeartSharp } from "react-icons/io5";
 import { LuBadgeCheck } from "react-icons/lu";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import DropDownPostEdit from "../ui/DropDownPostEdit/DropDownPostEdit";
+import CommentModal from "../comment/CommentModal";
 import { TFollow, TPost } from "@/src/types";
 import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
+import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
 
 
-const PostCard = ({ post }: { post: TPost }) => {
+
+const PostCard = ({ post }: { post: TPost }) => { 
     const router = useRouter();
     const { user } = useUser();
     const { data: userRes } = useGetSinglUserById(user?._id);
@@ -27,6 +31,9 @@ const PostCard = ({ post }: { post: TPost }) => {
     const { data: followInfo } = useGetUserFollow(user?._id);
     const { mutate: updateUpVote, isPending: upVoteUpdating } = useTogglePostUpVote();
     const { mutate: updateDownVote, isPending: downVoteUpdating } = useTogglePostDownVote();
+    const { data: commentsOfPostRes } = useGetAllCommentsOfPost(post?._id);
+    const commentsOfPost = (commentsOfPostRes?.result);
+    // console.log(commentsOfPost);
 
     const followData = (followInfo?.result);
     const followers = followData?.followers;
@@ -52,7 +59,7 @@ const PostCard = ({ post }: { post: TPost }) => {
     const isShowPost = !isPremium || isPremium && (fullUserData?.isVerified === true); // todo
 
     const isDownVote = downVote?.some((vote) => vote === user?._id) || false;
-    const isUpvote = upVote?.some((vote) => vote === user?._id) || false;
+    const isUpvote = upVote?.some((vote) => vote === user?._id) || false; 
 
     const cleanText = stripHtml(description);
 
@@ -152,6 +159,9 @@ const PostCard = ({ post }: { post: TPost }) => {
                                         className="rounded w-full"
                                         src={image}
                                         width={1000}
+                                    // classNames={
+                                    //     img
+                                    // }
                                     />
                                 ))
                             }
@@ -162,7 +172,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                     </CardBody>
                 ) :
                     <CardBody className="py-0 text-small text-default-400 relative">
-                        <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[1000] flex items-center justify-center " >
+                        <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[20] flex items-center justify-center " >
                             <Button className="bg-default-200 uppercase text-sm" onClick={() => router.push("/verify-account")}>Premium Content</Button>
                         </div>
                         <h2 className="text-lg text-default-800 mb-2">{title}</h2>
@@ -248,13 +258,20 @@ const PostCard = ({ post }: { post: TPost }) => {
                         >{downVote?.length}</Button>
                     </ButtonGroup>
                 </div>
-                <AnimatedButton>
-                    <div className="flex gap-1 items-center cursor-pointer">
-                        <BiMessageRoundedDetail size={20} />
-                        <p className="text-default-400 text-small">Comments</p>
-                        <p className="text-small text-default-400">(9)</p>
-                    </div>
-                </AnimatedButton>
+
+                <CommentModal
+                    btnText={
+                        <AnimatedButton>
+                            <div className="flex gap-1 items-center cursor-pointer">
+                                <BiMessageRoundedDetail size={20} />
+                                <p className="text-default-400 text-small">Comments</p>
+                                <p className="text-small text-default-400">({commentsOfPost?.length})</p>
+                            </div>
+                        </AnimatedButton>
+                    }
+                    postId={post?._id}
+                />
+
                 <div className="flex gap-1">
                     <p className="font-semibold text-default-400 text-small">100</p>
                     <p className="text-default-400 text-small">Seen</p>

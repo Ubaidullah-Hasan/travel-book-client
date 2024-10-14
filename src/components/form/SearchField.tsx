@@ -1,6 +1,6 @@
 "use client"
 import { Input } from '@nextui-org/input';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import useDebounce from '@/src/hooks/debounce.hook';
@@ -8,14 +8,14 @@ import { SearchIcon } from '@/src/assets/icons';
 
 
 const SearchField = () => {
-    const { register, handleSubmit, watch } = useForm();
+    const { register, watch } = useForm();
 
     const searchValue = watch("search");
     const searchTerm = useDebounce(searchValue);
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data.search);
-    };
+    // const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    //     console.log(data.search);
+    // };
 
     useEffect(() => {
         if(searchTerm) {
@@ -25,7 +25,8 @@ const SearchField = () => {
     }, [searchTerm]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        // <form onSubmit={handleSubmit(onSubmit)}>
+        <form >
             <motion.div
                 animate={{ opacity: 1, scale: 1 }}
                 initial={{ opacity: 0, scale: 0.8 }} 

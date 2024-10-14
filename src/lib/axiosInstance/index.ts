@@ -6,7 +6,7 @@ import { getNewAccessToken } from "@/src/services/authService";
 export const axiosInstance = axios.create({
     baseURL: envConfig.backend_api,
 });
-
+ 
 
 axiosInstance.interceptors.request.use(function (config) {
     // Do something before request is sent

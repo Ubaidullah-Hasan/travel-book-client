@@ -33,7 +33,6 @@ export default function FSInput({
         <Input
             {...register(name)}
             endContent={endContent}
-            errorMessage={errors[name] ? (errors[name].message as string) : ""}
             isInvalid={!!errors[name]}
             label={label}
             placeholder={placeholder}

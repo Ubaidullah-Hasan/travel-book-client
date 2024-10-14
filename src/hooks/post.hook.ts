@@ -11,22 +11,24 @@ interface IUploadOptions {
 }
 
 export const useGetAllPosts = (queryOptions: IQueryOptions) => {
+
     return useQuery({
-        queryKey: ["POST", queryOptions],
+        queryKey: ["GET_ALL_POST", queryOptions.searchTerm, queryOptions.sortBy, queryOptions.page],
         queryFn: async () => await getAllPosts(queryOptions),
+        staleTime: 200,
     })
 }
 
 export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string | undefined) => {
     return useQuery({
-        queryKey: ["POST", queryOptions],
+        queryKey: ["GET_USER_ALL_POST", queryOptions],
         queryFn: async () => await getUserAllPosts(queryOptions, userId as string),
     })
 }
 
 export const useGetSinglePostsById = (queryOptions: IQueryOptions, userId: string | undefined) => {
     return useQuery({
-        queryKey: ["POST"],
+        queryKey: ["GET_SINGLE_POST_BY_ID", queryOptions],
         queryFn: async () => await getSinglePost(queryOptions, userId as string),
     })
 }
@@ -53,11 +55,11 @@ export const useUpdatePost = (userId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation<any, Error, TUpdateData>({
-        mutationKey: ["POST"],
+        mutationKey: ["UPDATE_POST"],
         mutationFn: async (updateData) => await updateSinglePost(updateData, userId),
         onSuccess: () => {
             // @ts-ignore
-            queryClient.invalidateQueries(["POST"]);
+            queryClient.invalidateQueries(["GET_ALL_POST"]);
             router.push("/");
             toast.success("Post updated successfully");
         },
@@ -75,8 +77,9 @@ export const useTogglePostUpVote = () => {
         mutationKey: ["POST"],
         mutationFn: async (info) => await toggleUpVote(info),
         onSuccess: () => {
+            toast.success("Up vote change successfull");
             // @ts-ignore
-            queryClient.invalidateQueries(["POST"]);
+            queryClient.invalidateQueries({ queryKey: ["GET_ALL_POST"], exact: true });
         },
         onError: (error) => {
             toast.error(error.message);
@@ -91,9 +94,9 @@ export const useTogglePostDownVote = () => {
         mutationKey: ["POST"],
         mutationFn: async (info) => await toggleDownVote(info),
         onSuccess: () => {
-            toast.success("Down vote successfull");
+            toast.success("Down vote change successfull");
             // @ts-ignore
-            queryClient.invalidateQueries(["POST"]);
+            queryClient.invalidateQueries(["GET_ALL_POST"]);
         },
         onError: (error) => {
             toast.error(error.message);
@@ -111,7 +114,7 @@ export const useDeletePostPermanantly = () => {
         onSuccess: () => {
             toast.success("Post deleted successfull");
             // @ts-ignore
-            queryClient.invalidateQueries(["POST"]);
+            queryClient.invalidateQueries(["GET_ALL_POST"]);
         },
         onError: (error) => {
             toast.error(error.message);

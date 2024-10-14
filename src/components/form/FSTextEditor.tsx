@@ -1,6 +1,7 @@
+/* eslint-disable import/order */
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import { Controller, useFormContext } from "react-hook-form";
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 import dynamic from "next/dynamic";
@@ -27,7 +28,7 @@ export default function FSTextEditor({
 }: IProps) {
     const { control, formState: { errors } } = useFormContext();
 
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return null;
 
     return (
         <div className={`${errors[name]?.message ? 'border border-default-900' : ''}`}>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Textarea } from "@nextui-org/input";
 import { useFormContext, useWatch } from "react-hook-form";
 import { IInput } from "@/src/types";
