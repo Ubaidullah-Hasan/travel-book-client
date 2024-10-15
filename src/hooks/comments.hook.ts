@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { createComment, deleteCommentsByCommentId, getAllCommentsOfPost } from "../services/comment";
+import { createComment, deleteCommentsByCommentId, editCommentsByOwner, getAllCommentsOfPost } from "../services/comment";
 
 export const useCreateComment = () => {
     const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export const useCreateComment = () => {
             queryClient.invalidateQueries(["GET_COMMENT_OF_POST"]); // "GET_COMMENT_OF_POST" ai kye er data remove kore de, pore abar fetch kore dekhai
             toast.success("Comment Added Successfully");
         },
-        onError: (error:any) => {
+        onError: (error: any) => {
             toast.error(error.response.data.message);
         },
     });
@@ -42,7 +42,25 @@ export const useDeleteCommentsById = (userId: string) => {
             queryClient.invalidateQueries(["GET_COMMENT_OF_POST"]); // "GET_COMMENT_OF_POST" ai kye er data remove kore de, pore abar fetch kore dekhai
             toast.success("Comment delete Successfull!");
         },
-        onError: (error:any) => {
+        onError: (error: any) => {
+            toast.error(error.response.data.message);
+        },
+    });
+};
+
+
+export const useEditCommentsByOwner = (userId: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, any>({
+        mutationKey: ["EDIT_COMMENT_BY_OWNER"],
+        mutationFn: async (commentInfo) => await editCommentsByOwner(commentInfo, userId),
+        onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["GET_COMMENT_OF_POST"]); // "GET_COMMENT_OF_POST" ai kye er data remove kore de, pore abar fetch kore dekhai
+            toast.success("Comment update Successfull!");
+        },
+        onError: (error: any) => {
             toast.error(error.response.data.message);
         },
     });

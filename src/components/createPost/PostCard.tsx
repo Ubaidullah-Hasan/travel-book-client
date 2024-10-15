@@ -36,8 +36,8 @@ const PostCard = ({ post }: { post: TPost }) => {
     const { data: commentsOfPostRes } = useGetAllCommentsOfPost(post?._id);
     const commentsOfPost = (commentsOfPostRes?.result);
 
-    console.log(commentsOfPost);
-    console.log(commentsOfPost?.userId);
+    // console.log(commentsOfPost);
+    // console.log(commentsOfPost?.userId);
 
     const followData = (followInfo?.result);
     const followers = followData?.followers;
@@ -265,7 +265,6 @@ const PostCard = ({ post }: { post: TPost }) => {
                                 >{downVote?.length}</Button>
                             </ButtonGroup>
                         </div>
-
                         <CommentModal
                             btnText={
                                 <AnimatedButton>

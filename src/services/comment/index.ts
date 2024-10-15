@@ -1,9 +1,9 @@
 "use server"
-import { FieldValues } from "react-hook-form";
+import { FieldValue, FieldValues } from "react-hook-form";
 import axiosInstance from "@/src/lib/axiosInstance"
 
 
-export const createComment = async (data:FieldValues) => {
+export const createComment = async (data: FieldValues) => {
     try {
         const res = await axiosInstance.post("/comments", data);
 
@@ -24,9 +24,22 @@ export const getAllCommentsOfPost = async (postId: string) => {
     }
 }
 
-export const deleteCommentsByCommentId = async (commentId: string, userId:string) => {
+export const deleteCommentsByCommentId = async (commentId: string, userId: string) => {
     try {
         const res = await axiosInstance.delete(`/comments/${commentId}?userId=${userId}`);
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const editCommentsByOwner = async (commentinfo: any, userId: string) => {
+    try {
+        const res = await axiosInstance.patch(`/comments/${commentinfo?.commentId}?userId=${userId}`,
+            { comment: commentinfo.comment }
+        );
 
         return res.data;
     } catch (error: any) {

@@ -6,24 +6,30 @@ import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nex
 import FSForm from '../form/TSForm';
 import FSTextarea from '../form/FSTextArea';
 import Loading from '../ui/Loading';
-import { useCreateComment } from '@/src/hooks/comments.hook';
+import { useCreateComment, useEditCommentsByOwner } from '@/src/hooks/comments.hook';
 import { useUser } from '@/src/context/user.provider';
 
-const CommentModal = ({ postId, btnText, }: { postId: string, btnText: ReactNode }) => {
+type TProps = {
+    userId: string,
+    btnText: ReactNode,
+    commentId: string,
+    comment: string,
+}
+
+const EditCommentModal = ({ userId, btnText, commentId, comment }: TProps) => {
     const { user } = useUser();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { mutate: createComment, isPending } = useCreateComment();
+    const { mutate: editComment, isPending } = useEditCommentsByOwner(userId);
+
 
 
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
         const commentData = {
-            userId: user?._id,
-            postId: postId,
+            commentId,
             ...data,
         }
-
-
-        createComment(commentData);
+        console.log(commentData);
+        editComment(commentData);
     }
 
     return (
@@ -31,22 +37,26 @@ const CommentModal = ({ postId, btnText, }: { postId: string, btnText: ReactNode
             {
                 isPending && <Loading />
             }
-            <Button className='p-0 bg-transparent w-fit px-3' onPress={onOpen}>
+            <Button size='sm' className='bg-transparent w-fit text-sm p-0' onPress={onOpen}>
                 {btnText}
             </Button>
-            <Modal className='z-[100]' isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal
+                className='z-[100]'
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+            >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Drop A Comment</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Edit Your Comment</ModalHeader>
                             <ModalBody>
                                 <FSForm onSubmit={handleSubmit}>
                                     <div className='space-y-3'>
                                         <div className='flex gap-5'>
-                                            <FSTextarea label='Comment' name='comment' />
+                                            <FSTextarea defaultValue={comment} label='Comment' name='comment' />
                                         </div>
 
-                                        <Button fullWidth color='primary' type='submit'>Comment</Button>
+                                        <Button fullWidth color='primary' type='submit'>Edit</Button>
                                     </div>
                                 </FSForm>
                             </ModalBody>
@@ -58,4 +68,4 @@ const CommentModal = ({ postId, btnText, }: { postId: string, btnText: ReactNode
     );
 };
 
-export default CommentModal;
+export default EditCommentModal;
