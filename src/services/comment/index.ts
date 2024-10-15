@@ -23,3 +23,13 @@ export const getAllCommentsOfPost = async (postId: string) => {
         throw new Error(error.message)
     }
 }
+
+export const deleteCommentsByCommentId = async (commentId: string, userId:string) => {
+    try {
+        const res = await axiosInstance.delete(`/comments/${commentId}?userId=${userId}`);
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}

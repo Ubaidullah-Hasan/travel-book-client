@@ -11,7 +11,7 @@ interface IUploadOptions {
 }
 
 export const useGetAllPosts = (queryOptions: IQueryOptions) => {
-
+    
     return useQuery({
         queryKey: ["GET_ALL_POST", queryOptions.searchTerm, queryOptions.sortBy, queryOptions.page],
         queryFn: async () => await getAllPosts(queryOptions),
@@ -79,7 +79,7 @@ export const useTogglePostUpVote = () => {
         onSuccess: () => {
             toast.success("Up vote change successfull");
             // @ts-ignore
-            queryClient.invalidateQueries({ queryKey: ["GET_ALL_POST"], exact: true });
+            queryClient.invalidateQueries(["GET_ALL_POST"])
         },
         onError: (error) => {
             toast.error(error.message);

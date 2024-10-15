@@ -9,7 +9,6 @@ import { Input } from '@nextui-org/input';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { useGetAllPosts } from '@/src/hooks/post.hook';
-import { useGetAllCategories } from '@/src/hooks/categories.hook';
 import { TPost } from '@/src/types';
 import useDebounce from '@/src/hooks/debounce.hook';
 import { SearchIcon } from '@/src/assets/icons';
@@ -24,96 +23,107 @@ const RecentPosts = () => {
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState<TPost[]>([]);
     const [hasMore, setHasMore] = useState(true);
-    const [isFirstLoad, setIsFirstLoad] = useState(true); 
 
 
     const searchValue = watch("search");
-    const searchTerm = useDebounce(searchValue);
+    const searchTerm = useDebounce(searchValue?.trim());
 
     const queryOptions = {
         searchTerm: searT,
         sortBy: sort,
         selectedCategories: selectedCategories,
-        page,
+        // page,
     };
 
-    const { data: fetchedPosts, isLoading } = useGetAllPosts(queryOptions);
-    const postsData = fetchedPosts?.result; console.log({ postsData, posts });
+    const { data: fetchedPosts, isLoading, isSuccess } = useGetAllPosts(queryOptions);
+    const postsData = fetchedPosts?.result; 
 
 
     // const { data: categoriesRes } = useGetAllCategories();
     // const categories = categoriesRes?.result;
 
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     useEffect(() => {
-        if (isFirstLoad) {
-            setIsFirstLoad(false);
-            return;
-        }
+        // if (isFirstLoad) {
+        //     setIsFirstLoad(false);
+
+        //     return;
+        // }
 
         if (searchTerm) {
-            setPosts([]);
+            // setPosts([]);
             setSearT(searchTerm);
 
             return;
-        } else if (searchTerm === "") {
-            setPosts([]);
-            setPage(1);
+        } else if (!isFirstLoad && searchTerm === "") {
+            // setPosts([]);
+            // setPage(1);
             setSearT("");
         }
-
+        setSearT(searchTerm);
     }, [searchTerm])
 
 
+    // // Handle scroll event to trigger loading more posts
+    // const handleScroll = () => {
+    //     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && hasMore && !isLoading) {
+    //         setPage(prevPage => prevPage + 1);
+    //         setPosts([]); // Clear posts when loading new page
+    //     }
+    // };
 
+    // // Append new posts to existing posts when page changes
+    // useEffect(() => {
+    //     if (postsData?.length) {
+    //         setPosts(prevPosts => [...prevPosts, ...postsData]);
+    //         if (postsData.length < 10) {
+    //             setHasMore(false);
+    //         } else {
+    //             setHasMore(true); // Ensure hasMore is true if there are more posts
+    //         }
+    //     }
+    // }, [postsData]);
 
-    // Handle scroll event to trigger loading more posts
-    const handleScroll = () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && hasMore && !isLoading) {
-            setPage(prevPage => prevPage + 1);  // Load next page
-        }
-    };
+    // // Set up scroll event listener
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
 
-    // Append new posts to existing posts when page changes
-    useEffect(() => {
-        if (postsData?.length) {
-            setPosts(prevPosts => [...prevPosts, ...postsData]);
-            if (postsData.length < 10) {
-                setHasMore(false);
-            }
-        }
-    }, [postsData]);
-
-    // Set up scroll event listener
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [hasMore, isLoading]);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, [hasMore, isLoading]);
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data.search);
 
         if (!data.search) {
-            setPosts([]);
+            // setPosts([]);
             setSearT("");
 
             return;
         }
 
-        setPosts([]);
+        // setPosts([]);
         setSearT(data.search);
 
     };
 
+    const handleSort = () => {
+        if(sort === ""){
+            setSort("-upVoteSize");
+        } else if (sort === "-upVoteSize"){
+            setSort("");
+        }
+        // setPage(1);
+        // setPosts([]);
+    }
+
     return (
         <div>
             <div className='mb-4 flex justify-between items-center gap-1'>
-                <Button color='primary' onClick={() => { setSort("-upVote"); setPage(1); setPosts([]); }}>
+                <Button color='primary' onClick={handleSort}>
                     Sort By Upvote
-                    {sort === "-upVote" && <FaRegCheckCircle />}
+                    {sort === "-upVoteSize" && <FaRegCheckCircle />}
                 </Button>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -155,12 +165,13 @@ const RecentPosts = () => {
                 </Select> */}
             </div>
 
-            <div className='min-h-screen space-y-4'>
-                {posts.map((post: TPost) => (
+            <div className='min-h-screen pb-4'>
+                
+                {postsData?.map((post: TPost) => (
                     <PostCard key={post._id} post={post} />
                 ))}
-                {isLoading && <p className='text-center'>Loading more posts...</p>}
-                {!hasMore && <p className='text-center'>No more posts to load.</p>}
+                {/* {isLoading && <p className='text-center'>Loading more posts...</p>}
+                {!hasMore && <p className='text-center'>No more posts to load.</p>} */}
             </div>
         </div>
     );
