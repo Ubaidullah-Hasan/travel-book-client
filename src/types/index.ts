@@ -16,6 +16,7 @@ export interface IQueryOptions {
   sortBy?: string;
   searchTerm?: string;
   fields?: string;
+  categoryId?: string;
 }
 
 export type TPost = {

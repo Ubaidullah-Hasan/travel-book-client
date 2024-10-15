@@ -6,7 +6,7 @@ import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nex
 import FSForm from '../form/TSForm';
 import FSTextarea from '../form/FSTextArea';
 import Loading from '../ui/Loading';
-import { useCreateComment, useEditCommentsByOwner } from '@/src/hooks/comments.hook';
+import { useEditCommentsByOwner } from '@/src/hooks/comments.hook';
 import { useUser } from '@/src/context/user.provider';
 
 type TProps = {
@@ -28,7 +28,7 @@ const EditCommentModal = ({ userId, btnText, commentId, comment }: TProps) => {
             commentId,
             ...data,
         }
-        console.log(commentData);
+
         editComment(commentData);
     }
 
@@ -37,7 +37,7 @@ const EditCommentModal = ({ userId, btnText, commentId, comment }: TProps) => {
             {
                 isPending && <Loading />
             }
-            <Button size='sm' className='bg-transparent w-fit text-sm p-0' onPress={onOpen}>
+            <Button className='bg-transparent w-fit text-sm p-0' size='sm' onPress={onOpen}>
                 {btnText}
             </Button>
             <Modal

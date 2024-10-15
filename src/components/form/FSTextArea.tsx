@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Textarea } from "@nextui-org/input";
 import { useFormContext, useWatch } from "react-hook-form";
-import { IInput } from "@/src/types";
 import { useEffect, useState } from "react";
+import { IInput } from "@/src/types";
 
 interface IProps extends IInput {
     type?: string;
@@ -43,8 +43,8 @@ export default function FSTextarea({
                 label={label}
                 minRows={6}
                 value={currentValue || ""}  // Use state to control value
-                onChange={(e) => setCurrentValue(e.target.value)} // Update value on input change
                 variant={variant}
+                onChange={(e) => setCurrentValue(e.target.value)} // Update value on input change
             />
         </>
     );

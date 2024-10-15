@@ -66,8 +66,6 @@ const CreatePostModal = ({ className }: IProps) => {
         key: item?._id,
     }))
 
-    console.log(categoryOptions);
-
     const postTypeOptions = [
         {
             label: "Free",

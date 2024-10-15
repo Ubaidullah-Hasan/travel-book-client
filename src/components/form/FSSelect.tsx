@@ -15,7 +15,6 @@ export default function FSSelect({
     label,
     variant = "bordered",
     disabled,
-    required = true,
 }: IProps) {
     const {
         control,

@@ -8,10 +8,13 @@ import { FaRegCheckCircle } from 'react-icons/fa';
 import { Input } from '@nextui-org/input';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
+import { Select, SelectItem } from '@nextui-org/select';
 import { useGetAllPosts } from '@/src/hooks/post.hook';
 import { TPost } from '@/src/types';
 import useDebounce from '@/src/hooks/debounce.hook';
 import { SearchIcon } from '@/src/assets/icons';
+import { useGetAllCategories } from '@/src/hooks/categories.hook';
+import Loading from '@/src/components/ui/Loading';
 
 const PostCard = dynamic(() => import('@/src/components/createPost/PostCard'), { ssr: false });
 
@@ -19,7 +22,7 @@ const RecentPosts = () => {
     const { register, handleSubmit, watch } = useForm();
     const [searT, setSearT] = useState('');
     const [sort, setSort] = useState<string>("");
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [categoryId, setCategoryId] = useState<string>("");
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState<TPost[]>([]);
     const [hasMore, setHasMore] = useState(true);
@@ -31,16 +34,17 @@ const RecentPosts = () => {
     const queryOptions = {
         searchTerm: searT,
         sortBy: sort,
-        selectedCategories: selectedCategories,
+        categoryId: categoryId||undefined,
         // page,
-    };
+    };console.log(queryOptions);
 
-    const { data: fetchedPosts, isLoading, isSuccess } = useGetAllPosts(queryOptions);
-    const postsData = fetchedPosts?.result; 
+    const { data: fetchedPosts, isLoading } = useGetAllPosts(queryOptions);
+    const postsData = fetchedPosts?.result;
+    
 
 
-    // const { data: categoriesRes } = useGetAllCategories();
-    // const categories = categoriesRes?.result;
+    const { data: categoriesRes } = useGetAllCategories();
+    const categories = categoriesRes?.result;
 
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -102,16 +106,15 @@ const RecentPosts = () => {
 
             return;
         }
-
         // setPosts([]);
         setSearT(data.search);
 
     };
 
     const handleSort = () => {
-        if(sort === ""){
+        if (sort === "") {
             setSort("-upVoteSize");
-        } else if (sort === "-upVoteSize"){
+        } else if (sort === "-upVoteSize") {
             setSort("");
         }
         // setPage(1);
@@ -120,6 +123,7 @@ const RecentPosts = () => {
 
     return (
         <div>
+            {isLoading && <Loading />}
             <div className='mb-4 flex justify-between items-center gap-1'>
                 <Button color='primary' onClick={handleSort}>
                     Sort By Upvote
@@ -151,22 +155,22 @@ const RecentPosts = () => {
                 </form>
 
                 {/* Uncomment if you want to use category filtering */}
-                {/* <Select
-                    label="Filter By Category"
+                <Select
                     className="max-w-xs"
+                    label="Filter By Category"
                     size='sm'
-                    onChange={(e) => setSelectedCategories([e.target.value])}
+                    onChange={(e) => setCategoryId(e.target.value)}
                 >
                     {categories?.map((category: any) => (
                         <SelectItem key={category?._id} value={category._id}>
                             {category?.name}
                         </SelectItem>
                     ))}
-                </Select> */}
+                </Select>
             </div>
 
             <div className='min-h-screen pb-4'>
-                
+
                 {postsData?.map((post: TPost) => (
                     <PostCard key={post._id} post={post} />
                 ))}

@@ -4,6 +4,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { createPost, deletePostPermanently, getAllPosts, getSinglePost, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
 import { IQueryOptions } from "../types"
+import envConfig from "../config/envConfig"
 
 interface IUploadOptions {
     onSuccess: (urls: string[]) => void;
@@ -13,7 +14,7 @@ interface IUploadOptions {
 export const useGetAllPosts = (queryOptions: IQueryOptions) => {
     
     return useQuery({
-        queryKey: ["GET_ALL_POST", queryOptions.searchTerm, queryOptions.sortBy, queryOptions.page],
+        queryKey: ["GET_ALL_POST", queryOptions.searchTerm, queryOptions.sortBy, queryOptions.page, queryOptions.categoryId],
         queryFn: async () => await getAllPosts(queryOptions),
         staleTime: 200,
     })
@@ -35,7 +36,7 @@ export const useGetSinglePostsById = (queryOptions: IQueryOptions, userId: strin
 
 export const useCreatePosts = () => {
     const router = useRouter();
-    // console.log({ hi: envConfig.img_bb_key }) // todo
+    console.log({ hi: envConfig.img_bb_key }) // todo
 
     return useMutation<any, Error, FormData>({
         mutationKey: ["CREATE_POST"],

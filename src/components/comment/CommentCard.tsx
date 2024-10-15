@@ -2,13 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import Link from "next/link";
-import { RxDotsHorizontal } from "react-icons/rx";
-import { Card, CardBody, Avatar, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, user } from "@nextui-org/react";
-import AnimatedButton from "../framerMotion/AnimatedButton";
-import { useDeleteCommentsById } from "@/src/hooks/comments.hook";
+import { Card, CardBody, Avatar } from "@nextui-org/react";
 import Loading from "../ui/Loading";
-import { useState } from "react";
 import EditCommentModal from "./EditCommentModal";
+import { useDeleteCommentsById } from "@/src/hooks/comments.hook";
 
 
 
@@ -103,14 +100,14 @@ const CommentCard = ({ commentsOfPost, userId }: { commentsOfPost: any, userId: 
                                                             className="text-sm px-2 py-1 cursor-pointer"
                                                         >Edit</p>
                                                     }
-                                                    userId={userId}
-                                                    commentId={comment?._id}
                                                     comment={comment?.comment}
+                                                    commentId={comment?._id}
+                                                    userId={userId}
                                                 />
 
                                                 <p
-                                                    onClick={() => handleCommentDelete(comment?._id)}
                                                     className="text-sm px-2 py-1 cursor-pointer text-danger"
+                                                    onClick={() => handleCommentDelete(comment?._id)}
                                                 >Delete</p>
                                             </div>
                                         }
