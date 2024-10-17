@@ -8,12 +8,12 @@ type TProps = {
 
 const layout = ({ children }: TProps) => {
     return (
-        <div className='flex justify-between gap-6'>
+        <div className='flex justify-between gap-6 bg-default-50'>
             <aside className='w-[25%] relative'>
                 <LeftSidebar />
             </aside>
 
-            <main className='relative flex flex-col flex-1 h-screen my-5'>
+            <main className='relative flex flex-col flex-1 min-h-screen my-5'>
                 {children}
             </main>
 

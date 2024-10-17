@@ -36,7 +36,6 @@ export const useGetSinglePostsById = (queryOptions: IQueryOptions, userId: strin
 
 export const useCreatePosts = () => {
     const router = useRouter();
-    console.log({ hi: envConfig.img_bb_key }) // todo
 
     return useMutation<any, Error, FormData>({
         mutationKey: ["CREATE_POST"],
@@ -129,7 +128,7 @@ export const useDeletePostPermanantly = () => {
 
 // Upload Multiple Images
 export const uploadImages = async (imageFiles: File[], { onSuccess, onError }: IUploadOptions) => {
-    const apiKey = '21cddba9e429154e3c42d3c011ea0762';
+    const apiKey = envConfig.img_bb_key as string;
 
     const promises = imageFiles.map(async (imageFile: any) => {
         const formData = new FormData();

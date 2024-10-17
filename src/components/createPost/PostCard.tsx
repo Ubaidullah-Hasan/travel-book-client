@@ -20,6 +20,8 @@ import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
+import PrivateComponent from "../privateComponent/PrivateComponent";
+import PremiumComponent from "../privateComponent/PremiumComponent";
 
 
 
@@ -60,7 +62,8 @@ const PostCard = ({ post }: { post: TPost }) => {
         return tempDiv.innerText || tempDiv.textContent || '';
     }
 
-    const isShowPost = !isPremium || isPremium && (fullUserData?.isVerified === true); // todo
+    // const isShowPost = !isPremium || isPremium && (fullUserData?.isVerified === true); // todo
+    const isShowPost = !isPremium || isPremium && (user?.isVerified === true); // todo
 
     const isDownVote = downVote?.some((vote) => vote === user?._id) || false;
     const isUpvote = upVote?.some((vote) => vote === user?._id) || false;
@@ -119,23 +122,25 @@ const PostCard = ({ post }: { post: TPost }) => {
                             <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                         </div>
                     </div>
-                    <AnimatedButton scaleValue={1.05}>
-                        {userId?._id !== user?._id ?
-                            <Button
-                                className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
-                                color="primary"
-                                isLoading={updating}
-                                radius="full"
-                                size="sm"
-                                variant={isFollowed ? "bordered" : "solid"}
-                                onPress={handleFollow}
-                            >
-                                {isFollowed ? "Unfollow" : "Follow"}
-                            </Button>
-                            :
-                            <DropDownPostEdit postId={_id} />
-                        }
-                    </AnimatedButton>
+                    <PrivateComponent>
+                        <AnimatedButton scaleValue={1.05} >
+                            {userId?._id !== user?._id ?
+                                <Button
+                                    className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
+                                    color="primary"
+                                    isLoading={updating}
+                                    radius="full"
+                                    size="sm"
+                                    variant={isFollowed ? "bordered" : "solid"}
+                                    onPress={handleFollow}
+                                >
+                                    {isFollowed ? "Unfollow" : "Follow"}
+                                </Button>
+                                :
+                                <DropDownPostEdit postId={_id} />
+                            }
+                        </AnimatedButton>
+                    </PrivateComponent>
                 </CardHeader>
 
                 {
@@ -265,18 +270,20 @@ const PostCard = ({ post }: { post: TPost }) => {
                                 >{downVote?.length}</Button>
                             </ButtonGroup>
                         </div>
-                        <CommentModal
-                            btnText={
-                                <AnimatedButton>
-                                    <div className="flex gap-1 items-center cursor-pointer">
-                                        <BiMessageRoundedDetail size={20} />
-                                        <p className="text-default-400 text-small">Comments</p>
-                                        <p className="text-small text-default-400">({commentsOfPost?.length})</p>
-                                    </div>
-                                </AnimatedButton>
-                            }
-                            postId={post?._id}
-                        />
+                        <PremiumComponent isPremium={isPremium}>
+                            <CommentModal
+                                btnText={
+                                    <AnimatedButton>
+                                        <div className="flex gap-1 items-center cursor-pointer">
+                                            <BiMessageRoundedDetail size={20} />
+                                            <p className="text-default-400 text-small">Comments</p>
+                                            <p className="text-small text-default-400">({commentsOfPost?.length})</p>
+                                        </div>
+                                    </AnimatedButton>
+                                }
+                                postId={post?._id}
+                            />
+                        </PremiumComponent>
 
                         <div className="flex gap-1">
                             <p className="font-semibold text-default-400 text-small">100</p>

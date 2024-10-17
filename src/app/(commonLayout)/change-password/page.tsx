@@ -12,6 +12,7 @@ import { usePasswordChange } from '@/src/hooks/auth.hook';
 import Loading from '@/src/components/ui/Loading';
 import { useUser } from '@/src/context/user.provider';
 import { logoutUser } from '@/src/services/authService';
+import ModalCloseIcon from '@/src/components/ui/ModalCloseIcon';
 
 const ChangePassword = () => {
     const router = useRouter();
@@ -41,6 +42,7 @@ const ChangePassword = () => {
     return (
         <div>
             {isPending && <Loading />}
+            <ModalCloseIcon />
             <Modal
                 hideCloseButton
                 className="login-modal"

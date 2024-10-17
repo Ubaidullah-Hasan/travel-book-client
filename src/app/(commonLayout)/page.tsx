@@ -1,72 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client"
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import { Button } from '@nextui-org/button';
-import { FaRegCheckCircle } from 'react-icons/fa';
-import { Input } from '@nextui-org/input';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import { Select, SelectItem } from '@nextui-org/select';
-import { useGetAllPosts } from '@/src/hooks/post.hook';
 import { TPost } from '@/src/types';
-import useDebounce from '@/src/hooks/debounce.hook';
-import { SearchIcon } from '@/src/assets/icons';
-import { useGetAllCategories } from '@/src/hooks/categories.hook';
 import Loading from '@/src/components/ui/Loading';
+import { useGetAllPostsFromProvider } from '@/src/context/allPostData.provider';
+import { IoIosWarning } from "react-icons/io";
+import { useEffect } from 'react';
+import { logoutUser } from '@/src/services/authService';
+import { useUser } from '@/src/context/user.provider';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const PostCard = dynamic(() => import('@/src/components/createPost/PostCard'), { ssr: false });
 
 const RecentPosts = () => {
-    const { register, handleSubmit, watch } = useForm();
-    const [searT, setSearT] = useState('');
-    const [sort, setSort] = useState<string>("");
-    const [categoryId, setCategoryId] = useState<string>("");
-    const [page, setPage] = useState(1);
-    const [posts, setPosts] = useState<TPost[]>([]);
-    const [hasMore, setHasMore] = useState(true);
+    // const [searT, setSearT] = useState('');
+    // const [sort, setSort] = useState<string>("");
+    // const [categoryId, setCategoryId] = useState<string>("");
+    // const [page, setPage] = useState(1);
+    // const [hasMore, setHasMore] = useState(true);
 
-
-    const searchValue = watch("search");
-    const searchTerm = useDebounce(searchValue?.trim());
-
-    const queryOptions = {
-        searchTerm: searT,
-        sortBy: sort,
-        categoryId: categoryId||undefined,
-        // page,
-    };console.log(queryOptions);
-
-    const { data: fetchedPosts, isLoading } = useGetAllPosts(queryOptions);
-    const postsData = fetchedPosts?.result;
-    
-
-
-    const { data: categoriesRes } = useGetAllCategories();
-    const categories = categoriesRes?.result;
-
-    const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-    useEffect(() => {
-        // if (isFirstLoad) {
-        //     setIsFirstLoad(false);
-
-        //     return;
-        // }
-
-        if (searchTerm) {
-            // setPosts([]);
-            setSearT(searchTerm);
-
-            return;
-        } else if (!isFirstLoad && searchTerm === "") {
-            // setPosts([]);
-            // setPage(1);
-            setSearT("");
-        }
-        setSearT(searchTerm);
-    }, [searchTerm])
+    const { posts, isLoading } = useGetAllPostsFromProvider();
 
 
     // // Handle scroll event to trigger loading more posts
@@ -98,80 +50,48 @@ const RecentPosts = () => {
     //     };
     // }, [hasMore, isLoading]);
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    // const onSubmit: SubmitHandler<FieldValues> = (data) => {
 
-        if (!data.search) {
-            // setPosts([]);
-            setSearT("");
+    //     if (!data.search) {
+    //         // setPosts([]);
+    //         setSearT("");
 
-            return;
+    //         return;
+    //     }
+    //     // setPosts([]);
+    //     setSearT(data.search);
+
+    // };
+    const { setIsLoading } = useUser();
+    const router = useRouter();
+    const searchParams = useSearchParams(); 
+
+    const logout = searchParams.get('logout');
+
+    const handleLogout = async () => {
+        if (logout === 'true') {
+            await logoutUser();
+            setIsLoading(true);
+            router.push("/");
         }
-        // setPosts([]);
-        setSearT(data.search);
-
-    };
-
-    const handleSort = () => {
-        if (sort === "") {
-            setSort("-upVoteSize");
-        } else if (sort === "-upVoteSize") {
-            setSort("");
-        }
-        // setPage(1);
-        // setPosts([]);
     }
+
+    useEffect(() => {
+        handleLogout();
+    }, [logout]);
 
     return (
         <div>
+            {posts?.length === 0 &&
+                <div className='items-center flex justify-center flex-col mt-[20%]'>
+                    <IoIosWarning size={100} />
+                    <h3 className='text-lg font-semibold'>No Post Abailable Here!</h3>
+                </div>
+            }
             {isLoading && <Loading />}
-            <div className='mb-4 flex justify-between items-center gap-1'>
-                <Button color='primary' onClick={handleSort}>
-                    Sort By Upvote
-                    {sort === "-upVoteSize" && <FaRegCheckCircle />}
-                </Button>
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <motion.div
-                        animate={{ opacity: 1, scale: 1 }}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3 }}
-                        whileHover={{ scale: 1.01 }}
-                    >
-                        <Input
-                            {...register('search')}
-                            aria-label="Search"
-                            classNames={{
-                                inputWrapper: "shadow",
-                                input: "text-sm ",
-                            }}
-                            placeholder="Search Moment"
-                            size='lg'
-                            startContent={
-                                <SearchIcon className="pointer-events-none flex-shrink-0 text-base text-default-600" />
-                            }
-                            type="text"
-                        />
-                    </motion.div>
-                </form>
-
-                {/* Uncomment if you want to use category filtering */}
-                <Select
-                    className="max-w-xs"
-                    label="Filter By Category"
-                    size='sm'
-                    onChange={(e) => setCategoryId(e.target.value)}
-                >
-                    {categories?.map((category: any) => (
-                        <SelectItem key={category?._id} value={category._id}>
-                            {category?.name}
-                        </SelectItem>
-                    ))}
-                </Select>
-            </div>
-
             <div className='min-h-screen pb-4'>
 
-                {postsData?.map((post: TPost) => (
+                {posts?.map((post: TPost) => (
                     <PostCard key={post._id} post={post} />
                 ))}
                 {/* {isLoading && <p className='text-center'>Loading more posts...</p>}
@@ -182,3 +102,5 @@ const RecentPosts = () => {
 };
 
 export default RecentPosts;
+
+

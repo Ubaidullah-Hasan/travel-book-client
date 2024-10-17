@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 "use client"
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AiOutlineLogin } from "react-icons/ai";
 import Link from 'next/link';
 import { RiLogoutCircleLine } from "react-icons/ri";
@@ -17,7 +17,7 @@ import { useGetSinglUserById } from '@/src/hooks/user.hook';
 
 const LeftSidebar = () => {
     const router = useRouter();
-    const { user, setIsLoading } = useUser();
+    const { user, setIsLoading,isLoading } = useUser();
     const { data: userRes } = useGetSinglUserById(user?._id);
     const fullUserData = (userRes?.result);
 
@@ -26,6 +26,10 @@ const LeftSidebar = () => {
         setIsLoading(true);
         router.push("/");
     }
+
+    // useEffect(() => {
+    //     handleLogOut();
+    // }, [isLoading]);
 
     return (
         <div className='w-[25%] px-3 py-4 fixed top-0 bottom-0 left-0 overflow-y-scroll '>

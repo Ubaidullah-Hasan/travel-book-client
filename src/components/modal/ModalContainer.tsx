@@ -2,6 +2,7 @@
 import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/modal';
 import React, { ReactNode } from 'react';
 import { IChildren } from '@/src/types';
+import ModalCloseIcon from '../ui/ModalCloseIcon';
 
 
 interface IProps extends IChildren {
@@ -14,7 +15,7 @@ const ModalContainer = ({ title, children }: IProps) => {
 
     return (
         <>
-
+            <ModalCloseIcon />
             <Modal
                 hideCloseButton
                 backdrop="opaque"

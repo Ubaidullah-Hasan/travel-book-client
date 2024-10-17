@@ -98,8 +98,8 @@ export const forgotPassword = async (email: FieldValues) => {
         const { data } = await axiosInstance.post("auth/forgot-password", email);
 
         return data;
-    } catch (error) {
-        throw new Error("Failed request to forgot password!");
+    } catch (error: any) {
+        throw new Error(error.response.data.message);
     }
 }
 

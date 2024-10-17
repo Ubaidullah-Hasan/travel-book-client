@@ -32,6 +32,7 @@ export default function FSForm({
     const methods = useForm(formConfig);
 
     const submitHandler = methods.handleSubmit;
+    
 
     return (
         <FormProvider {...methods}>

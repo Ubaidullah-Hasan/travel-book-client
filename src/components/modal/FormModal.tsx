@@ -1,8 +1,7 @@
 // "use client"
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
-import Link from "next/link";
-import { IoMdClose } from "react-icons/io";
 import { IChildren } from "@/src/types";
+import ModalCloseIcon from "../ui/ModalCloseIcon";
 
 
 interface IModalProps extends IChildren {
@@ -11,13 +10,11 @@ interface IModalProps extends IChildren {
 }
 
 
-const FormModal = ({ children, title, size="md" }: IModalProps) => {
+const FormModal = ({ children, title, size = "md" }: IModalProps) => {
 
     return (
         <div className="relative">
-            <Link className="z-[100] p-2 rounded-full bg-default-200 hover:bg-default-300 duration-300 absolute right-[50%] top-[80px] animate-ping" href={"/"}>
-                <IoMdClose size={15} />
-            </Link>
+            <ModalCloseIcon />
             <Modal
                 hideCloseButton
                 className="py-5 relative"
