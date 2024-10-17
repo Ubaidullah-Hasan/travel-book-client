@@ -10,7 +10,7 @@ import { useDeleteCommentsById } from "@/src/hooks/comments.hook";
 
 
 
-const CommentCard = ({ commentsOfPost, userId }: { commentsOfPost: any, userId: string }) => {
+const CommentCard = ({ commentsOfPost, userId, postId }: { commentsOfPost: any, userId: string, postId: string }) => {
     const { mutate: deleteComment, isPending } = useDeleteCommentsById(userId);
 
 
@@ -29,7 +29,7 @@ const CommentCard = ({ commentsOfPost, userId }: { commentsOfPost: any, userId: 
                         <div className="flex items-center justify-between mb-4">
                             <h1 className="text-lg font-semibold ">Comments</h1>
                             {commentsOfPost?.length > 2 &&
-                                <Link className="text-violet-500 underline text-sm font-semibold" href={"post-comments"}>See All</Link>
+                                <Link className="text-violet-500 underline text-sm font-semibold" href={`/${postId}/comments`}>See All</Link>
                             }
                         </div>
                         {commentsOfPost?.slice(0, 2)?.map((comment: any) => (

@@ -224,51 +224,53 @@ const PostCard = ({ post }: { post: TPost }) => {
                 <CardFooter className="flex-col justify-between items-stretch border-t border-default-200">
                     <div className="flex gap-3 justify-between items-center ">
                         <div className="flex gap-1">
-                            <ButtonGroup radius="full" size="sm"  >
-                                <Button
-                                    className="hover:bg-default-200"
-                                    isDisabled={isDownVote}
-                                    isLoading={upVoteUpdating}
-                                    startContent={
-                                        upVote?.some((vote) => vote === user?._id) ?
-                                            (
-                                                <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
-                                                    <IoHeartSharp
-                                                        className={"text-red-600"}
-                                                        size={20}
-                                                    />
+                            <PremiumComponent isPremium={isPremium}>
+                                <ButtonGroup radius="full" size="sm"  >
+                                    <Button
+                                        className="hover:bg-default-200"
+                                        isDisabled={isDownVote}
+                                        isLoading={upVoteUpdating}
+                                        startContent={
+                                            upVote?.some((vote) => vote === user?._id) ?
+                                                (
+                                                    <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
+                                                        <IoHeartSharp
+                                                            className={"text-red-600"}
+                                                            size={20}
+                                                        />
+                                                    </AnimatedButton>
+                                                ) : <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
+                                                    <GoHeart
+                                                        className="text-default-500"
+                                                        size={20} />
                                                 </AnimatedButton>
-                                            ) : <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
-                                                <GoHeart
-                                                    className="text-default-500"
-                                                    size={20} />
-                                            </AnimatedButton>
-                                    }
-                                    onClick={() => handleUpVote(_id)}
-                                >{upVote?.length}</Button>
+                                        }
+                                        onClick={() => handleUpVote(_id)}
+                                    >{upVote?.length}</Button>
 
-                                <Button
-                                    className="bg-transparent/20 hover:bg-default-200 disabled:bg-default-200"
-                                    disabled={isUpvote}
-                                    isLoading={downVoteUpdating}
-                                    startContent={
-                                        downVote?.some((vote) => vote === user?._id) ?
-                                            (
-                                                <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
-                                                    <IoHeartSharp
-                                                        className={"text-default-500"}
-                                                        size={20}
-                                                    />
+                                    <Button
+                                        className="bg-transparent/20 hover:bg-default-200 disabled:bg-default-200"
+                                        disabled={isUpvote}
+                                        isLoading={downVoteUpdating}
+                                        startContent={
+                                            downVote?.some((vote) => vote === user?._id) ?
+                                                (
+                                                    <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
+                                                        <IoHeartSharp
+                                                            className={"text-default-500"}
+                                                            size={20}
+                                                        />
+                                                    </AnimatedButton>
+                                                ) : <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
+                                                    <GoHeart
+                                                        className="text-default-500"
+                                                        size={20} />
                                                 </AnimatedButton>
-                                            ) : <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
-                                                <GoHeart
-                                                    className="text-default-500"
-                                                    size={20} />
-                                            </AnimatedButton>
-                                    }
-                                    onClick={() => handleDownVote(_id)}
-                                >{downVote?.length}</Button>
-                            </ButtonGroup>
+                                        }
+                                        onClick={() => handleDownVote(_id)}
+                                    >{downVote?.length}</Button>
+                                </ButtonGroup>
+                            </PremiumComponent>
                         </div>
                         <PremiumComponent isPremium={isPremium}>
                             <CommentModal
@@ -296,7 +298,7 @@ const PostCard = ({ post }: { post: TPost }) => {
             </Card>
 
             {/* comment display */}
-            <CommentCard commentsOfPost={commentsOfPost} userId={user?._id as string} />
+            <CommentCard commentsOfPost={commentsOfPost} userId={user?._id as string} postId={_id} />
             {/* {
                 commentsOfPost?.length > 0 ?
                     <div className="space-y-1 bg-default-100 p-6 pb-4 rounded-b-md">
