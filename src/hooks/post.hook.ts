@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { createPost, deletePostPermanently, getAllPosts, getSinglePost, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
+import { createPost, deletePostPermanently, getAllPosts, getSinglePostByPostId, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
 import { IQueryOptions } from "../types"
 import envConfig from "../config/envConfig"
 
@@ -27,10 +27,11 @@ export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string |
     })
 }
 
-export const useGetSinglePostsById = (queryOptions: IQueryOptions, userId: string | undefined) => {
+export const useGetSinglePostsByPostId = ( postId: string | undefined) => {
     return useQuery({
-        queryKey: ["GET_SINGLE_POST_BY_ID", queryOptions],
-        queryFn: async () => await getSinglePost(queryOptions, userId as string),
+        queryKey: ["GET_SINGLE_POST_BY_ID"],
+        queryFn: async () => await getSinglePostByPostId(postId as string),
+        enabled: !!postId,
     })
 }
 

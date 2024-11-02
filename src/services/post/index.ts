@@ -10,10 +10,10 @@ export const getAllPosts = async (queryOptions: IQueryOptions) => {
         });
 
         return res.data;
-    } catch (error:any) {
-        throw new Error(error.response.data.message);
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message);
     }
-    
+
 }
 
 export const createPost = async (postData: FormData) => {
@@ -36,19 +36,18 @@ export const getUserAllPosts = async (queryOptions: IQueryOptions, userId: strin
 
         return res.data;
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 
-export const getSinglePost = async (queryOptions: IQueryOptions, userId: string) => {
+export const getSinglePostByPostId = async (postId: string) => {
+    console.log({postId});
     try {
-        const res = await axiosInstance.get(`/posts/${userId}`, {
-            params: queryOptions
-        });
+        const res = await axiosInstance.get(`/posts/${postId}`);
 
         return res.data;
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 
@@ -64,7 +63,7 @@ export const updateSinglePost = async (updateData: TUpdateData, userId: string) 
 
         return res.data;
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 
@@ -84,7 +83,7 @@ export const toggleUpVote = async (info: TToggleVote) => {
         return res.data;
 
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 
@@ -98,7 +97,7 @@ export const toggleDownVote = async (info: TToggleVote) => {
         return res.data;
 
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 

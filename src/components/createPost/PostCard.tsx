@@ -14,14 +14,14 @@ import AnimatedButton from "../framerMotion/AnimatedButton";
 import DropDownPostEdit from "../ui/DropDownPostEdit/DropDownPostEdit";
 import CommentModal from "../comment/CommentModal";
 import CommentCard from "../comment/CommentCard";
+import PrivateComponent from "../privateComponent/PrivateComponent";
+import PremiumComponent from "../privateComponent/PremiumComponent";
 import { TFollow, TPost } from "@/src/types";
 import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
-import PrivateComponent from "../privateComponent/PrivateComponent";
-import PremiumComponent from "../privateComponent/PremiumComponent";
 
 
 
@@ -100,7 +100,6 @@ const PostCard = ({ post }: { post: TPost }) => {
 
     return (
         <>
-
             <Card className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} mt-4`} shadow="sm">
                 <CardHeader className="justify-between border-b border-default-200">
                     <div className="flex gap-5">
@@ -298,7 +297,7 @@ const PostCard = ({ post }: { post: TPost }) => {
             </Card>
 
             {/* comment display */}
-            <CommentCard commentsOfPost={commentsOfPost} userId={user?._id as string} postId={_id} />
+            <CommentCard commentsOfPost={commentsOfPost} postId={_id} userId={user?._id as string} />
             {/* {
                 commentsOfPost?.length > 0 ?
                     <div className="space-y-1 bg-default-100 p-6 pb-4 rounded-b-md">

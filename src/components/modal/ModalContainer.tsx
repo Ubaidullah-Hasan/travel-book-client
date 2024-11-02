@@ -1,8 +1,8 @@
 "use client"
 import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/modal';
 import React, { ReactNode } from 'react';
-import { IChildren } from '@/src/types';
 import ModalCloseIcon from '../ui/ModalCloseIcon';
+import { IChildren } from '@/src/types';
 
 
 interface IProps extends IChildren {

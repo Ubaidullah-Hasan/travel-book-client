@@ -1,77 +1,77 @@
 "use client"
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { TPost } from '@/src/types';
-import Loading from '@/src/components/ui/Loading';
 import { useGetAllPostsFromProvider } from '@/src/context/allPostData.provider';
-import { IoIosWarning } from "react-icons/io";
-import { useEffect } from 'react';
 import { logoutUser } from '@/src/services/authService';
 import { useUser } from '@/src/context/user.provider';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { IoIosWarning } from 'react-icons/io';
 
 const PostCard = dynamic(() => import('@/src/components/createPost/PostCard'), { ssr: false });
 
 const RecentPosts = () => {
-    // const [searT, setSearT] = useState('');
-    // const [sort, setSort] = useState<string>("");
-    // const [categoryId, setCategoryId] = useState<string>("");
-    // const [page, setPage] = useState(1);
-    // const [hasMore, setHasMore] = useState(true);
+    const [items, setItems] = useState<TPost[]>([]);
+    const [intoFirst, setIntoFirst] = useState(true);
 
-    const { posts, isLoading } = useGetAllPostsFromProvider();
+    const { posts, setQueryOptions, queryOptions } = useGetAllPostsFromProvider();
+    const page = queryOptions?.page;
+
+    // todo: real time upvote data not update for infinite scrolling, before it updating
+
+    useEffect(() => {
+        if (posts?.length === 0) {
+            setItems([])
+        }
+
+        if (posts?.length > 0) {
+            setItems((prevItems) => {
+                if (queryOptions.searchTerm) {
+                    return [...posts];
+                }
+                if (queryOptions.categoryId) {
+
+                    return [...posts];
+                }
+                if (queryOptions.sortBy) {
+                    if(intoFirst){
+                        setIntoFirst(false);
+
+                        return[...posts];
+                    }
+                    const newPosts = posts.filter(post => !prevItems.some(item => item._id === post._id));
+
+                    return [...prevItems, ...newPosts];
+                } else {
+                    const newPosts = posts.filter(post => !prevItems.some(item => item._id === post._id));
+
+                    return [...prevItems, ...newPosts];
+                }
+            });
+        }
+    }, [posts, queryOptions]);
+
+    console.log({ items, queryOptions, posts });
 
 
-    // // Handle scroll event to trigger loading more posts
-    // const handleScroll = () => {
-    //     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && hasMore && !isLoading) {
-    //         setPage(prevPage => prevPage + 1);
-    //         setPosts([]); // Clear posts when loading new page
-    //     }
-    // };
+    const hasMore = posts?.length < 10;
 
-    // // Append new posts to existing posts when page changes
-    // useEffect(() => {
-    //     if (postsData?.length) {
-    //         setPosts(prevPosts => [...prevPosts, ...postsData]);
-    //         if (postsData.length < 10) {
-    //             setHasMore(false);
-    //         } else {
-    //             setHasMore(true); // Ensure hasMore is true if there are more posts
-    //         }
-    //     }
-    // }, [postsData]);
+    const fetchMoreData = () => {
+        setQueryOptions((pre) => ({ ...pre, page: page && page + 1 }));
+    }
 
-    // // Set up scroll event listener
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
 
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-    // }, [hasMore, isLoading]);
-
-    // const onSubmit: SubmitHandler<FieldValues> = (data) => {
-
-    //     if (!data.search) {
-    //         // setPosts([]);
-    //         setSearT("");
-
-    //         return;
-    //     }
-    //     // setPosts([]);
-    //     setSearT(data.search);
-
-    // };
-    const { setIsLoading } = useUser();
+    const { setIsLoading: userLoading } = useUser();
     const router = useRouter();
-    const searchParams = useSearchParams(); 
+    const searchParams = useSearchParams();
 
     const logout = searchParams.get('logout');
 
     const handleLogout = async () => {
         if (logout === 'true') {
             await logoutUser();
-            setIsLoading(true);
+            userLoading(true);
             router.push("/");
         }
     }
@@ -82,21 +82,27 @@ const RecentPosts = () => {
 
     return (
         <div>
-            {posts?.length === 0 &&
-                <div className='items-center flex justify-center flex-col mt-[20%]'>
+            {items?.length === 0
+                && <div className='items-center flex justify-center flex-col mt-[20%]'>
                     <IoIosWarning size={100} />
                     <h3 className='text-lg font-semibold'>No Post Abailable Here!</h3>
                 </div>
             }
-            {isLoading && <Loading />}
-            <div className='min-h-screen pb-4'>
-
-                {posts?.map((post: TPost) => (
-                    <PostCard key={post._id} post={post} />
-                ))}
-                {/* {isLoading && <p className='text-center'>Loading more posts...</p>}
-                {!hasMore && <p className='text-center'>No more posts to load.</p>} */}
-            </div>
+            <InfiniteScroll
+                dataLength={items?.length}
+                hasMore={!hasMore}
+                endMessage={
+                    items.length > 0 && <p className='text-center'>No more posts!</p>
+                }
+                loader={<p className='text-center'>Loading more posts...</p>}
+                next={fetchMoreData}
+            >
+                <div className='min-h-screen pb-4'>
+                    {items?.map((post: TPost) => (
+                        <PostCard key={post._id} post={post} />
+                    ))}
+                </div>
+            </InfiniteScroll>
         </div>
     );
 };

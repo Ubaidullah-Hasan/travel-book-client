@@ -37,8 +37,8 @@ export const getUserFollowInfo = async (userId: string | undefined) => {
         );
 
         return data;
-    } catch (error) {
-        throw new Error("Failed to retrive follow info!");
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message);
     }
 }
 
@@ -49,8 +49,8 @@ export const getSingleUserById = async (userId: string | undefined) => {
         );
 
         return data;
-    } catch (error) {
-        throw new Error("Failed to retrive follow info!");
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message);
     }
 }
 

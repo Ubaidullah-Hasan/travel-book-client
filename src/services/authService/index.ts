@@ -99,7 +99,7 @@ export const forgotPassword = async (email: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 

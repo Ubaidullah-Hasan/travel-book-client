@@ -1,8 +1,8 @@
 "use client"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createCategory, getAllCategories } from "../services/category/categories"
 import { FieldValues } from "react-hook-form"
 import { toast } from "sonner"
+import { createCategory, getAllCategories } from "../services/category/categories"
 
 export const useGetAllCategories = () => {
     return useQuery({

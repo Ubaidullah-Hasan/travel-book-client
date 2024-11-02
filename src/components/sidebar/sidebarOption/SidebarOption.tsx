@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { IoNewspaperOutline } from "react-icons/io5";
+import { IoHomeOutline, IoNewspaperOutline } from "react-icons/io5";
 import { GrUserSettings } from "react-icons/gr";
 import { TbPasswordUser } from "react-icons/tb";
 import { RiFunctionAddLine } from "react-icons/ri";
@@ -15,7 +15,7 @@ const SidebarOption = () => {
     const { user } = useUser();
     const sidebarLinkAdmin = [
         {
-            icon: <IoNewspaperOutline size={20} />,
+            icon: <IoHomeOutline size={20} />,
             label: "Home",
             path: "/",
         },
@@ -42,7 +42,7 @@ const SidebarOption = () => {
     ]
     const sidebarLinkUser = [
         {
-            icon: <IoNewspaperOutline size={20} />,
+            icon: <IoHomeOutline size={20} />,
             label: "Home",
             path: "/",
         },

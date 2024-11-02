@@ -27,7 +27,6 @@ const CreatePostModal = ({ className }: IProps) => {
     const { mutate: createPost, isPending } = useCreatePosts();
 
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-
         const imagesToUpload = data.images;
 
         const postData = {
@@ -36,7 +35,6 @@ const CreatePostModal = ({ className }: IProps) => {
             userId: user?._id,
             isPremium: data?.isPremium === "false" ? false : true,
         };
-
 
         if (imagesToUpload && imagesToUpload.length > 0) {
 

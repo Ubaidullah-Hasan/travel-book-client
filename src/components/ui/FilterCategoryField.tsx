@@ -16,6 +16,7 @@ const FilterCategoryField = () => {
         setQueryOptions((prev) => ({
             ...prev,
             categoryId: selectValue === "all" ? undefined : selectValue,
+            page: 1 
         }))
     }
 
@@ -23,13 +24,13 @@ const FilterCategoryField = () => {
     return (
         <div>
             <Select
-                defaultSelectedKeys={["all"]}
-                label="Filter By Category"
-                size='sm'
-                radius="lg"
                 classNames={{
                     mainWrapper:"border rounded-xl"
                 }}
+                defaultSelectedKeys={["all"]}
+                label="Filter By Category"
+                radius="lg"
+                size='sm'
                 onChange={(e) => handleCategory(e)}
             >
                 <SelectItem key={"all"} value={undefined}>

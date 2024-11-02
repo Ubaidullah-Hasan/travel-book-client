@@ -1,6 +1,6 @@
 "use server"
-import axiosInstance from "@/src/lib/axiosInstance"
 import { FieldValues } from "react-hook-form";
+import axiosInstance from "@/src/lib/axiosInstance"
 
 
 export const getAllCategories = async () => {
@@ -19,7 +19,7 @@ export const createCategory = async (category: FieldValues) => {
 
         return res.data;
     } catch (error: any) {
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data?.message);
 
     }
 }

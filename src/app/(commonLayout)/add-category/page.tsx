@@ -1,15 +1,14 @@
 "use client"
-import { LockIcon } from '@/src/assets/icons';
+import { Button } from '@nextui-org/button';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
+import React from 'react';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { MdOutlineCategory } from "react-icons/md";
 import FSInput from '@/src/components/form/FSInput';
 import FSForm from '@/src/components/form/TSForm';
 import Loading from '@/src/components/ui/Loading';
 import ModalCloseIcon from '@/src/components/ui/ModalCloseIcon';
 import { useCreateCategory } from '@/src/hooks/categories.hook';
-import { Button } from '@nextui-org/button';
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
-import React, { use } from 'react';
-import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form';
-import { MdOutlineCategory } from "react-icons/md";
 
 
 const AddCategory = () => {
@@ -17,6 +16,7 @@ const AddCategory = () => {
 
     const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
         const upperCaseCategory = { name: data.name.toUpperCase() }
+
         createCategory(upperCaseCategory);
     }
 

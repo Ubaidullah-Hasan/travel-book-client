@@ -3,7 +3,7 @@ import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button } from '@nextui-org/button';
 import { TCategory } from '@/src/types';
 import { useGetAllCategories } from '@/src/hooks/categories.hook';
-import { useGetSinglePostsById, useUpdatePost } from '@/src/hooks/post.hook';
+import { useGetSinglePostsByPostId, useUpdatePost } from '@/src/hooks/post.hook';
 import Loading from '@/src/components/ui/Loading';
 import ModalContainer from '@/src/components/modal/ModalContainer';
 import FSForm from '@/src/components/form/TSForm';
@@ -19,11 +19,8 @@ type TParams = {
 }
 
 const SinglePostEdit = ({ params }: TParams) => {
-    const queryOptions = {
-        searchTerm: '',
-    };
     const { data: catetoriesResponse } = useGetAllCategories();
-    const { data: postRes } = useGetSinglePostsById(queryOptions, params.postId);
+    const { data: postRes } = useGetSinglePostsByPostId(params.postId);
     const post = postRes?.result;
 
     const { mutate: updatePost, isPending } = useUpdatePost(params.postId);

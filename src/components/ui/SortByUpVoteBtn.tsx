@@ -13,10 +13,10 @@ const SortByUpVoteBtn = () => {
     const handleSort = () => {
         if (sort === "") {
             setSort("-upVoteSize");
-            setQueryOptions((prev) => ({ ...prev, sortBy: "-upVoteSize" }))
+            setQueryOptions((prev) => ({ ...prev, sortBy: "-upVoteSize", page: 1 }))
         } else if (sort === "-upVoteSize") {
             setSort("");
-            setQueryOptions((prev) => ({ ...prev, sortBy: "" }))
+            setQueryOptions((prev) => ({ ...prev, sortBy: "", page: 1 }))
         }
     }
 

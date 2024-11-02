@@ -18,11 +18,11 @@ const SearchField = () => {
 
     useEffect(() => {
         if (searchTerm) {
-            setQueryOptions((pre) => ({ ...pre, searchTerm: searchTerm }));
+            setQueryOptions((pre) => ({ ...pre, searchTerm: searchTerm, page: 1 }));
 
             return;
         }
-        setQueryOptions((pre) => ({ ...pre, searchTerm: searchTerm }));
+        setQueryOptions((pre) => ({ ...pre, searchTerm: searchTerm, page: 1 }));
 
     }, [searchTerm])
 

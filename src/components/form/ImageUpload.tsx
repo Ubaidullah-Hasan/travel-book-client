@@ -12,13 +12,10 @@ export default function ImageUpload({ name }: ImageUploadProps) {
     const { setValue, watch } = useFormContext();
     const [filePreviews, setFilePreviews] = useState<string[]>([]);
 
-
     const files = watch(name);
-
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = Array.from(e.target.files || []);
-
         const existingFiles = files || [];
         const allFiles = [...existingFiles, ...selectedFiles];
 
@@ -40,7 +37,7 @@ export default function ImageUpload({ name }: ImageUploadProps) {
     };
 
     return (
-        <div>
+        <div className='relative'>
             <input
                 multiple
                 accept="image/*, video/*"
@@ -52,13 +49,13 @@ export default function ImageUpload({ name }: ImageUploadProps) {
             <label
                 className="flex items-center w-full border p-4 rounded-xl text-sm cursor-pointer font-semibold text-blue-700 bg-blue-100"
                 htmlFor="file-upload">
-                <FaUpload className="mr-2" /> 
+                <FaUpload className="mr-2" />
                 {filePreviews.length ? "Upload More" : "Upload Images"}
             </label>
 
             {/* preview */}
             {filePreviews.length > 0 && (
-                <div className='mt-3 grid grid-cols-4 gap-4'>
+                <div className='mt-3 grid grid-cols-2 gap-4 '>
                     {filePreviews.map((preview, index) => (
                         <div key={index} className="relative w-32 h-32 object-cover rounded-md">
                             {/* Remove icon */}

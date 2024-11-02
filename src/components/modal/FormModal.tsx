@@ -1,7 +1,7 @@
 // "use client"
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
-import { IChildren } from "@/src/types";
 import ModalCloseIcon from "../ui/ModalCloseIcon";
+import { IChildren } from "@/src/types";
 
 
 interface IModalProps extends IChildren {
