@@ -1,6 +1,5 @@
 "use client"
 import React from 'react';
-import "./style.css"
 import { usePathname } from 'next/navigation';
 import SearchField from '../form/SearchField';
 import CreatePost from '../createPost/CreatePostCard';
@@ -13,7 +12,7 @@ const RightSidebar = () => {
 
     return (
         <div className='px-3 py-4 fixed top-0 bottom-0 w-[38%] lg:w-[25%] overflow-y-scroll space-y-5'>
-            <div className='flex items-center justify-center lg:block hidden'>
+            <div className='lg:flex items-center justify-center hidden'>
                 <ThemeSwitch />
             </div>
             {pathName !== "/my-profile" && <SearchField />}
@@ -21,7 +20,6 @@ const RightSidebar = () => {
             {pathName !== "/my-profile" && <SortByUpVoteBtn />}
             <div className={`${pathName === "/my-profile" ? "pt-0" : "pt-10"}`}>
                 <CreatePost />
-
             </div>
         </div>
     );

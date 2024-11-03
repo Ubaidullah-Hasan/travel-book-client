@@ -20,8 +20,8 @@ const CreatePostCard = () => {
     }
 
     return (
-        <div className=' space-y-4'>
-            <h1 className='font-semibold text-lg'>Create A New Post!</h1>
+        <div className='space-y-4'>
+            <h1 className='hidden sm:block font-semibold text-lg'>Create A New Post!</h1>
             <Card className="w-full bg-default-100">
                 <CardHeader className="flex gap-3">
                     <Avatar isBordered

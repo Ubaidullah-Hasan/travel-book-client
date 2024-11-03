@@ -8,10 +8,13 @@ import { USER_ROLE } from '@/src/constant';
 import { useUser } from '@/src/context/user.provider';
 
 
+type TResponsiveProps = {
+    setIsOpen?: any,
+    isOpen?: boolean,
+}
 
 
-
-const SidebarOption = () => {
+const SidebarOption = ({ setIsOpen, isOpen }: TResponsiveProps) => {
     const { user } = useUser();
     const sidebarLinkAdmin = [
         {
@@ -73,7 +76,9 @@ const SidebarOption = () => {
             {user?.role === USER_ROLE.ADMIN ?
                 sidebarLinkAdmin?.map((item) => (
                     <div key={item?.path}>
-                        <Link className='mt-3' href={item.path}>
+                        <Link
+                            className='mt-3'
+                            href={item.path} onClick={() => setIsOpen(!isOpen)}>
                             <div className='duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2'>
                                 {item.icon}
                                 {item.label}
@@ -83,7 +88,9 @@ const SidebarOption = () => {
                 )) :
                 sidebarLinkUser?.map((item) => (
                     <div key={item?.path}>
-                        <Link className='mt-3' href={item.path}>
+                        <Link
+                            className='mt-3'
+                            href={item.path} onClick={() => setIsOpen(!isOpen)}>
                             <div className='duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2'>
                                 {item.icon}
                                 {item.label}

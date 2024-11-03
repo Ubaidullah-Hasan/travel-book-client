@@ -13,9 +13,12 @@ import { useUser } from '@/src/context/user.provider';
 import { logoutUser } from '@/src/services/authService';
 import { useGetSinglUserById } from '@/src/hooks/user.hook';
 
+type TResponsiveProps = {
+    setIsOpen?: any,
+    isOpen?: boolean,
+}
 
-
-const LeftSidebar = () => {
+const LeftSidebar = ({ setIsOpen, isOpen }: TResponsiveProps) => {
     const router = useRouter();
     const { user, setIsLoading } = useUser();
     const { data: userRes } = useGetSinglUserById(user?._id);
@@ -35,15 +38,15 @@ const LeftSidebar = () => {
             </div>
             <div className='space-y-2 mt-6'>
 
-                <SidebarOption />
+                <SidebarOption isOpen={isOpen} setIsOpen={setIsOpen} />
                 {
                     fullUserData?.isVerified ? (
-                        <div className='cursor-default duration-200 bg-default-100 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2'>
+                        <div className='cursor-default duration-200 bg-default-100 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2' onClickCapture={() => setIsOpen(!isOpen)}>
                             <LuBadgeCheck className='text-green-600' />
                             Verified
                         </div>
                     ) : (
-                        <div className='cursor-pointer duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2' onClick={() => router.push("/verify-account")}>
+                        <div className='cursor-pointer duration-200 bg-default-200 hover:bg-default-100 py-2 px-4 rounded-lg font-semibold flex items-center gap-2' onClick={() => router.push("/verify-account")} onClickCapture={() => setIsOpen(!isOpen)}>
                             <LuBadgeAlert className='text-warning-600' />
                             Verified Account
                         </div>

@@ -1,10 +1,8 @@
 import { ReactNode } from 'react';
 import LeftSidebar from '@/src/components/sidebar/LeftSidebar';
 import RightSidebar from '@/src/components/sidebar/RightSidebar';
-import { HiOutlineMenuAlt1 } from "react-icons/hi";
-import { ThemeSwitch } from '@/src/components/ui/theme-switch';
-import { RiMenuUnfold3Fill } from 'react-icons/ri';
 import HeaderForSmallDevice from '@/src/components/responsiveHeader/HeaderForSmallDevice';
+import CreatePostCardAndFilter from '@/src/components/responsiveHeader/CreatePostCardAndFilter';
 
 
 type TProps = {
@@ -18,16 +16,17 @@ const layout = ({ children }: TProps) => {
                 <LeftSidebar />
             </aside>
 
-            <main className='relative flex flex-col flex-1 min-h-screen lg:my-5 p-1 lg:p-0'>
-                {/* header for 768px */}
+            <main className='relative flex flex-col flex-1 min-h-screen lg:my-5 '>
+                {/* responsive code */}
                 <div className='lg:hidden'>
                     <HeaderForSmallDevice />
+                    <CreatePostCardAndFilter />
                 </div>
 
                 {children}
             </main>
 
-            <aside className='w-[38%] lg:w-[25%] bg-default-50'>
+            <aside className='hidden sm:block w-[38%] lg:w-[25%] bg-default-50'>
                 <RightSidebar />
             </aside>
         </div>
