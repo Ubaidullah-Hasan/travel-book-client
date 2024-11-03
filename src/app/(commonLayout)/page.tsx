@@ -3,11 +3,11 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { IoIosWarning } from 'react-icons/io';
 import { TPost } from '@/src/types';
 import { useGetAllPostsFromProvider } from '@/src/context/allPostData.provider';
 import { logoutUser } from '@/src/services/authService';
 import { useUser } from '@/src/context/user.provider';
-import { IoIosWarning } from 'react-icons/io';
 
 const PostCard = dynamic(() => import('@/src/components/createPost/PostCard'), { ssr: false });
 
@@ -35,15 +35,26 @@ const RecentPosts = () => {
                     return [...posts];
                 }
                 if (queryOptions.sortBy) {
-                    if(intoFirst){
+                    if (intoFirst) {
                         setIntoFirst(false);
 
-                        return[...posts];
+                        return [...posts];
                     }
                     const newPosts = posts.filter(post => !prevItems.some(item => item._id === post._id));
 
                     return [...prevItems, ...newPosts];
-                } else {
+                }
+                if (queryOptions.sortBy === "") {
+                    if (!intoFirst) {
+                        setIntoFirst(true);
+
+                        return [...posts];
+                    }
+                    const newPosts = posts.filter(post => !prevItems.some(item => item._id === post._id));
+
+                    return [...prevItems, ...newPosts];
+                }
+                else {
                     const newPosts = posts.filter(post => !prevItems.some(item => item._id === post._id));
 
                     return [...prevItems, ...newPosts];
@@ -90,14 +101,14 @@ const RecentPosts = () => {
             }
             <InfiniteScroll
                 dataLength={items?.length}
-                hasMore={!hasMore}
                 endMessage={
                     items.length > 0 && <p className='text-center'>No more posts!</p>
                 }
+                hasMore={!hasMore}
                 loader={<p className='text-center'>Loading more posts...</p>}
                 next={fetchMoreData}
             >
-                <div className='min-h-screen pb-4'>
+                <div className='min-h-screen pb-4 space-y-4'>
                     {items?.map((post: TPost) => (
                         <PostCard key={post._id} post={post} />
                     ))}

@@ -1,7 +1,6 @@
 "use client"
 import { Button } from '@nextui-org/button';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
-import React from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { MdOutlineCategory } from "react-icons/md";
 import FSInput from '@/src/components/form/FSInput';

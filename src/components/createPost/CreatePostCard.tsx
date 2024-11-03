@@ -20,9 +20,9 @@ const CreatePostCard = () => {
     }
 
     return (
-        <div className='pt-10 space-y-4'>
+        <div className=' space-y-4'>
             <h1 className='font-semibold text-lg'>Create A New Post!</h1>
-            <Card className="w-full">
+            <Card className="w-full bg-default-100">
                 <CardHeader className="flex gap-3">
                     <Avatar isBordered
                         className='w-11 h-11'
@@ -30,7 +30,7 @@ const CreatePostCard = () => {
                         src={user?.profilePhoto || 'https://i.ibb.co.com/nb7ZFPP/user.png'}
                     />
                     <div className='flex-1'>
-                        <div className='bg-default-100 hover:bg-default-200 text-default-400 py-2 px-4 w-full text-start rounded-full text-sm cursor-pointer' onClick={handleCreatPostBtn}>
+                        <div className='bg-default-200 hover:bg-default-300 text-default-400 py-2 px-4 w-full text-start rounded-full text-sm cursor-pointer' onClick={handleCreatPostBtn}>
                             Share your mind!
                         </div>
                     </div>

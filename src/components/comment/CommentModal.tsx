@@ -34,26 +34,30 @@ const CommentModal = ({ postId, btnText, }: { postId: string, btnText: ReactNode
             <Button className='p-0 bg-transparent w-fit px-3' onPress={onOpen}>
                 {btnText}
             </Button>
-            <Modal className='z-[100]' isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Drop A Comment</ModalHeader>
-                            <ModalBody>
-                                <FSForm onSubmit={handleSubmit}>
-                                    <div className='space-y-3'>
-                                        <div className='flex gap-5'>
-                                            <FSTextarea label='Comment' name='comment' />
-                                        </div>
+            
+            {
+                user?.email
+                && <Modal className='z-[100]' isOpen={isOpen} onOpenChange={onOpenChange}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">Drop A Comment</ModalHeader>
+                                <ModalBody>
+                                    <FSForm onSubmit={handleSubmit}>
+                                        <div className='space-y-3'>
+                                            <div className='flex gap-5'>
+                                                <FSTextarea label='Comment' name='comment' />
+                                            </div>
 
-                                        <Button fullWidth color='primary' type='submit'>Comment</Button>
-                                    </div>
-                                </FSForm>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+                                            <Button fullWidth color='primary' type='submit'>Comment</Button>
+                                        </div>
+                                    </FSForm>
+                                </ModalBody>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+            }
         </>
     );
 };

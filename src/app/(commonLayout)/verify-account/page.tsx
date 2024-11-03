@@ -31,7 +31,7 @@ const VerifyAccount = () => {
     return (
         <div className='flex flex-col justify-center items-center h-screen'>
             <h1 className='text-lg font-bold mb-3'>Premium Access</h1>
-            <p className='mb-2'>To access premium content please needed to virify your account!</p>
+            <p className='mb-2 text-center'>To access premium content please needed to verify your account!</p>
             {
                 fullUserData?.isVerified ?
                     <Button

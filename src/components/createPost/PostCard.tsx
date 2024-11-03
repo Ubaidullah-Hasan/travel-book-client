@@ -17,7 +17,7 @@ import CommentCard from "../comment/CommentCard";
 import PrivateComponent from "../privateComponent/PrivateComponent";
 import PremiumComponent from "../privateComponent/PremiumComponent";
 import { TFollow, TPost } from "@/src/types";
-import { useGetSinglUserById, useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
+import { useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
@@ -29,8 +29,6 @@ import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
 const PostCard = ({ post }: { post: TPost }) => {
     const router = useRouter();
     const { user } = useUser();
-    const { data: userRes } = useGetSinglUserById(user?._id);
-    const fullUserData = (userRes?.result);
     const [isExpanded, setIsExpanded] = useState(false);
     const { data: followInfo } = useGetUserFollow(user?._id);
     const { mutate: updateUpVote, isPending: upVoteUpdating } = useTogglePostUpVote();
@@ -99,8 +97,8 @@ const PostCard = ({ post }: { post: TPost }) => {
 
 
     return (
-        <>
-            <Card className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} mt-4`} shadow="sm">
+        <div>
+            <Card className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} border border-default-100`} shadow="sm">
                 <CardHeader className="justify-between border-b border-default-200">
                     <div className="flex gap-5">
                         <Avatar
@@ -334,8 +332,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                     ""
             } */}
 
-
-        </>
+        </div>
     );
 };
 
