@@ -17,9 +17,9 @@ const FormModal = ({ children, title, size = "md" }: IModalProps) => {
             <ModalCloseIcon />
             <Modal
                 hideCloseButton
-                className="py-5 relative"
+                className="py-5 relative mx-2 bg-default-100"
                 isOpen={true}
-                placement="top-center"
+                placement="center"
                 size={size}
             >
                 <ModalContent>

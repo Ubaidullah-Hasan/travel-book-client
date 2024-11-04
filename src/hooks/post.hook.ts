@@ -24,6 +24,7 @@ export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string |
     return useQuery({
         queryKey: ["GET_USER_ALL_POST", queryOptions],
         queryFn: async () => await getUserAllPosts(queryOptions, userId as string),
+        enabled: !!userId,
     })
 }
 

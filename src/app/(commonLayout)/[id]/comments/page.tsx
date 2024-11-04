@@ -158,6 +158,7 @@ const PostComments = ({ params }: TParams) => {
                         },
                     }
                 }}
+                placement='top'
                 size='2xl'
             >
                 <ModalContent>

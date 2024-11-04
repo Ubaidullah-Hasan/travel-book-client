@@ -23,7 +23,9 @@ const layout = ({ children }: TProps) => {
                     <CreatePostCardAndFilter />
                 </div>
 
-                {children}
+                <div className='mx-3 sm:mx-2 lg:mx-0'>
+                    {children}
+                </div>
             </main>
 
             <aside className='hidden sm:block w-[38%] lg:w-[25%] bg-default-50'>

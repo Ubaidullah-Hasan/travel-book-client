@@ -7,6 +7,7 @@ import { useUser } from '@/src/context/user.provider';
 import { useGetUserAllPosts } from '@/src/hooks/post.hook';
 import { useGetUserFollow } from '@/src/hooks/user.hook';
 import { TFollow, TPost } from '@/src/types';
+import Loading from '@/src/components/ui/Loading';
 
 
 const MyProfile = () => {
@@ -36,13 +37,16 @@ const MyProfile = () => {
             </div>
 
             <Divider />
-            
+
+            {/* loading */}
+            {isFetching && < Loading />}
+
             {/* followers section => todo: show user img */}
             {
                 followers?.length > 0 && (
                     <div>
                         <h2 className='font-semibold mb-2'>Followings {followersCount}</h2> {/* self profile */}
-                        <div className='grid grid-cols-4 gap-1 justify-between'>
+                        <div className='grid grid-cols-2 sm:grid-cols-3  gap-1 justify-between'>
                             {
                                 followers?.map((follower: TFollow) => (
                                     <div key={follower?._id}>
@@ -68,7 +72,7 @@ const MyProfile = () => {
                 following?.length > 0 && (
                     <div>
                         <h2 className='font-semibold mb-2'>Followers {followingCount}</h2> {/* self profile */}
-                        <div className='grid grid-cols-4 gap-1'>
+                        <div className='grid grid-cols-2 sm:grid-cols-3  gap-1'>
                             {
                                 following?.map((following: TFollow) => (
                                     <div key={following?._id}>

@@ -25,8 +25,9 @@ const AddCategory = () => {
             <ModalCloseIcon />
             <Modal
                 hideCloseButton
+                className="login-modal mx-2 bg-default-100"
                 isOpen={true}
-                placement="top-center"
+                placement="center"
             >
                 <ModalContent>
                     {() => (

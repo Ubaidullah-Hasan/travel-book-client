@@ -108,7 +108,7 @@ const RecentPosts = () => {
                 loader={<p className='text-center'>Loading more posts...</p>}
                 next={fetchMoreData}
             >
-                <div className='min-h-screen pb-4 space-y-4 mx-3 sm:mx-2 lg:mx-0'>
+                <div className='min-h-screen pb-4 space-y-4 '>
                     {items?.map((post: TPost) => (
                         <PostCard key={post._id} post={post} />
                     ))}

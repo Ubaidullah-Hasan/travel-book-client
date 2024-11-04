@@ -9,6 +9,8 @@ import SearchField from '../form/SearchField';
 const HeaderForSmallDevice = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const pathName = usePathname();
+    const pageWithOutHeaderCompo = ["/verify-account", "/my-profile"];
+    // console.log(pageWithOutHeaderCompo?.some((path) => pathName.match(path)));
 
     return (
         <div className='relative mb-4'>

@@ -79,7 +79,7 @@ const ProfileSeetings = () => {
                 <FSForm onSubmit={handlSubmit}>
 
                     <div className="space-y-3">
-                        <div className='flex gap-3'>
+                        <div className='grid md:grid-cols-2 gap-3'>
                             <FSInput
                                 endContent={
                                     <FaRegUser
@@ -104,7 +104,7 @@ const ProfileSeetings = () => {
                                 variant="bordered"
                             />
                         </div>
-                        <div className='flex gap-3'>
+                        <div className='grid md:grid-cols-2 gap-3'>
                             <FSInput
                                 endContent={
                                     <>
