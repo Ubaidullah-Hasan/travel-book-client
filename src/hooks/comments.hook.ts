@@ -27,6 +27,7 @@ export const useGetAllCommentsOfPost = (postId: string) => {
         queryKey: ["GET_COMMENT_OF_POST", postId],
         queryFn: async () => await getAllCommentsOfPost(postId),
         staleTime: 100, // Optional: Adjust stale time as needed => 5s seconds no request of same id
+        enabled: !!postId
     });
 }
 

@@ -10,6 +10,7 @@ import FSForm from '@/src/components/form/TSForm';
 import FSInput from '@/src/components/form/FSInput';
 import FSSelect from '@/src/components/form/FSSelect';
 import { getFilledFields } from '@/src/utils/findFilledObjectFieldValue';
+import FSTextEditor from '@/src/components/form/FSTextEditor';
 
 
 type TParams = {
@@ -78,6 +79,8 @@ const SinglePostEdit = ({ params }: TParams) => {
                                     <FSInput label='Title' name='title' required={false} />
                                     <FSSelect label='Category' name='categoryId' options={categoryOptions} required={false} />
                                 </div>
+
+                                <FSTextEditor label='Description' name='description' value={post?.description} />
 
                                 <div className='flex gap-5'>
                                     <FSSelect label='Post type' name='isPremium' options={postTypeOptions} required={false} />

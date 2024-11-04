@@ -1,16 +1,20 @@
 import Link from 'next/link';
 import React from 'react';
 import { useUser } from '@/src/context/user.provider';
-import { IChildren } from '@/src/types';
+import { ReactNode } from 'react';
 
-const PrivateComponent = ({ children }: IChildren) => {
+interface IChildren {
+    children: ReactNode;
+}
+
+const PrivateComponent = ({ children }: IChildren): React.ReactElement | null => {
     const { user } = useUser();
 
     if (user?.email) {
-        return children;
+        return <>
+            {children}
+        </>;
     }
-
-    
 
     return (
         <Link href={"/login"} >

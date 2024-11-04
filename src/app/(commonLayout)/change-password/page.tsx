@@ -42,16 +42,16 @@ const ChangePassword = () => {
     return (
         <div>
             {isPending && <Loading />}
-            <ModalCloseIcon />
             <Modal
                 hideCloseButton
                 className="login-modal mx-2 bg-default-100"
                 isOpen={true}
                 placement="center"
             >
-                <ModalContent>
+                <ModalContent className='relative'>
                     {() => (
                         <>
+                            <ModalCloseIcon />
                             <FSForm onSubmit={handleSubmit}>
                                 <ModalHeader className="flex flex-col gap-1 text-center capitalize">Change Your Password</ModalHeader>
                                 <ModalBody>

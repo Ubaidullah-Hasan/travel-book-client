@@ -7,9 +7,11 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import dynamic from "next/dynamic";
 import { IInput } from "@/src/types";
 import "react-quill/dist/quill.snow.css";
+import "./style.css"
 
 interface IProps extends IInput {
     type?: string;
+    value?: string;
 }
 
 
@@ -25,6 +27,7 @@ const modules = {
 
 export default function FSTextEditor({
     name,
+    value
 }: IProps) {
     const { control, formState: { errors } } = useFormContext();
 
@@ -39,7 +42,7 @@ export default function FSTextEditor({
                     <ReactQuill
                         modules={modules}
                         theme="snow"
-                        value={field.value || ""}
+                        value={field.value || value}
                         onChange={field.onChange}
                     />
                 )}

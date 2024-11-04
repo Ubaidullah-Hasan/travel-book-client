@@ -14,7 +14,6 @@ const FormModal = ({ children, title, size = "md" }: IModalProps) => {
 
     return (
         <div className="relative">
-            <ModalCloseIcon />
             <Modal
                 hideCloseButton
                 className="py-5 relative mx-2 bg-default-100"
@@ -22,9 +21,10 @@ const FormModal = ({ children, title, size = "md" }: IModalProps) => {
                 placement="center"
                 size={size}
             >
-                <ModalContent>
+                <ModalContent className="relative">
                     {() => (
                         <>
+                            <ModalCloseIcon />
                             <ModalHeader className="flex flex-col gap-1 text-center capitalize">
                                 {title}
                             </ModalHeader>

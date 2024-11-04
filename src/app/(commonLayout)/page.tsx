@@ -63,7 +63,7 @@ const RecentPosts = () => {
         }
     }, [posts, queryOptions]);
 
-    console.log({ items, queryOptions, posts });
+    // console.log({ items, queryOptions, posts });
 
 
     const hasMore = posts?.length < 10;

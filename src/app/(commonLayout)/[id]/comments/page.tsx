@@ -25,7 +25,7 @@ import { useDeleteCommentsById, useGetAllCommentsOfPost } from '@/src/hooks/comm
 import { useGetSinglePostsByPostId, useTogglePostDownVote, useTogglePostUpVote } from '@/src/hooks/post.hook';
 import { useGetUserFollow, useUpdateUserFollow } from '@/src/hooks/user.hook';
 import { TToggleVote } from '@/src/services/post';
-import { TFollow } from '@/src/types';
+import { TFollow, TPost } from '@/src/types';
 import CommentModal from '@/src/components/comment/CommentModal';
 
 
@@ -44,18 +44,19 @@ const PostComments = ({ params }: TParams) => {
     const comments = commentsRes?.result;
 
     const { data: postRes, isLoading: postLoading } = useGetSinglePostsByPostId(postId);
-    const post = postRes?.result;
-    let description, title, userId, categoryId, images, upVote, downVote, _id, isPremium;
+    const post: TPost = postRes?.result;
+    let { description, title, userId, categoryId, images, upVote, downVote, _id, isPremium } = post || {};
+    // let description, title, userId, categoryId, images, upVote, downVote, _id, isPremium;
 
-    description = post?.description;
-    title = post?.title;
-    userId = post?.userId;
-    categoryId = post?.categoryId;
-    images = post?.images;
-    upVote = post?.upVote;
-    _id = post?._id;
-    downVote = post?.downVote;
-    isPremium = post?.isPremium;
+    // description = post?.description as string;
+    // title = post?.title;
+    // userId = post?.userId;
+    // categoryId = post?.categoryId;
+    // images = post?.images;
+    // upVote = post?.upVote;
+    // _id = post?._id;
+    // downVote = post?.downVote;
+    // isPremium = post?.isPremium;
 
     const { data: followInfo } = useGetUserFollow(user?._id);
     const followData = (followInfo?.result);
@@ -195,7 +196,7 @@ const PostComments = ({ params }: TParams) => {
                                                 <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                                             </div>
                                         </div>
-                                        
+
                                         <PrivateComponent>
                                             <AnimatedButton scaleValue={1.05} >
                                                 {userId?._id !== user?._id ?

@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 
 const ModalCloseIcon = () => {
     return (
-        <Link className="z-[100] p-2 rounded-full bg-default-200 hover:bg-default-300 duration-500 fixed right-[50%] top-[80px] animate-ping" href={"/"}>
+        <Link className="z-[100] p-2 rounded-full border-2 border-default-400 bg-default-200 hover:bg-default-300 hover:rotate-180 duration-500 absolute right-4 top-4 " href={"/"}>
             <IoMdClose size={15} />
         </Link>
     );

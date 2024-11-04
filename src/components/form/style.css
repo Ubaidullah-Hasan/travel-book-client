@@ -1,0 +1,18 @@
+.ql-container {
+    border-radius: 0 0  10px 10px;
+}
+
+.ql-editor {
+    padding: 12px;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 130px;
+}
+
+
+.ql-toolbar {
+    background-color: #f0f0f0;
+    /* Toolbar background color */
+    border-radius: 10px 10px 0 0;
+}
+

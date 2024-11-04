@@ -3,6 +3,7 @@ import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/modal';
 import React, { ReactNode } from 'react';
 import ModalCloseIcon from '../ui/ModalCloseIcon';
 import { IChildren } from '@/src/types';
+import { usePathname } from 'next/navigation';
 
 
 interface IProps extends IChildren {
@@ -12,14 +13,15 @@ interface IProps extends IChildren {
 }
 
 const ModalContainer = ({ title, children }: IProps) => {
+    const pathName = usePathname();
 
     return (
         <>
-            <ModalCloseIcon />
+
             <Modal
                 hideCloseButton
                 backdrop="opaque"
-                className='pb-5'
+                className='pb-5 mx-2 bg-default-50 '
                 isOpen={true}
                 motionProps={{
                     variants: {
@@ -42,10 +44,12 @@ const ModalContainer = ({ title, children }: IProps) => {
                     }
                 }}
                 size='2xl'
+                placement={pathName === "/create-post" ? "center" : "top"}
             >
-                <ModalContent>
+                <ModalContent className='relative'>
                     {() => (
                         <>
+                            <ModalCloseIcon />
                             <ModalHeader className="flex flex-col gap-1 text-center border-b border-default-200">
                                 {title}
                             </ModalHeader>

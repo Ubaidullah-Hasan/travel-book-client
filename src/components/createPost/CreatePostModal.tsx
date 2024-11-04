@@ -87,14 +87,14 @@ const CreatePostModal = ({ className }: IProps) => {
             >
                 <FSForm onSubmit={handleSubmit}>
                     <div className='space-y-3'>
-                        <div className='flex gap-5'>
+                        <div className='grid md:grid-cols-2 gap-5'>
                             <FSInput label='Title' name='title' />
                             <FSSelect label='Category' name='categoryId' options={categoryOptions} />
                         </div>
 
-                        <FSTextEditor label='Description' name='description' />
+                        <FSTextEditor label='Description' name='description'  />
 
-                        <div className='flex gap-5'>
+                        <div className='grid md:grid-cols-2 gap-5'>
                             <div className='w-[100%]'>
                                 <ImageUpload name="images" />
                             </div>
