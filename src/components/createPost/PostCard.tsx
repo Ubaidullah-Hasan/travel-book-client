@@ -23,10 +23,13 @@ import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hoo
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
 
+type TProps = {
+    post: TPost;
+    setUpdatePostId: (value: string) => void;
+}
 
 
-
-const PostCard = ({ post }: { post: TPost }) => {
+const PostCard = ({ post, setUpdatePostId }: TProps) => {
     const router = useRouter();
     const { user } = useUser();
     const [isExpanded, setIsExpanded] = useState(false);
@@ -83,6 +86,7 @@ const PostCard = ({ post }: { post: TPost }) => {
             userId: user?._id,
         }
 
+        setUpdatePostId(postId);
         updateUpVote(info as TToggleVote);
     }
 
@@ -91,7 +95,8 @@ const PostCard = ({ post }: { post: TPost }) => {
             postId: postId,
             userId: user?._id,
         }
-
+        
+        setUpdatePostId(postId);
         updateDownVote(info as TToggleVote);
     }
 
@@ -167,9 +172,6 @@ const PostCard = ({ post }: { post: TPost }) => {
                                             className="rounded w-full"
                                             src={image}
                                             width={1000}
-                                        // classNames={
-                                        //     img
-                                        // }
                                         />
                                     ))
                                 }
@@ -296,42 +298,6 @@ const PostCard = ({ post }: { post: TPost }) => {
 
             {/* comment display */}
             <CommentCard commentsOfPost={commentsOfPost} postId={_id} userId={user?._id as string} />
-            {/* {
-                commentsOfPost?.length > 0 ?
-                    <div className="space-y-1 bg-default-100 p-6 pb-4 rounded-b-md">
-                        <div className="flex items-center justify-between mb-4">
-                            <h1 className="text-lg font-semibold ">Comments</h1>
-                            {commentsOfPost?.length > 2 &&
-                                <Link className="text-violet-500 underline text-sm font-semibold" href={"post-comments"}>See All</Link>
-                            }
-                        </div>
-                        {commentsOfPost?.slice(0, 2)?.map((comment: any) => (
-                            <Card key={comment?._id} className=" rounded shadow-none border">
-                                <CardBody className="p-5  text-small text-default-400">
-                                    <div className="flex items-start gap-5">
-                                        <Avatar isBordered radius="full" size="sm" src={comment?.userId?.profilePhoto || "https://nextui.org/avatars/avatar-1.png"} />
-                                        <div className="flex-1">
-                                            <h4 className="text-sm mt-2 font-semibold leading-none text-default-600">{comment?.userId?.name}</h4>
-                                            <p className="mt-2">
-                                                {comment?.comment}
-                                            </p>
-                                        </div>
-                                        {
-                                            <AnimatedButton >
-                                                <RxDotsHorizontal className="mt-2" />
-                                            </AnimatedButton>
-                                        }
-                                    </div>
-
-                                </CardBody>
-                            </Card>
-                        ))}
-
-
-                    </div> :
-                    ""
-            } */}
-
         </div>
     );
 };

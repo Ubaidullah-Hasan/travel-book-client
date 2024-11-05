@@ -15,6 +15,8 @@ export default function FSSelect({
     label,
     variant = "bordered",
     disabled,
+    required = true,
+    defaultValue,
 }: IProps) {
     const {
         control,
@@ -26,10 +28,11 @@ export default function FSSelect({
             <Controller
                 control={control}
                 name={name}
+                defaultValue={defaultValue}
                 render={({ field }) => (
                     <Select
                         {...field}
-                        required
+                        required={required}
                         className="!capitalize"
                         isDisabled={disabled}
                         label={label}
@@ -42,7 +45,9 @@ export default function FSSelect({
                         ))}
                     </Select>
                 )}
-                rules={{ required: `${label} is required` }}
+                rules={{
+                    required: required ? `${label} is required` : false
+                }}
             />
             {errors[name] && (
                 <p className="text-red-500 text-sm">

@@ -6,7 +6,7 @@ const authRoutes = ["/login", "/register"]
 
 type Role = keyof typeof roleBasedRoutes;
 const roleBasedRoutes = {
-  USER: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/, /^\/verify-account/], // must you have user to access this routes
+  USER: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/my-profile/, /^\/verify-account/], // must you have user to access this routes
   ADMIN: [/^\/create-post/, /^\/change-password/, /^\/profile-seetings/, /^\/add-category/, /^\/my-profile/, /^\/verify-account/], // must you have admin to access this routes
 }
 

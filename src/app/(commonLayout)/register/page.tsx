@@ -39,9 +39,9 @@ const Register = () => {
         <div>
             <Modal
                 hideCloseButton
-                className="login-modal"
+                className="bg-default-100 mx-2"
                 isOpen={true}
-                placement="top-center"
+                placement="center"
             >
                 <ModalContent>
                     {() => (

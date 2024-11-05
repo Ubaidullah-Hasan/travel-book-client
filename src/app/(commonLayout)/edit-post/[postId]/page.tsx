@@ -80,11 +80,11 @@ const SinglePostEdit = ({ params }: TParams) => {
                                     <FSSelect label='Category' name='categoryId' options={categoryOptions} required={false} />
                                 </div>
 
-                                <FSTextEditor label='Description' name='description' value={post?.description} />
+                                <FSTextEditor label='Description' name='description' value={post?.description} required={false} />
 
-                                <div className='flex gap-5'>
-                                    <FSSelect label='Post type' name='isPremium' options={postTypeOptions} required={false} />
-                                </div>
+                                {/* <div className='flex gap-5'>
+                                    <FSSelect label='Post type' name='isPremium' options={postTypeOptions} required={false}  />
+                                </div> */}
                                 <Button fullWidth color='primary' type='submit'>Post</Button>
                             </div>
                         </FSForm>

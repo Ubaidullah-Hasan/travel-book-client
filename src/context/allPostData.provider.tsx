@@ -7,6 +7,7 @@ interface IInitialValue {
     posts: TPost[];
     setQueryOptions: React.Dispatch<React.SetStateAction<IQueryOptions>>;
     isLoading: boolean;
+    isFetching:boolean;
     error: any;
     queryOptions:IQueryOptions;
 }
@@ -21,13 +22,14 @@ const AllPostProvider = ({ children }: IChildren) => {
         page: 1,
     });
 
-    const { data: postsResponse, isLoading, error } = useGetAllPosts(queryOptions);
+    const { data: postsResponse, isLoading, error, isFetching } = useGetAllPosts(queryOptions);
     const posts = postsResponse?.result;
 
     const initialValue = {
         posts,
         setQueryOptions,
         isLoading,
+        isFetching,
         error,
         queryOptions,
     }

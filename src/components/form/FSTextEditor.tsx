@@ -27,14 +27,15 @@ const modules = {
 
 export default function FSTextEditor({
     name,
-    value
+    value,
+    required=true,
 }: IProps) {
     const { control, formState: { errors } } = useFormContext();
 
     if (typeof window === "undefined") return null;
 
     return (
-        <div className={`${errors[name]?.message ? 'border border-default-900' : ''}`}>
+        <div className={`${errors[name]?.message ? 'border-2 border-red-500 rounded-xl' : ''}`}>
             <Controller
                 control={control}
                 name={name}
@@ -47,7 +48,9 @@ export default function FSTextEditor({
                     />
                 )}
 
-                rules={{ required: `${name} is required` }}
+                rules={{
+                    required: required ? `${name} is required` : false
+                }}
 
             />
         </div>

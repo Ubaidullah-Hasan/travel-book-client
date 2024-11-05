@@ -63,12 +63,7 @@ const SidebarOption = ({ setIsOpen, isOpen }: TResponsiveProps) => {
             icon: <TbPasswordUser />,
             label: "change password",
             path: "/change-password",
-        },
-        {
-            icon: <RiFunctionAddLine />,
-            label: "Add Category",
-            path: "/add-category",
-        },
+        }
     ]
 
     return (

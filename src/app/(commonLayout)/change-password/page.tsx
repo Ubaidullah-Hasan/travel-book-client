@@ -44,7 +44,7 @@ const ChangePassword = () => {
             {isPending && <Loading />}
             <Modal
                 hideCloseButton
-                className="login-modal mx-2 bg-default-100"
+                className=" mx-2 bg-default-100"
                 isOpen={true}
                 placement="center"
             >

@@ -27,8 +27,10 @@ export type TPost = {
   images: string[];
   categoryId: TCategory;
   upVote: string[];
+  upVoteSize: number;
   downVote: string[];
   isPremium: boolean;
+  updatedAt: string;
 }
 
 export type TUser = {
@@ -61,6 +63,7 @@ export interface IInput {
   label: string;
   name: string;
   disabled?: boolean;
+  defaultValue?:string | undefined;
 }
 
 

@@ -18,7 +18,7 @@ const Login = async () => {
     const router = useRouter();
     const [isPass, setIsPass] = useState<boolean>(true);
     const { mutate: handleLogin, isPending, isSuccess } = useUserLogin();
-    const { setIsLoading } = useUser(); 
+    const { setIsLoading } = useUser();
 
     const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
         handleLogin(data);
@@ -38,9 +38,9 @@ const Login = async () => {
             {isPending && <Loading />}
             <Modal
                 hideCloseButton
-                className="login-modal"
+                className=" bg-default-100 mx-2"
                 isOpen={true}
-                placement="top-center"
+                placement="center"
             >
                 <ModalContent>
                     {() => (
