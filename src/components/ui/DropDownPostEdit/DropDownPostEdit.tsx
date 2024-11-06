@@ -47,7 +47,7 @@ const DropDownPostEdit = ({postId}:{postId:string}) => {
                         color={item.key === "delete" ? "danger" : "default"}
                         onClick={item.onClick} 
                     >
-                        {item.label}{isPending && "..."}
+                        {item.label}{isPending && item.key === "delete" && "..."}
                     </DropdownItem>
                 )}
             </DropdownMenu>

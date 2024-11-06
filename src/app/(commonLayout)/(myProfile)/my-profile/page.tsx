@@ -2,6 +2,7 @@
 import { Avatar } from '@nextui-org/avatar';
 import { Divider, Skeleton } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
+import { IoIosWarning } from 'react-icons/io';
 import PostCard from '@/src/components/createPost/PostCard';
 import { useUser } from '@/src/context/user.provider';
 import { useGetUserAllPosts } from '@/src/hooks/post.hook';
@@ -29,6 +30,10 @@ const MyProfile = () => {
 
     return (
         <div className='space-y-8'>
+            {/* loading */}
+            {isFetching && < Loading />}
+
+
             <div className='space-y-3 flex flex-col items-center justify-center'>
                 <Skeleton className="rounded-full shadow-md border" isLoaded={!isLoading || !isFetching}>
                     <Avatar fallback className="w-[120px] h-[120px] text-large " src={user?.profilePhoto} />
@@ -37,9 +42,6 @@ const MyProfile = () => {
             </div>
 
             <Divider />
-
-            {/* loading */}
-            {isFetching && < Loading />}
 
             {/* followers section => todo: show user img */}
             {
@@ -91,6 +93,13 @@ const MyProfile = () => {
                         </div>
                     </div>
                 )
+            }
+
+            {posts?.length === 0
+                && <div className='items-center flex justify-center flex-col mt-[20%]'>
+                    <IoIosWarning size={100} />
+                    <h3 className='text-lg font-semibold'>No Post Abailable Here!</h3>
+                </div>
             }
 
             <div className='space-y-4'>

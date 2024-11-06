@@ -27,15 +27,15 @@ export default function FSSelect({
         <div className="w-full">
             <Controller
                 control={control}
-                name={name}
                 defaultValue={defaultValue}
+                name={name}
                 render={({ field }) => (
                     <Select
                         {...field}
-                        required={required}
                         className="!capitalize"
                         isDisabled={disabled}
                         label={label}
+                        required={required}
                         variant={variant}
                     >
                         {options?.map((option) => (

@@ -10,12 +10,27 @@ export const useCreateComment = () => {
     return useMutation<any, Error, FieldValues>({
         mutationKey: ["CREATE_COMMENT"],
         mutationFn: async (commentData) => await createComment(commentData),
+        // onMutate: async (commentData) => {
+        //     const previousComments = queryClient.getQueryData(["GET_COMMENT_OF_POST"]);
+
+        //     if (!previousComments) {
+        //         console.log('Previous Comments nai:', previousComments); // ডেটা চেক করুন
+        //         return { previousComments: [] };
+        //     }
+
+        //     queryClient.setQueryData(["GET_COMMENT_OF_POST"], (old: any) => {
+        //         return [...old, { ...commentData, isLoading: true }];
+        //     });
+
+        //     return { previousComments };
+        // },
         onSuccess: () => {
             // @ts-ignore
             queryClient.invalidateQueries(["GET_COMMENT_OF_POST"]); // "GET_COMMENT_OF_POST" ai kye er data remove kore de, pore abar fetch kore dekhai
             toast.success("Comment Added Successfully");
         },
-        onError: (error: any) => {
+        onError: (error: any, variables, context: any) => {
+            queryClient.setQueryData(["GET_COMMENT_OF_POST"], context.previousComments);
             toast.error(error.response.data.message);
         },
     });

@@ -13,6 +13,8 @@ const VerifyAccount = () => {
     const { data: userRes } = useGetSinglUserById(user?._id);
     const fullUserData = (userRes?.result);
 
+    
+
     const handlePayment = (amount: number) => {
         if (user) {
             const info = {

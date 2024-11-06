@@ -1,6 +1,6 @@
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button } from '@nextui-org/button';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { toast } from 'sonner';
 import FSInput from '../form/FSInput';
 import FSForm from '../form/TSForm';
@@ -25,8 +25,10 @@ const CreatePostModal = ({ className }: IProps) => {
     const { data: catetoriesResponse } = useGetAllCategories();
     const { user } = useUser();
     const { mutate: createPost, isPending } = useCreatePosts();
+    const [uploading, setUploading] = useState(false);
 
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+        setUploading(true);
         const imagesToUpload = data.images;
 
         const postData = {
@@ -56,6 +58,7 @@ const CreatePostModal = ({ className }: IProps) => {
             // @ts-ignore
             createPost(postData);
         }
+        setUploading(false);
     };
 
 
@@ -92,7 +95,7 @@ const CreatePostModal = ({ className }: IProps) => {
                             <FSSelect label='Category' name='categoryId' options={categoryOptions} />
                         </div>
 
-                        <FSTextEditor label='Description' name='description'  />
+                        <FSTextEditor label='Description' name='description' />
 
                         <div className='grid md:grid-cols-2 gap-5'>
                             <div className='w-[100%]'>
@@ -100,7 +103,7 @@ const CreatePostModal = ({ className }: IProps) => {
                             </div>
                             <FSSelect label='Post type' name='isPremium' options={postTypeOptions} />
                         </div>
-                        <Button fullWidth color='primary' type='submit'>Post</Button>
+                        <Button fullWidth color='primary' isLoading={uploading} type='submit'>{uploading ? "Posting" : "Post"}</Button>
                     </div>
                 </FSForm>
             </ModalContainer>

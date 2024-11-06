@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import { useUser } from '@/src/context/user.provider';
 import { ReactNode } from 'react';
+import { useUser } from '@/src/context/user.provider';
 
 interface IChildren {
     children: ReactNode;

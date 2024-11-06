@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup } from "@nextui-org/react";
-import { useState } from "react";
+import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, ButtonGroup, Spinner } from "@nextui-org/react";
+import { useRef, useState } from "react";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import parse from 'html-react-parser';
 import { Image } from "@nextui-org/image";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { GoHeart } from "react-icons/go";
 import { IoHeartSharp } from "react-icons/io5";
 import { LuBadgeCheck } from "react-icons/lu";
+import { IoIosDownload } from "react-icons/io";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import DropDownPostEdit from "../ui/DropDownPostEdit/DropDownPostEdit";
 import CommentModal from "../comment/CommentModal";
@@ -22,10 +23,11 @@ import { useUser } from "@/src/context/user.provider";
 import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
+import { downloadPDF } from "@/src/utils/generatePdg";
 
 type TProps = {
     post: TPost;
-    setUpdatePostId: (value: string) => void;
+    setUpdatePostId?: (value: string) => void;
 }
 
 
@@ -36,7 +38,7 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
     const { data: followInfo } = useGetUserFollow(user?._id);
     const { mutate: updateUpVote, isPending: upVoteUpdating } = useTogglePostUpVote();
     const { mutate: updateDownVote, isPending: downVoteUpdating } = useTogglePostDownVote();
-    const { data: commentsOfPostRes } = useGetAllCommentsOfPost(post?._id);
+    const { data: commentsOfPostRes, isFetching: commentsFetching } = useGetAllCommentsOfPost(post?._id);
     const commentsOfPost = (commentsOfPostRes?.result);
 
     // console.log(commentsOfPost);
@@ -86,7 +88,7 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
             userId: user?._id,
         }
 
-        setUpdatePostId(postId);
+        setUpdatePostId?.(postId);
         updateUpVote(info as TToggleVote);
     }
 
@@ -95,15 +97,16 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
             postId: postId,
             userId: user?._id,
         }
-        
-        setUpdatePostId(postId);
+
+        setUpdatePostId?.(postId);
         updateDownVote(info as TToggleVote);
     }
 
+    const cardRef = useRef<HTMLDivElement>(null);
 
     return (
         <div>
-            <Card className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} border border-default-100`} shadow="sm">
+            <Card ref={cardRef} className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} border border-default-100`} shadow="sm">
                 <CardHeader className="justify-between border-b border-default-200">
                     <div className="flex gap-5">
                         <Avatar
@@ -278,7 +281,8 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                                         <div className="flex gap-1 items-center cursor-pointer">
                                             <BiMessageRoundedDetail size={20} />
                                             <p className="text-default-400 text-small">Comments</p>
-                                            <p className="text-small text-default-400">({commentsOfPost?.length})</p>
+                                            <p className="text-small text-default-400">({commentsOfPost?.length || 0})</p>
+                                            {commentsFetching && <Spinner size="sm" />}
                                         </div>
                                     </AnimatedButton>
                                 }
@@ -287,8 +291,9 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                         </PremiumComponent>
 
                         <div className="flex gap-1">
-                            <p className="font-semibold text-default-400 text-small">100</p>
-                            <p className="text-default-400 text-small">Seen</p>
+                            <Button className="bg-green-100/50 hover:bg-green-100 hover:text-green-600 duration-200 rounded-full" onClick={() => downloadPDF(cardRef, `${post?.title}.pdf`)}>
+                                <IoIosDownload className="text-green-500 " size={30} />
+                            </Button>
                         </div>
                     </div>
 

@@ -12,7 +12,7 @@ interface IUploadOptions {
 }
 
 export const useGetAllPosts = (queryOptions: IQueryOptions) => {
-    
+
     return useQuery({
         queryKey: ["GET_ALL_POST", queryOptions.searchTerm, queryOptions.sortBy, queryOptions.page, queryOptions.categoryId],
         queryFn: async () => await getAllPosts(queryOptions),
@@ -28,7 +28,7 @@ export const useGetUserAllPosts = (queryOptions: IQueryOptions, userId: string |
     })
 }
 
-export const useGetSinglePostsByPostId = ( postId: string | undefined) => {
+export const useGetSinglePostsByPostId = (postId: string | undefined) => {
     return useQuery({
         queryKey: ["GET_SINGLE_POST_BY_ID"],
         queryFn: async () => await getSinglePostByPostId(postId as string),
@@ -36,15 +36,25 @@ export const useGetSinglePostsByPostId = ( postId: string | undefined) => {
     })
 }
 
+// todo: after create post ui does not update without refresh
 export const useCreatePosts = () => {
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     return useMutation<any, Error, FormData>({
         mutationKey: ["CREATE_POST"],
         mutationFn: async (postData) => await createPost(postData),
         onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["GET_ALL_POST"]);
             router.push("/");
             toast.success("Post created successfully");
+
+            const id = setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+
+            return () => clearTimeout(id);
         },
         onError: (error) => {
             toast.error(error.message);
@@ -64,6 +74,11 @@ export const useUpdatePost = (userId: string) => {
             queryClient.invalidateQueries(["GET_ALL_POST"]);
             router.push("/");
             toast.success("Post updated successfully");
+            const id = setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+
+            return () => clearTimeout(id);
         },
         onError: (error) => {
             toast.error(error.message);
@@ -117,6 +132,11 @@ export const useDeletePostPermanantly = () => {
             toast.success("Post deleted successfull");
             // @ts-ignore
             queryClient.invalidateQueries(["GET_ALL_POST"]);
+            const id = setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+
+            return () => clearTimeout(id);
         },
         onError: (error) => {
             toast.error(error.message);
@@ -131,6 +151,7 @@ export const useDeletePostPermanantly = () => {
 // Upload Multiple Images
 export const uploadImages = async (imageFiles: File[], { onSuccess, onError }: IUploadOptions) => {
     const apiKey = envConfig.img_bb_key as string;
+
 
     const promises = imageFiles.map(async (imageFile: any) => {
         const formData = new FormData();

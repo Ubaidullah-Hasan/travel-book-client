@@ -1,9 +1,9 @@
 "use client"
 import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/modal';
 import React, { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import ModalCloseIcon from '../ui/ModalCloseIcon';
 import { IChildren } from '@/src/types';
-import { usePathname } from 'next/navigation';
 
 
 interface IProps extends IChildren {
@@ -43,8 +43,8 @@ const ModalContainer = ({ title, children }: IProps) => {
                         },
                     }
                 }}
-                size='2xl'
                 placement={pathName === "/create-post" ? "center" : "top"}
+                size='2xl'
             >
                 <ModalContent className='relative'>
                     {() => (

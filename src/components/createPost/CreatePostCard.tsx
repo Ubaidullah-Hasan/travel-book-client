@@ -27,7 +27,7 @@ const CreatePostCard = () => {
                     <Avatar isBordered
                         className='w-11 h-11'
                         color={user?.email ? 'success' : "default"}
-                        src={user?.profilePhoto || 'https://i.ibb.co.com/nb7ZFPP/user.png'}
+                        src={user?.profilePhoto || 'https://i.ibb.co.com/V3HmxcR/man-avatar.png'}
                     />
                     <div className='flex-1'>
                         <div className='bg-default-200 hover:bg-default-300 text-default-400 py-2 px-4 w-full text-start rounded-full text-sm cursor-pointer' onClick={handleCreatPostBtn}>

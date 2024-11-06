@@ -45,16 +45,16 @@ const SinglePostEdit = ({ params }: TParams) => {
         label: item?.name,
         key: item?._id,
     }))
-    const postTypeOptions = [
-        {
-            label: "Free",
-            key: false,
-        },
-        {
-            label: "Premium",
-            key: true,
-        }
-    ]
+    // const postTypeOptions = [
+    //     {
+    //         label: "Free",
+    //         key: false,
+    //     },
+    //     {
+    //         label: "Premium",
+    //         key: true,
+    //     }
+    // ]
 
     return (
         <>
@@ -80,12 +80,12 @@ const SinglePostEdit = ({ params }: TParams) => {
                                     <FSSelect label='Category' name='categoryId' options={categoryOptions} required={false} />
                                 </div>
 
-                                <FSTextEditor label='Description' name='description' value={post?.description} required={false} />
+                                <FSTextEditor label='Description' name='description' required={false} value={post?.description} />
 
                                 {/* <div className='flex gap-5'>
                                     <FSSelect label='Post type' name='isPremium' options={postTypeOptions} required={false}  />
                                 </div> */}
-                                <Button fullWidth color='primary' type='submit'>Post</Button>
+                                <Button fullWidth color='primary' type='submit'>Update</Button>
                             </div>
                         </FSForm>
                     </ModalContainer>

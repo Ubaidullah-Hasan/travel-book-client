@@ -16,7 +16,7 @@ export const registerUser = async (userInfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(error?.response?.data?.message);
     }
 }
 
@@ -31,7 +31,7 @@ export const login = async (userinfo: FieldValues) => {
 
         return data;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(error?.response?.data?.message);
     }
 };
 

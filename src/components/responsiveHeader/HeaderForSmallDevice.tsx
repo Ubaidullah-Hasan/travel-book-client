@@ -5,12 +5,16 @@ import { usePathname } from 'next/navigation';
 import { ThemeSwitch } from '../ui/theme-switch';
 import LeftSidebar from '../sidebar/LeftSidebar';
 import SearchField from '../form/SearchField';
+import { pageWithOutHeaderCompo } from '@/src/constant';
+
+
+
 
 const HeaderForSmallDevice = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const pathName = usePathname();
-    const pageWithOutHeaderCompo = ["/verify-account", "/my-profile"];
-    // console.log(pageWithOutHeaderCompo?.some((path) => pathName.match(path)));
+    const isShow = (pageWithOutHeaderCompo?.some((path) => pathName.match(path)));
+    
 
     return (
         <div className='relative mb-4'>
@@ -20,7 +24,7 @@ const HeaderForSmallDevice = () => {
                     : <div />
                 }
                 <div className='flex-1 sm:hidden'>
-                    {pathName !== "/my-profile" && <SearchField />}
+                    {!isShow && <SearchField />}
                 </div>
                 <ThemeSwitch />
             </div>

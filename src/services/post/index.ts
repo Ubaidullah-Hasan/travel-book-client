@@ -36,13 +36,11 @@ export const getUserAllPosts = async (queryOptions: IQueryOptions, userId: strin
 
         return res.data;
     } catch (error: any) {
-        console.log(error?.response?.data?.message);
         throw new Error(error?.response?.data?.message);
     }
 }
 
 export const getSinglePostByPostId = async (postId: string) => {
-    console.log({postId});
     try {
         const res = await axiosInstance.get(`/posts/${postId}`);
 

@@ -7,3 +7,5 @@ export const USER_STATUS = {
     ACTIVE: 'ACTIVE',
     BLOCKED: 'BLOCKED',
 } as const;
+
+export const pageWithOutHeaderCompo = ["/verify-account", "/my-profile"];

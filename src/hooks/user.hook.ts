@@ -50,7 +50,8 @@ export const useUserPayment = () => {
             queryClient.invalidateQueries(["USER_PAYMENT"]);
         },
         onError: (error) => {
-            toast.error(error.message);
+            // toast.error(error.message);
+            toast.error("Something went wrong! You must have 1 upvote for premium users.");
         },
     });
 }

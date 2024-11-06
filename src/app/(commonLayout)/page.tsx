@@ -28,11 +28,16 @@ const RecentPosts = () => {
 
         if (posts?.length > 0) {
             setItems((prevItems) => {
-                const updatedItem = posts.filter((item) => item?._id === updatePostId);
-                const withoutUpdatedItems = prevItems.filter((item) => item?._id !== updatePostId)
+                const updatedItem = posts.find((item) => item?._id === updatePostId);
+                const withoutUpdatedItems = prevItems.filter((item) => item?._id !== updatePostId);
 
-                // If there's an updated item, include it at the beginning of the array (or end based on your requirement).
-                let newItems = updatedItem?.length > 0 ? [...updatedItem, ...withoutUpdatedItems] : [...prevItems];
+                // // If there's an updated item, include it at the same position in the array
+                let newItems = updatedItem ? [
+                    ...withoutUpdatedItems.slice(0, prevItems.findIndex(item => item._id === updatePostId)),
+                    updatedItem,
+                    ...withoutUpdatedItems.slice(prevItems.findIndex(item => item._id === updatePostId))
+                ] : [...prevItems];
+
 
                 if (queryOptions.searchTerm) {
                     return [...posts];
@@ -110,26 +115,28 @@ const RecentPosts = () => {
         <div>
             {isQueryChanging && <Loading />}
             {items?.length === 0
-                && <div className='items-center flex justify-center flex-col mt-[20%]'>
+                ? <div className='items-center flex justify-center flex-col mt-[20%]'>
                     <IoIosWarning size={100} />
                     <h3 className='text-lg font-semibold'>No Post Abailable Here!</h3>
-                </div>
+                </div> :
+
+                <InfiniteScroll
+                    dataLength={items?.length}
+                    endMessage={
+                        items.length > 0 && <p className='text-center'>No more posts!</p>
+                    }
+                    hasMore={!hasMore}
+                    loader={<p className='text-center'>Loading more posts...</p>}
+                    next={fetchMoreData}
+                >
+                    <div className='min-h-screen pb-4 space-y-4 '>
+                        {items?.map((post: TPost) => (
+                            <PostCard key={post._id} post={post} setUpdatePostId={setUpdatePostId} />
+                        ))}
+                    </div>
+                </InfiniteScroll>
             }
-            <InfiniteScroll
-                dataLength={items?.length}
-                endMessage={
-                    items.length > 0 && <p className='text-center'>No more posts!</p>
-                }
-                hasMore={!hasMore}
-                loader={<p className='text-center'>Loading more posts...</p>}
-                next={fetchMoreData}
-            >
-                <div className='min-h-screen pb-4 space-y-4 '>
-                    {items?.map((post: TPost) => (
-                        <PostCard key={post._id} post={post} setUpdatePostId={setUpdatePostId} />
-                    ))}
-                </div>
-            </InfiniteScroll>
+
         </div>
     );
 };
