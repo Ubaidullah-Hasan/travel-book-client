@@ -40,6 +40,11 @@ git clone https://github.com/Ubaidullah-Hasan/travel-book-client.git
 ## Following steps
 * Open the repository in a code editor
 * Open terminal or command prompt then write <code>npm install</code>
+```bash
+BACKEND_URL="your backend url"
+IMAGEBB_API_URL=https://api.imgbb.com/1/upload
+NEXT_PUBLIC_IMAGEBB_API_KEY="secret key"
+```
   
 <b> Run these command for spacific output </b>
   * <code> npm run dev </code> for ts file server running in development mode
