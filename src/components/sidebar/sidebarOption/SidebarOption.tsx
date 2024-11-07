@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import React from 'react';
 import { IoHomeOutline, IoNewspaperOutline } from "react-icons/io5";
-import { GrUserSettings } from "react-icons/gr";
+import { GrContactInfo, GrUserSettings } from "react-icons/gr";
 import { TbPasswordUser } from "react-icons/tb";
 import { RiFunctionAddLine } from "react-icons/ri";
 import { AiOutlineDashboard } from 'react-icons/ai';
+import { TiInfoLarge } from "react-icons/ti";
 import { USER_ROLE } from '@/src/constant';
 import { useUser } from '@/src/context/user.provider';
+
 
 
 type TResponsiveProps = {
@@ -48,6 +50,16 @@ const SidebarOption = ({ setIsOpen, isOpen }: TResponsiveProps) => {
             label: "Add Category",
             path: "/add-category",
         },
+        {
+            icon: <TiInfoLarge />,
+            label: "About Us",
+            path: "/about",
+        },
+        {
+            icon: <GrContactInfo />,
+            label: "Contact Us",
+            path: "/contact",
+        },
     ]
     const sidebarLinkUser = [
         {
@@ -69,6 +81,16 @@ const SidebarOption = ({ setIsOpen, isOpen }: TResponsiveProps) => {
             icon: <TbPasswordUser />,
             label: "change password",
             path: "/change-password",
+        },
+        {
+            icon: <TiInfoLarge />,
+            label: "About Us",
+            path: "/about",
+        },
+        {
+            icon: <GrContactInfo />,
+            label: "Contact Us",
+            path: "/contact",
         }
     ]
 

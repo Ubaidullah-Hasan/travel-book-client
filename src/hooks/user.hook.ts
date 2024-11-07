@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { deleteUserByAdmin, editUserRoleByAdmin, getAllUsers, getSingleUserById, getUserFollowInfo, TEditUserPayload, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
+import { deleteUserByAdmin, editUserRoleByAdmin, getAllUsers, getSingleUserById, getUserFollowInfo, sendMessage, TEditUserPayload, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
 
 export const useUpdateProfile = (userEmail: string) => {
 
@@ -105,6 +105,22 @@ export const useEditUserRole = () => {
         mutationFn: async (payload) => await editUserRoleByAdmin(payload),
         onSuccess: () => {
             toast.success("User role updated!", {
+                position: "top-center"
+            });
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+export const useSendMessage = () => {
+
+    return useMutation<any, Error, FieldValues>({
+        mutationKey: ["send_message"],
+        mutationFn: async (payload) => await sendMessage(payload),
+        onSuccess: () => {
+            toast.success("Send message Successfully!", {
                 position: "top-center"
             });
         },

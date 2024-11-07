@@ -125,3 +125,19 @@ export const editUserRoleByAdmin = async (payload: TEditUserPayload) => {
         throw new Error("Failed to update profile!");
     }
 }
+
+// export type TSendMessage = { message: string, name: string, email: string }
+
+export const sendMessage = async (payload: FieldValues) => {
+    try {
+        const { data } = await axiosInstance.post(
+            `/contact-messages`,
+            payload
+        );
+
+        return data;
+    } catch (error) {
+        // console.log(error?.response?.data?.message);
+        throw new Error("Failed to send message!");
+    }
+}

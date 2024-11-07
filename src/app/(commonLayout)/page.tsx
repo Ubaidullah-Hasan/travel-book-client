@@ -78,7 +78,7 @@ const RecentPosts = () => {
         }
     }, [posts, queryOptions]);
 
-    // console.log({ items, queryOptions, posts });
+    console.log({ items, queryOptions, posts });
 
 
     useEffect(() => {
@@ -86,7 +86,7 @@ const RecentPosts = () => {
     }, [queryOptions]);
 
 
-    const hasMore = posts?.length < 10;
+    const hasMore = posts?.length < 10; 
 
     const fetchMoreData = () => {
         setQueryOptions((pre) => ({ ...pre, page: page && page + 1 }));

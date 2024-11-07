@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 "use client"
-import { Chip, Select, SelectItem, Switch, Tooltip, User } from '@nextui-org/react';
+import { Chip, Switch, Tooltip, User } from '@nextui-org/react';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
-import React, { useState } from 'react';
-import { CiEdit } from 'react-icons/ci';
+import React from 'react';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { TUser } from '@/src/types';
 import { USER_ROLE, USER_STATUS } from '@/src/constant';
@@ -42,6 +41,7 @@ const TSTable = ({ columns, users }: TProps) => {
             userId: id,
             role: USER_ROLE.ADMIN,
         }
+
         editUser(payload);
     }
 
@@ -75,7 +75,7 @@ const TSTable = ({ columns, users }: TProps) => {
             case "actions":
                 return (
                     <div className="relative flex justify-center items-center gap-2">
-                        <Tooltip onClick={() => handleDelete(user?._id)} color="danger" content="Delete user">
+                        <Tooltip color="danger" content="Delete user" onClick={() => handleDelete(user?._id)}>
                             <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(user?._id)}>
                                 <MdOutlineDeleteOutline />
                             </span>
@@ -87,7 +87,7 @@ const TSTable = ({ columns, users }: TProps) => {
                     <div className="relative flex justify-center items-center gap-2">
                         <div className='flex gap-1 items-center'>
                             <span className={`border ${user?.role === USER_ROLE.USER ? "border-green-400 bg-green-100" : "border-default-300 bg-default-200"}  font-bold text-sm w-6 h-6 flex justify-center items-center p-1 bg-default-200 rounded-full`} >U</span>
-                            <Switch onClick={() => handleUpdateRole(user?._id)} className='ms-2' isDisabled={user?.role === USER_ROLE.ADMIN || user?.status === USER_STATUS.BLOCKED} defaultSelected={user?.role === USER_ROLE.ADMIN} color="success" />
+                            <Switch className='ms-2' color="success" defaultSelected={user?.role === USER_ROLE.ADMIN} isDisabled={user?.role === USER_ROLE.ADMIN || user?.status === USER_STATUS.BLOCKED} onClick={() => handleUpdateRole(user?._id)} />
                             <span className={`border ${user?.role === USER_ROLE.ADMIN ? "border-green-400 bg-green-100" : "border-default-300 bg-default-200"}  font-bold text-sm w-6 h-6 flex justify-center items-center p-1 bg-default-200 rounded-full`} >A</span>
                         </div>
                     </div>
