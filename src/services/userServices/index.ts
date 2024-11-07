@@ -15,6 +15,7 @@ export const updateUserProfile = async (updateInfo: FieldValues, userEmail: stri
 
         return data;
     } catch (error) {
+        // console.log(error.response.data.message)
         throw new Error("Failed to update profile!");
     }
 }

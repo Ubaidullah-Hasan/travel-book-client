@@ -14,8 +14,8 @@ export const useUpdateProfile = (userEmail: string) => {
                 position: "top-center"
             });
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: () => {
+            toast.error("Something went wrong!");
         },
     });
 }

@@ -78,7 +78,7 @@ const RecentPosts = () => {
         }
     }, [posts, queryOptions]);
 
-    console.log({ items, queryOptions, posts });
+    // console.log({ items, queryOptions, posts });
 
 
     useEffect(() => {
