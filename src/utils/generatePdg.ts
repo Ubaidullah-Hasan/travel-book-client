@@ -6,6 +6,7 @@ import html2canvas from "html2canvas";
  * @param elementRef - PDF এ রূপান্তর করার জন্য HTML এলিমেন্টের রেফারেন্স।
  * @param fileName - PDF ফাইলটির নাম।
  */
+
 export const downloadPDF = async (elementRef: React.RefObject<HTMLElement>, fileName: string = "download.pdf") => {
     const element = elementRef.current;
 
@@ -20,6 +21,7 @@ export const downloadPDF = async (elementRef: React.RefObject<HTMLElement>, file
             const pdf = new jsPDF("p", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
+
 
             // ক্যানভাসের উচ্চতা ও প্রস্থ অনুসারে অনুপাত নির্ধারণ করা
             const imgWidth = canvas.width;
@@ -45,7 +47,6 @@ export const downloadPDF = async (elementRef: React.RefObject<HTMLElement>, file
 
                     position += sectionCanvas.height;
 
-                    // পরবর্তী পৃষ্ঠার জন্য addPage যোগ করা
                     if (position < imgHeight) {
                         pdf.addPage();
                     }

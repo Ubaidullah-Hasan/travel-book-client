@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { getSingleUserById, getUserFollowInfo, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
+import { deleteUserByAdmin, editUserRoleByAdmin, getAllUsers, getSingleUserById, getUserFollowInfo, TEditUserPayload, TIds, toggleUserFollowInfo, TUserPayment, updateUserProfile, userPayment } from "../services/userServices";
 
 export const useUpdateProfile = (userEmail: string) => {
 
@@ -57,7 +57,7 @@ export const useUserPayment = () => {
 }
 
 export const useGetUserFollow = (userId: string | undefined) => {
-    
+
     return useQuery<any, Error, FieldValues>({
         queryKey: ["USER_FOLLOW"],
         queryFn: async () => await getUserFollowInfo(userId),
@@ -66,10 +66,50 @@ export const useGetUserFollow = (userId: string | undefined) => {
 }
 
 export const useGetSinglUserById = (userId: string | undefined) => {
-    
+
     return useQuery<any, Error, FieldValues>({
         queryKey: ["GET_SINGL_USER"],
         queryFn: async () => await getSingleUserById(userId),
         enabled: !!userId,
+    });
+
+}
+export const useGetAllUsers = () => {
+
+    return useQuery<any, Error, FieldValues>({
+        queryKey: ["GET_ALL_USERS"],
+        queryFn: async () => await getAllUsers(),
+    });
+}
+
+export const useDeleteUser = () => {
+
+    return useMutation<any, Error, string>({
+        mutationKey: ["DELETE_USER"],
+        mutationFn: async (userId) => await deleteUserByAdmin(userId),
+        onSuccess: () => {
+            toast.success("Blocked this user!", {
+                position: "top-center"
+            });
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+
+export const useEditUserRole = () => {
+
+    return useMutation<any, Error, TEditUserPayload>({
+        mutationKey: ["EDIT_USER"],
+        mutationFn: async (payload) => await editUserRoleByAdmin(payload),
+        onSuccess: () => {
+            toast.success("User role updated!", {
+                position: "top-center"
+            });
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
     });
 }

@@ -1,6 +1,8 @@
 "use server"
 import { FieldValues } from "react-hook-form";
+import { revalidateTag } from "next/cache";
 import axiosInstance from "@/src/lib/axiosInstance";
+import { USER_ROLE } from "@/src/constant";
 
 export const updateUserProfile = async (updateInfo: FieldValues, userEmail: string) => {
     try {
@@ -8,6 +10,8 @@ export const updateUserProfile = async (updateInfo: FieldValues, userEmail: stri
             `/users/update-user/${userEmail}`,
             updateInfo
         );
+
+        revalidateTag("profile");
 
         return data;
     } catch (error) {
@@ -54,6 +58,18 @@ export const getSingleUserById = async (userId: string | undefined) => {
     }
 }
 
+export const getAllUsers = async () => {
+    try {
+        const { data } = await axiosInstance.get(
+            `/users`
+        );
+
+        return data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message);
+    }
+}
+
 export type TUserPayment = {
     id: string | undefined,
     totalPrice: number,
@@ -68,5 +84,44 @@ export const userPayment = async (info: TUserPayment) => {
         return data;
     } catch (error: any) {
         throw new Error(error?.response?.data?.message);
+    }
+}
+
+
+export const deleteUserByAdmin = async (userId: string) => {
+    try {
+        const { data } = await axiosInstance.patch(
+            `/users/${userId}`,
+        );
+
+        revalidateTag("profile");
+
+        return data;
+    } catch (error) {
+        throw new Error("Failed to update profile!");
+    }
+}
+
+
+type TUserRole = keyof typeof USER_ROLE;
+
+export type TEditUserPayload = {
+    userId: string,
+    role: TUserRole
+}
+
+export const editUserRoleByAdmin = async (payload: TEditUserPayload) => {
+    try {
+        const { data } = await axiosInstance.patch(
+            `/users/role/${payload?.userId}`,
+            { role: payload.role }
+        );
+
+        revalidateTag("profile");
+
+        return data;
+    } catch (error) {
+        // console.log(error?.response?.data?.message);
+        throw new Error("Failed to update profile!");
     }
 }

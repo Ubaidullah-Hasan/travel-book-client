@@ -4,6 +4,7 @@ import { IoHomeOutline, IoNewspaperOutline } from "react-icons/io5";
 import { GrUserSettings } from "react-icons/gr";
 import { TbPasswordUser } from "react-icons/tb";
 import { RiFunctionAddLine } from "react-icons/ri";
+import { AiOutlineDashboard } from 'react-icons/ai';
 import { USER_ROLE } from '@/src/constant';
 import { useUser } from '@/src/context/user.provider';
 
@@ -17,6 +18,11 @@ type TResponsiveProps = {
 const SidebarOption = ({ setIsOpen, isOpen }: TResponsiveProps) => {
     const { user } = useUser();
     const sidebarLinkAdmin = [
+        {
+            icon: <AiOutlineDashboard size={20} />,
+            label: "Dashboard",
+            path: "/dashboard",
+        },
         {
             icon: <IoHomeOutline size={20} />,
             label: "Home",

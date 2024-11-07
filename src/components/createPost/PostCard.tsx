@@ -291,9 +291,11 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                         </PremiumComponent>
 
                         <div className="flex gap-1">
-                            <Button className="bg-green-100/50 hover:bg-green-100 hover:text-green-600 duration-200 rounded-full" onClick={() => downloadPDF(cardRef, `${post?.title}.pdf`)}>
-                                <IoIosDownload className="text-green-500 " size={30} />
-                            </Button>
+                            <PrivateComponent>
+                                <Button className="bg-green-100/50 hover:bg-green-100 hover:text-green-600 duration-200 rounded-full" onClick={() => downloadPDF(cardRef, `${post?.title}.pdf`)}>
+                                    <IoIosDownload className="text-green-500 " size={30} />
+                                </Button>
+                            </PrivateComponent>
                         </div>
                     </div>
 
