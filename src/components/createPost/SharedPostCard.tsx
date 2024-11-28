@@ -1,16 +1,38 @@
-import { useGetSinglePostsByPostId } from '@/src/hooks/post.hook';
 import { Avatar } from '@nextui-org/avatar';
 import { Image } from '@nextui-org/image';
-import { Link, LinkIcon } from '@nextui-org/link';
-import React from 'react';
+import { Link } from '@nextui-org/link';
+import React, { useEffect, useState } from 'react';
 import { LuBadgeCheck } from 'react-icons/lu';
+import { useGetSinglePostsByPostId } from '@/src/hooks/post.hook';
+import { getSinglePostByPostId } from '@/src/services/post';
 
 type TProps = {
     sharedPostIdForm: string,
 }
 const SharedPostCard = ({ sharedPostIdForm }: TProps) => {
-    const { data: sharedPostRes, isLoading } = useGetSinglePostsByPostId(sharedPostIdForm);
-    const sharedPost = sharedPostRes?.result;
+
+    const [sharedPost, setPost] = useState<any>(null); 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchPost = async (id: string) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const postData = await getSinglePostByPostId(id);
+            setPost(postData?.result);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (sharedPostIdForm) {
+            fetchPost(sharedPostIdForm);
+        }
+    }, [sharedPostIdForm]);
 
     function stripHtml(html: any) {
         const spaceAdd = (html?.replace(/<\/[^>]+>/g, '$& '));
@@ -34,7 +56,7 @@ const SharedPostCard = ({ sharedPostIdForm }: TProps) => {
         </div>
             :
             <Link href={`/${sharedPostIdForm}/comments`}>
-                <div className='border rounded-lg my-2 p-4'>
+                <div className='border rounded-lg my-2 p-4 w-full'>
                     <div className="flex pb-3 border-b gap-5">
                         <Avatar
                             isBordered

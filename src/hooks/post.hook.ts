@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { createPost, deletePostPermanently, getAllPosts, getSinglePostByPostId, getUserAllPosts, toggleDownVote, toggleUpVote, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
+import { createPost, deletePostPermanently, getAllPosts, getSinglePostByPostId, getUserAllPosts, sharePost, toggleDownVote, toggleUpVote, TSharePost, TToggleVote, TUpdateData, updateSinglePost } from "../services/post"
 import { IQueryOptions } from "../types"
 import envConfig from "../config/envConfig"
 
@@ -36,6 +36,7 @@ export const useGetSinglePostsByPostId = (postId: string | undefined) => {
     })
 }
 
+
 // todo: after create post ui does not update without refresh
 export const useCreatePosts = () => {
     const router = useRouter();
@@ -49,6 +50,30 @@ export const useCreatePosts = () => {
             queryClient.invalidateQueries(["GET_ALL_POST"]);
             router.push("/");
             toast.success("Post created successfully");
+
+            const id = setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+
+            return () => clearTimeout(id);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+}
+export const useSharePosts = (postId:string) => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    return useMutation<any, Error, TSharePost>({
+        mutationKey: ["SHARE_POST"],
+        mutationFn: async (postData) => await sharePost(postId, postData),
+        onSuccess: () => {
+            // @ts-ignore
+            queryClient.invalidateQueries(["GET_ALL_POST"]);
+            router.push("/");
+            toast.success("Post updated successfully");
 
             const id = setTimeout(() => {
                 window.location.reload();

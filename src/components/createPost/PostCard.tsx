@@ -10,21 +10,22 @@ import { useRouter } from "next/navigation";
 import { GoHeart } from "react-icons/go";
 import { IoHeartSharp } from "react-icons/io5";
 import { LuBadgeCheck } from "react-icons/lu";
-import { IoIosDownload } from "react-icons/io";
+import { IoIosDownload, IoIosShareAlt } from "react-icons/io";
 import AnimatedButton from "../framerMotion/AnimatedButton";
 import DropDownPostEdit from "../ui/DropDownPostEdit/DropDownPostEdit";
 import CommentModal from "../comment/CommentModal";
 import CommentCard from "../comment/CommentCard";
 import PrivateComponent from "../privateComponent/PrivateComponent";
 import PremiumComponent from "../privateComponent/PremiumComponent";
+import Loading from "../ui/Loading";
+import SharedPostCard from "./SharedPostCard";
 import { TFollow, TPost } from "@/src/types";
 import { useGetUserFollow, useUpdateUserFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
-import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
+import { useSharePosts, useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hook";
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
 import { downloadPDF } from "@/src/utils/generatePdg";
-import SharedPostCard from "./SharedPostCard";
 
 type TProps = {
     post: TPost;
@@ -53,12 +54,12 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
 
     const { mutate: handleFollowUpdate, isPending: updating } = useUpdateUserFollow();
     const { sharedForm, description, title, userId, categoryId, images, upVote, downVote, _id, isPremium } = post;
-    const descriptionText = parse(description);
+    const descriptionText = parse(description || "");
 
     const isFollowed = followers?.some((follow: TFollow) => follow?._id?.match(userId?._id));
 
     function stripHtml(html: any) {
-        const spaceAdd = (html.replace(/<\/[^>]+>/g, '$& '));
+        const spaceAdd = (html?.replace(/<\/[^>]+>/g, '$& '));
         const tempDiv = document.createElement('div');
 
         tempDiv.innerHTML = spaceAdd;
@@ -105,217 +106,240 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
 
     const cardRef = useRef<HTMLDivElement>(null);
 
+    const { mutate: sharePost, isPending } = useSharePosts(_id);
+
+    const handleSharedPost = () => {
+        const postData = {
+            userId: user?._id as string,
+            // description: description,
+            isPremium: isPremium,
+        }
+
+        sharePost(postData);
+    }
+
     return (
-        <div>
-            <Card ref={cardRef} className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} border border-default-100`} shadow="sm">
-                <CardHeader className="justify-between border-b border-default-200">
-                    <div className="flex gap-5">
-                        <Avatar
-                            isBordered
-                            radius="full"
-                            size="md"
-                            src={userId?.profilePhoto || "https://nextui.org/avatars/avatar-1.png"}
-                        />
-                        <div className="flex flex-col gap-1 items-start justify-center">
-                            <div>
-                                {
-                                    <h4 className="text-small font-semibold leading-none text-default-600 flex gap-1 items-center">
-                                        {userId?.name || "Unknown"}
-                                        {userId?.isVerified && <LuBadgeCheck className="text-green-500" />}
-                                    </h4>
-                                }
+        <>
+            {isPending && <Loading />}
+            <div>
+                <Card ref={cardRef} className={`${commentsOfPost?.length > 0 ? "rounded-t-md rounded-b-none " : "rounded-md"} border border-default-100`} shadow="sm">
+                    <CardHeader className="justify-between border-b border-default-200">
+                        <div className="flex gap-5">
+                            <Avatar
+                                isBordered
+                                radius="full"
+                                size="md"
+                                src={userId?.profilePhoto || "https://nextui.org/avatars/avatar-1.png"}
+                            />
+                            <div className="flex flex-col gap-1 items-start justify-center">
+                                <div>
+                                    {
+                                        <h4 className="text-small font-semibold leading-none text-default-600 flex gap-1 items-center">
+                                            {userId?.name || "Unknown"}
+                                            {userId?.isVerified && <LuBadgeCheck className="text-green-500" />}
+                                        </h4>
+                                    }
+                                </div>
+                                <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                             </div>
-                            <h5 className="text-small tracking-tight text-default-400">{userId?.role}</h5>
                         </div>
-                    </div>
-                    <PrivateComponent>
-                        <AnimatedButton scaleValue={1.05} >
-                            {userId?._id !== user?._id ?
-                                <Button
-                                    className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
-                                    color="primary"
-                                    isLoading={updating}
-                                    radius="full"
-                                    size="sm"
-                                    variant={isFollowed ? "bordered" : "solid"}
-                                    onPress={handleFollow}
-                                >
-                                    {isFollowed ? "Unfollow" : "Follow"}
-                                </Button>
-                                :
-                                <DropDownPostEdit postId={_id} />
-                            }
-                        </AnimatedButton>
-                    </PrivateComponent>
-                </CardHeader>
+                        <PrivateComponent>
+                            <div className="flex flex-col- gap-4 items-center ">
+                                <AnimatedButton scaleValue={1.05} >
+                                    {userId?._id !== user?._id ?
+                                        <Button
+                                            className={`${isFollowed ? "bg-transparent text-foreground border-default-200" : ""} uppercase`}
+                                            color="primary"
+                                            isLoading={updating}
+                                            radius="full"
+                                            size="sm"
+                                            variant={isFollowed ? "bordered" : "solid"}
+                                            onPress={handleFollow}
+                                        >
+                                            {isFollowed ? "Unfollow" : "Follow"}
+                                        </Button>
+                                        :
+                                        <DropDownPostEdit postId={_id} />
+                                    }
+                                </AnimatedButton>
 
-                {
-                    isShowPost ? (
-                        <CardBody className="px-3 py-0 text-small text-default-400 my-1">
-                            <h2 className="text-lg text-default-800 mb-2">{title}</h2>
-                            {/* description */}
-                            <p className="text-default-900">
-                                {
-                                    cleanText.length <= 142 || isExpanded
-                                        ? descriptionText
-                                        : (cleanText.slice(0, 142))
-                                }
-                                {cleanText.length >= 142 && !isExpanded ? (
-                                    <span className="text-blue-500 ms-2"
-                                        role="button"
-                                        onClick={() => setIsExpanded(true)}
-                                    >See more...</span>
-                                ) : ""
-                                }
-                            </p>
-                            {/* if it is a shared post then display it start */}
-                            {
-                                sharedForm && <SharedPostCard sharedPostIdForm={sharedForm} />
-                            }
-                            {/* if it is a shared post then display it end */}
-
-                            <div className="space-y-2 my-2">
-                                {
-                                    images?.map((image, i) => (
-                                        <Image
-                                            key={i}
-                                            alt={`${title}-${i}`}
-                                            className="rounded w-full"
-                                            src={image}
-                                            width={1000}
-                                        />
-                                    ))
-                                }
+                                {/* post share button */}
+                                {userId?._id !== user?._id &&
+                                    <AnimatedButton scaleValue={1.05} >
+                                        <IoIosShareAlt className="border border-default-400 rounded-full p-2" size={35} onClick={() => handleSharedPost()} />
+                                    </AnimatedButton>}
                             </div>
-                            {categoryId &&
+                        </PrivateComponent>
+                    </CardHeader>
+
+                    {
+                        isShowPost ? (
+                            <CardBody className="px-3 py-0 text-small text-default-400 my-1">
+                                <h2 className="text-lg text-default-800 mb-2">{title}</h2>
+                                {/* description */}
+                                <p className="text-default-900">
+                                    {
+                                        cleanText.length <= 142 || isExpanded
+                                            ? descriptionText
+                                            : (cleanText.slice(0, 142))
+                                    }
+                                    {cleanText.length >= 142 && !isExpanded ? (
+                                        <span className="text-blue-500 ms-2"
+                                            role="button"
+                                            onClick={() => setIsExpanded(true)}
+                                        >See more...</span>
+                                    ) : ""
+                                    }
+                                </p>
+                                {/* if it is a shared post then display it start */}
+                                {
+                                    sharedForm && <SharedPostCard sharedPostIdForm={sharedForm} />
+                                }
+                                {/* if it is a shared post then display it end */}
+
+                                <div className="space-y-2 my-2">
+                                    {
+                                        images?.map((image, i) => (
+                                            <Image
+                                                key={i}
+                                                alt={`${title}-${i}`}
+                                                className="rounded w-full"
+                                                src={image}
+                                                width={1000}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                                {categoryId &&
+                                    <span className="pt-2 capitalize">
+                                        #{categoryId?.name}
+                                    </span>
+                                }
+                            </CardBody>
+                        ) :
+                            <CardBody className="py-0 text-small text-default-400 relative">
+                                <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[20] flex items-center justify-center " >
+                                    <Button className="bg-default-200 uppercase text-sm" onClick={() => router.push("/verify-account")}>Premium Content</Button>
+                                </div>
+                                <h2 className="text-lg text-default-800 mb-2">{title}</h2>
+                                <p className="text-default-900">
+                                    {
+                                        cleanText.length <= 142 || isExpanded
+                                            ? descriptionText
+                                            : (cleanText.slice(0, 142))
+                                    }
+                                    {cleanText.length >= 142 && !isExpanded ? (
+                                        <span className="text-blue-500 ms-2"
+                                            role="button"
+                                            onClick={() => setIsExpanded(true)}
+                                        >See more...</span>
+                                    ) : ""
+                                    }
+                                </p>
+                                <div className="space-y-2 my-2">
+                                    {
+                                        images?.map((image, i) => (
+                                            <Image
+                                                key={i}
+                                                alt={`${title}-${i}`}
+                                                className="rounded w-full"
+                                                src={image}
+                                                width={1000}
+                                            />
+                                        ))
+                                    }
+                                </div>
                                 <span className="pt-2 capitalize">
                                     #{categoryId?.name}
                                 </span>
-                            }
-                        </CardBody>
-                    ) :
-                        <CardBody className="py-0 text-small text-default-400 relative">
-                            <div className="w-full h-full absolute bg-violet-500 top-0 left-0 z-[20] flex items-center justify-center " >
-                                <Button className="bg-default-200 uppercase text-sm" onClick={() => router.push("/verify-account")}>Premium Content</Button>
-                            </div>
-                            <h2 className="text-lg text-default-800 mb-2">{title}</h2>
-                            <p className="text-default-900">
-                                {
-                                    cleanText.length <= 142 || isExpanded
-                                        ? descriptionText
-                                        : (cleanText.slice(0, 142))
-                                }
-                                {cleanText.length >= 142 && !isExpanded ? (
-                                    <span className="text-blue-500 ms-2"
-                                        role="button"
-                                        onClick={() => setIsExpanded(true)}
-                                    >See more...</span>
-                                ) : ""
-                                }
-                            </p>
-                            <div className="space-y-2 my-2">
-                                {
-                                    images?.map((image, i) => (
-                                        <Image
-                                            key={i}
-                                            alt={`${title}-${i}`}
-                                            className="rounded w-full"
-                                            src={image}
-                                            width={1000}
-                                        />
-                                    ))
-                                }
-                            </div>
-                            <span className="pt-2 capitalize">
-                                #{categoryId?.name}
-                            </span>
-                        </CardBody>
-                }
+                            </CardBody>
+                    }
 
 
-                <CardFooter className="flex-col justify-between items-stretch border-t border-default-200">
-                    <div className="flex gap-3 justify-between items-center ">
-                        <div className="flex gap-1">
+                    <CardFooter className="flex-col justify-between items-stretch border-t border-default-200">
+                        <div className="flex gap-3 justify-between items-center ">
+                            <div className="flex gap-1">
+                                <PremiumComponent isPremium={isPremium}>
+                                    <ButtonGroup radius="full" size="sm"  >
+                                        <Button
+                                            className="hover:bg-default-200"
+                                            isDisabled={isDownVote}
+                                            isLoading={upVoteUpdating}
+                                            startContent={
+                                                upVote?.some((vote) => vote === user?._id) ?
+                                                    (
+                                                        <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
+                                                            <IoHeartSharp
+                                                                className={"text-red-600"}
+                                                                size={20}
+                                                            />
+                                                        </AnimatedButton>
+                                                    ) : <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
+                                                        <GoHeart
+                                                            className="text-default-500"
+                                                            size={20} />
+                                                    </AnimatedButton>
+                                            }
+                                            onClick={() => handleUpVote(_id)}
+                                        >{upVote?.length}</Button>
+
+                                        <Button
+                                            className="bg-transparent/20 hover:bg-default-200 disabled:bg-default-200"
+                                            disabled={isUpvote}
+                                            isLoading={downVoteUpdating}
+                                            startContent={
+                                                downVote?.some((vote) => vote === user?._id) ?
+                                                    (
+                                                        <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
+                                                            <IoHeartSharp
+                                                                className={"text-default-500"}
+                                                                size={20}
+                                                            />
+                                                        </AnimatedButton>
+                                                    ) : <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
+                                                        <GoHeart
+                                                            className="text-default-500"
+                                                            size={20} />
+                                                    </AnimatedButton>
+                                            }
+                                            onClick={() => handleDownVote(_id)}
+                                        >{downVote?.length}</Button>
+                                    </ButtonGroup>
+                                </PremiumComponent>
+                            </div>
                             <PremiumComponent isPremium={isPremium}>
-                                <ButtonGroup radius="full" size="sm"  >
-                                    <Button
-                                        className="hover:bg-default-200"
-                                        isDisabled={isDownVote}
-                                        isLoading={upVoteUpdating}
-                                        startContent={
-                                            upVote?.some((vote) => vote === user?._id) ?
-                                                (
-                                                    <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
-                                                        <IoHeartSharp
-                                                            className={"text-red-600"}
-                                                            size={20}
-                                                        />
-                                                    </AnimatedButton>
-                                                ) : <AnimatedButton scaleValue={isDownVote ? 1 : 1.1}>
-                                                    <GoHeart
-                                                        className="text-default-500"
-                                                        size={20} />
-                                                </AnimatedButton>
-                                        }
-                                        onClick={() => handleUpVote(_id)}
-                                    >{upVote?.length}</Button>
-
-                                    <Button
-                                        className="bg-transparent/20 hover:bg-default-200 disabled:bg-default-200"
-                                        disabled={isUpvote}
-                                        isLoading={downVoteUpdating}
-                                        startContent={
-                                            downVote?.some((vote) => vote === user?._id) ?
-                                                (
-                                                    <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
-                                                        <IoHeartSharp
-                                                            className={"text-default-500"}
-                                                            size={20}
-                                                        />
-                                                    </AnimatedButton>
-                                                ) : <AnimatedButton scaleValue={isUpvote ? 1 : 1.1}>
-                                                    <GoHeart
-                                                        className="text-default-500"
-                                                        size={20} />
-                                                </AnimatedButton>
-                                        }
-                                        onClick={() => handleDownVote(_id)}
-                                    >{downVote?.length}</Button>
-                                </ButtonGroup>
+                                <CommentModal
+                                    btnText={
+                                        <AnimatedButton>
+                                            <div className="flex gap-1 items-center cursor-pointer">
+                                                <BiMessageRoundedDetail size={20} />
+                                                <p className="text-default-400 text-small">Comments</p>
+                                                <p className="text-small text-default-400">({commentsOfPost?.length || 0})</p>
+                                                {commentsFetching && <Spinner size="sm" />}
+                                            </div>
+                                        </AnimatedButton>
+                                    }
+                                    postId={post?._id}
+                                />
                             </PremiumComponent>
+
+                            <div className="flex gap-1">
+                                <PrivateComponent>
+                                    <Button className="bg-green-100/50 hover:bg-green-100 hover:text-green-600 duration-200 rounded-full" onClick={() => downloadPDF(cardRef, `${post?.title}.pdf`)}>
+                                        <IoIosDownload className="text-green-500 " size={30} />
+                                    </Button>
+                                </PrivateComponent>
+                            </div>
                         </div>
-                        <PremiumComponent isPremium={isPremium}>
-                            <CommentModal
-                                btnText={
-                                    <AnimatedButton>
-                                        <div className="flex gap-1 items-center cursor-pointer">
-                                            <BiMessageRoundedDetail size={20} />
-                                            <p className="text-default-400 text-small">Comments</p>
-                                            <p className="text-small text-default-400">({commentsOfPost?.length || 0})</p>
-                                            {commentsFetching && <Spinner size="sm" />}
-                                        </div>
-                                    </AnimatedButton>
-                                }
-                                postId={post?._id}
-                            />
-                        </PremiumComponent>
-
-                        <div className="flex gap-1">
-                            <PrivateComponent>
-                                <Button className="bg-green-100/50 hover:bg-green-100 hover:text-green-600 duration-200 rounded-full" onClick={() => downloadPDF(cardRef, `${post?.title}.pdf`)}>
-                                    <IoIosDownload className="text-green-500 " size={30} />
-                                </Button>
-                            </PrivateComponent>
-                        </div>
-                    </div>
 
 
-                </CardFooter>
-            </Card>
+                    </CardFooter>
+                </Card>
 
-            {/* comment display */}
-            <CommentCard commentsOfPost={commentsOfPost} postId={_id} userId={user?._id as string} />
-        </div>
+                {/* comment display */}
+                <CommentCard commentsOfPost={commentsOfPost} postId={_id} userId={user?._id as string} />
+            </div>
+        </>
     );
 };
 

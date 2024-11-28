@@ -2,7 +2,6 @@
 import { revalidateTag } from "next/cache";
 import { axiosInstance } from "@/src/lib/axiosInstance";
 import { IQueryOptions } from "@/src/types";
-import envConfig from "@/src/config/envConfig";
 
 export const getAllPosts = async (queryOptions: IQueryOptions) => {
     try {
@@ -20,6 +19,19 @@ export const getAllPosts = async (queryOptions: IQueryOptions) => {
 export const createPost = async (postData: FormData) => {
     try {
         const res = await axiosInstance.post(`/posts`, postData);
+
+        revalidateTag("posts");
+
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message)
+    }
+}
+
+export type TSharePost = { userId: string; isPremium: boolean; description?: string }
+export const sharePost = async (postId: string, postData: TSharePost) => {
+    try {
+        const res = await axiosInstance.post(`posts/${postId}/share`, postData);
 
         revalidateTag("posts");
 
