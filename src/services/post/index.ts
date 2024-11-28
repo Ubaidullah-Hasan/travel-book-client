@@ -2,6 +2,7 @@
 import { revalidateTag } from "next/cache";
 import { axiosInstance } from "@/src/lib/axiosInstance";
 import { IQueryOptions } from "@/src/types";
+import envConfig from "@/src/config/envConfig";
 
 export const getAllPosts = async (queryOptions: IQueryOptions) => {
     try {
@@ -13,7 +14,6 @@ export const getAllPosts = async (queryOptions: IQueryOptions) => {
     } catch (error: any) {
         throw new Error(error?.response?.data?.message);
     }
-
 }
 
 

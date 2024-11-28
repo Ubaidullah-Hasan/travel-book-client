@@ -31,6 +31,7 @@ export type TPost = {
   downVote: string[];
   isPremium: boolean;
   updatedAt: string;
+  sharedForm:string;
 }
 
 export type TUser = {

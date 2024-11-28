@@ -24,6 +24,7 @@ import { useTogglePostDownVote, useTogglePostUpVote } from "@/src/hooks/post.hoo
 import { TToggleVote } from "@/src/services/post";
 import { useGetAllCommentsOfPost } from "@/src/hooks/comments.hook";
 import { downloadPDF } from "@/src/utils/generatePdg";
+import SharedPostCard from "./SharedPostCard";
 
 type TProps = {
     post: TPost;
@@ -51,7 +52,7 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
     // const followingCount = followData?.followingCount;
 
     const { mutate: handleFollowUpdate, isPending: updating } = useUpdateUserFollow();
-    const { description, title, userId, categoryId, images, upVote, downVote, _id, isPremium } = post;
+    const { sharedForm, description, title, userId, categoryId, images, upVote, downVote, _id, isPremium } = post;
     const descriptionText = parse(description);
 
     const isFollowed = followers?.some((follow: TFollow) => follow?._id?.match(userId?._id));
@@ -120,7 +121,7 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                                 {
                                     <h4 className="text-small font-semibold leading-none text-default-600 flex gap-1 items-center">
                                         {userId?.name || "Unknown"}
-                                        {userId.isVerified && <LuBadgeCheck className="text-green-500" />}
+                                        {userId?.isVerified && <LuBadgeCheck className="text-green-500" />}
                                     </h4>
                                 }
                             </div>
@@ -150,8 +151,9 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
 
                 {
                     isShowPost ? (
-                        <CardBody className="px-3 py-0 text-small text-default-400 my-4">
+                        <CardBody className="px-3 py-0 text-small text-default-400 my-1">
                             <h2 className="text-lg text-default-800 mb-2">{title}</h2>
+                            {/* description */}
                             <p className="text-default-900">
                                 {
                                     cleanText.length <= 142 || isExpanded
@@ -166,6 +168,12 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                                 ) : ""
                                 }
                             </p>
+                            {/* if it is a shared post then display it start */}
+                            {
+                                sharedForm && <SharedPostCard sharedPostIdForm={sharedForm} />
+                            }
+                            {/* if it is a shared post then display it end */}
+
                             <div className="space-y-2 my-2">
                                 {
                                     images?.map((image, i) => (
@@ -179,9 +187,11 @@ const PostCard = ({ post, setUpdatePostId }: TProps) => {
                                     ))
                                 }
                             </div>
-                            <span className="pt-2 capitalize">
-                                #{categoryId?.name}
-                            </span>
+                            {categoryId &&
+                                <span className="pt-2 capitalize">
+                                    #{categoryId?.name}
+                                </span>
+                            }
                         </CardBody>
                     ) :
                         <CardBody className="py-0 text-small text-default-400 relative">
