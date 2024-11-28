@@ -45,7 +45,13 @@ const Login = async () => {
                 <ModalContent>
                     {() => (
                         <>
-                            <FSForm onSubmit={handleSubmit}>
+                            <FSForm
+                                onSubmit={handleSubmit}
+                                defaultValues={{ 
+                                    email: "hm2964133@gmail.com",
+                                    password: "123456"
+                                 }}
+                            >
                                 <ModalHeader className="flex flex-col gap-1 text-center capitalize">Welcome To Login</ModalHeader>
                                 <ModalBody>
 

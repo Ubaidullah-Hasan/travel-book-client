@@ -16,6 +16,7 @@ export const getAllPosts = async (queryOptions: IQueryOptions) => {
 
 }
 
+
 export const createPost = async (postData: FormData) => {
     try {
         const res = await axiosInstance.post(`/posts`, postData);

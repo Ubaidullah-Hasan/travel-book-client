@@ -22,8 +22,12 @@ const RecentPosts = () => {
     const page = queryOptions?.page;
 
     useEffect(() => {
-        if (posts?.length === 0) {
+        if (posts?.length === 0 && items?.length % 10 === 0) {
+            setItems(items)
+            setIsQueryChanging(false);
+        } else if (posts?.length === 0) {
             setItems([])
+            setIsQueryChanging(false);
         }
 
         if (posts?.length > 0) {
@@ -78,7 +82,7 @@ const RecentPosts = () => {
         }
     }, [posts, queryOptions]);
 
-    // console.log({ items, queryOptions, posts });
+    console.log({ items, queryOptions, posts });
 
 
     useEffect(() => {
@@ -86,7 +90,8 @@ const RecentPosts = () => {
     }, [queryOptions]);
 
 
-    const hasMore = posts?.length < 10; 
+    // const hasMore = posts?.length < 10;
+    const hasMore = posts?.length === 10;
 
     const fetchMoreData = () => {
         setQueryOptions((pre) => ({ ...pre, page: page && page + 1 }));
@@ -125,7 +130,8 @@ const RecentPosts = () => {
                     endMessage={
                         items.length > 0 && <p className='text-center'>No more posts!</p>
                     }
-                    hasMore={!hasMore}
+                    // hasMore={hasMore}
+                    hasMore={hasMore}
                     loader={<p className='text-center'>Loading more posts...</p>}
                     next={fetchMoreData}
                 >
